@@ -13,5 +13,3 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
-// require __DIR__ . '/asesor.php';
-// require __DIR__ . '/cash.php';
