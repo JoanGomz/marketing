@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  app:
+    image: bitnami/php-fpm:8.4
+    container_name: laravel-app
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      PHP_FPM_USER: 1000
+      PHP_FPM_GROUP: 1000
+
+  web:
+    image: nginx:alpine
+    container_name: laravel-nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/app
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - app
+
+  composer:
+    image: composer:2
+    container_name: laravel-composer
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: ["composer", "install"]
+    
+  node:
+    image: node:18
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: ["sh", "-c", "npm install && npm run build"]
