@@ -1,0 +1,9 @@
+{
+    "id": "prueba joan",
+    "type": "test",
+    "text": "Mensaje de prueba desde Landbot Joan",
+    "customer": {
+        "id": "customer-test",
+        "name": "Nombre de Prueba Joan"
+    }
+}

@@ -1,0 +1,212 @@
+{
+    "success": true,
+    "customers": [
+        {
+            "name": "Hola",
+            "avatar": "https://storage.googleapis.com/media.landbot.io/avatars/yexir.png",
+            "email": null,
+            "identificacion": "1030696923",
+            "id": 454634413,
+            "uuid": "06f4e168-4446-4c6a-bdd3-b152fddb3da7",
+            "unread": false,
+            "blocked": false,
+            "brand_id": 660339,
+            "archived": false,
+            "agent_id": null,
+            "meta_data": {
+                "api_payload": "$0"
+            },
+            "channel_id": 2794318,
+            "visitor_id": null,
+            "last_message_content": "¡Bienvenido a Starpark! ¿Ya estás registrado en nuestro sistema?",
+            "ticket_id": null,
+            "paused_until": null,
+            "last_message": 1742921093.351638,
+            "last_send_date": 1742921093.975246,
+            "last_receive_date": 1742921093.351638,
+            "register_date": 1739980704.0,
+            "opt_in": true,
+            "custom_fields": {
+                "name": {
+                    "name": "name",
+                    "value": "Hola",
+                    "type": "string"
+                },
+                "identificacion": {
+                    "name": "identificacion",
+                    "value": 1030696923,
+                    "type": "integer"
+                }
+            }
+        },
+        {
+            "name": "Joan",
+            "avatar": "https://storage.googleapis.com/media.landbot.io/avatars/yexir.png",
+            "email": null,
+            "phone": "573194268958",
+            "id": 460850101,
+            "uuid": "6175b44f-702e-452d-8557-94423ad4f939",
+            "unread": false,
+            "blocked": false,
+            "brand_id": 660339,
+            "archived": false,
+            "agent_id": 714998,
+            "meta_data": {},
+            "channel_id": 2835525,
+            "visitor_id": null,
+            "last_message_content": "hola",
+            "ticket_id": null,
+            "paused_until": null,
+            "last_message": 1742315027.782732,
+            "last_send_date": 1742312381.109678,
+            "last_receive_date": 1742315027.782732,
+            "register_date": 1742312062.0,
+            "opt_in": false,
+            "custom_fields": {
+                "phone": {
+                    "name": "phone",
+                    "value": "573194268958",
+                    "type": "string"
+                },
+                "name": {
+                    "name": "name",
+                    "value": "Joan",
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "Michelle Camelo ñ",
+            "avatar": "https://storage.googleapis.com/media.landbot.io/avatars/yexir.png",
+            "email": null,
+            "phone": "573202936511",
+            "id": 460852202,
+            "uuid": "e4ea61b7-0568-490b-9918-eaca09b29088",
+            "unread": false,
+            "blocked": false,
+            "brand_id": 660339,
+            "archived": false,
+            "agent_id": null,
+            "meta_data": {},
+            "channel_id": 2835525,
+            "visitor_id": null,
+            "last_message_content": "Michelle Camelo",
+            "ticket_id": null,
+            "paused_until": null,
+            "last_message": 1742312536.784795,
+            "last_send_date": 1742312526.757182,
+            "last_receive_date": 1742312536.784795,
+            "register_date": 1742312511.0,
+            "opt_in": false,
+            "custom_fields": {
+                "phone": {
+                    "name": "phone",
+                    "value": "573202936511",
+                    "type": "string"
+                },
+                "name": {
+                    "name": "name",
+                    "value": "Michelle Camelo ñ",
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "Martha",
+            "avatar": "https://storage.googleapis.com/media.landbot.io/avatars/yexir.png",
+            "email": null,
+            "id": 457805193,
+            "uuid": "1a6177ea-39c0-42a6-8646-fed36421f836",
+            "unread": false,
+            "blocked": false,
+            "brand_id": 660339,
+            "archived": false,
+            "agent_id": null,
+            "meta_data": {
+                "api_payload": "$0"
+            },
+            "channel_id": null,
+            "visitor_id": null,
+            "last_message_content": "Martha, estos son nuestras opciones 👇👇",
+            "ticket_id": null,
+            "paused_until": null,
+            "last_message": 1741193199.545619,
+            "last_send_date": 1741193200.155407,
+            "last_receive_date": 1741193199.545619,
+            "register_date": 1741192896.0,
+            "opt_in": false,
+            "custom_fields": {
+                "name": {
+                    "name": "name",
+                    "value": "Martha",
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "Fernanda",
+            "avatar": "https://storage.googleapis.com/media.landbot.io/avatars/yexir.png",
+            "email": null,
+            "id": 457657744,
+            "uuid": "88305e36-0fac-4bf7-bec0-cc4ba1615aa0",
+            "unread": false,
+            "blocked": false,
+            "brand_id": 660339,
+            "archived": false,
+            "agent_id": null,
+            "meta_data": {
+                "api_payload": "$0"
+            },
+            "channel_id": null,
+            "visitor_id": null,
+            "last_message_content": "Fernanda por favor ingresa a este link donde podras hacer tu recarga y disfrutar de nuestras atracciones  https://clientes.nequi.com.co/recargas",
+            "ticket_id": null,
+            "paused_until": null,
+            "last_message": 1741122626.062173,
+            "last_send_date": 1741122626.617182,
+            "last_receive_date": 1741122626.062173,
+            "register_date": 1741122579.0,
+            "opt_in": false,
+            "custom_fields": {
+                "name": {
+                    "name": "name",
+                    "value": "Fernanda",
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "Angel",
+            "avatar": "https://storage.googleapis.com/media.landbot.io/avatars/yexir.png",
+            "email": null,
+            "id": 456259252,
+            "uuid": "b58cbd58-24c8-4acf-95e2-f712221ecb26",
+            "unread": false,
+            "blocked": false,
+            "brand_id": 660339,
+            "archived": false,
+            "agent_id": null,
+            "meta_data": {
+                "api_payload": "$0"
+            },
+            "channel_id": null,
+            "visitor_id": null,
+            "last_message_content": "Hola Angel este es tu codigo *8540 *para poder jugar en starpark, recuerda que este codigo tiene duracion de 1 hora a partir de ahora 🎮👾",
+            "ticket_id": null,
+            "paused_until": null,
+            "last_message": 1740501205.896309,
+            "last_send_date": 1740501206.44202,
+            "last_receive_date": 1740501205.896309,
+            "register_date": 1740501138.0,
+            "opt_in": false,
+            "custom_fields": {
+                "name": {
+                    "name": "name",
+                    "value": "Angel",
+                    "type": "string"
+                }
+            }
+        }
+    ],
+    "total": 6
+}

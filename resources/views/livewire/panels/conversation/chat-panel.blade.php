@@ -33,7 +33,7 @@
     </div>
 
     <!-- Historial de mensajes -->
-    <div id="content-conversation" class="flex-1 overflow-y-auto p-4 bg-gray-50" style="background-image: url('/Images/Asesor/patron starp.png'); background-size: 100%;
+    <div id="content-conversation" class="flex-1 overflow-y-auto p-4 bg-gray-50" style="background-image: url('/Images/Asesor/patron.png'); background-size: 100%;
             background-repeat: repeat;">
         <!-- Mensajes del sistema -->
         <div class="flex justify-center mb-4">

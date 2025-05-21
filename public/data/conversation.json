@@ -1,0 +1,58 @@
+{
+    "conversation": [
+      {
+        "sender": "user",
+        "message": "Hola, ¿cómo puedo acceder a las promociones de StarPark?"
+      },
+      {
+        "sender": "bot",
+        "message": "¡Hola! Para acceder a las promociones, por favor proporcióname tu número de cédula."
+      },
+      {
+        "sender": "user",
+        "message": "Mi número de cédula es 123456789."
+      },
+      {
+        "sender": "bot",
+        "message": "Gracias, Andrés. Por favor, elige una opción del siguiente menú:",
+        "menu": [
+          {
+            "title": "Jugar",
+            "id": "play"
+          },
+          {
+            "title": "Recargar",
+            "id": "recharge"
+          },
+          {
+            "title": "Hablar con un asesor",
+            "id": "talk_to_advisor"
+          }
+        ]
+      },
+      {
+        "sender": "user",
+        "message": "Jugar"
+      },
+      {
+        "sender": "bot",
+        "message": "Perfecto, Andrés. Este es tu código para jugar: 🎮783. Este código expira en una hora. ¡Diviértete!"
+      },
+      {
+        "sender": "user",
+        "message": "Recargar"
+      },
+      {
+        "sender": "bot",
+        "message": "Andrés, para recargar, por favor dirígete a la caja y con tu número de cédula podrás recargar tu cuenta. ¿Hay algo más en lo que pueda ayudarte?"
+      },
+      {
+        "sender": "user",
+        "message": "Hablar con un asesor"
+      },
+      {
+        "sender": "bot",
+        "message": "Para hablar con un asesor, por favor visita el siguiente enlace: https://wha11234.13hqoeyrba.com  Un asesor estará disponible para resolver todas tus inquietudes."
+      }
+  ]
+}

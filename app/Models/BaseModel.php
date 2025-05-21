@@ -14,10 +14,6 @@ class BaseModel extends Model
         'user_last_update',
         'user_creator'
     ];
-
-    const CREATED_AT = 'create_at';
-    const UPDATED_AT = 'update_at';
-
     protected static function boot()
     {
         parent::boot();
