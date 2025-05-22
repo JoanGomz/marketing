@@ -36,7 +36,7 @@ class ParksController extends Controller
         try {
             $validatedData = $request->validate((new StoreParksRequest())->rules());
             $park = $this->parksService->create($validatedData);
-            return $this->responseLivewire('success', 'El centro comercial se creó exitosamente', $park);
+            return $this->responseLivewire('success', 'El parque se creó exitosamente', $park);
         } catch (\Exception $ex) {
             return $this->responseLivewire('error', $ex->getMessage(), []);
         }
@@ -49,10 +49,10 @@ class ParksController extends Controller
 
             $park = $this->parksService->findById($parkId);
             if (!$park instanceof Parks) {
-                throw new \Exception('El centro comercial no existe');
+                throw new \Exception('El parque no existe');
             }
             $park = $this->parksService->update($validatedData, $park->id);
-            return $this->responseLivewire('success', 'El centro comercial se actualizó exitosamente', $park);
+            return $this->responseLivewire('success', 'El parque se actualizó exitosamente', $park);
         } catch (\Exception $ex) {
             return $this->responseLivewire('error', $ex->getMessage(), []);
         }
@@ -63,7 +63,7 @@ class ParksController extends Controller
         try {
             $park = $this->parksService->findById($parkId);
             if (!$park instanceof Parks) {
-                throw new \Exception('El centro comercial no existe');
+                throw new \Exception('El parque no existe');
             }
             $this->parksService->delete($park->id);
 
