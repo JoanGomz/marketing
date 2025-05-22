@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Contracts\Admin\UserServiceInterface;
 use App\Http\Controllers\Controller;
 use App\Models\Operation\Parks;
+use App\Models\Operation\Roles;
 use App\Models\User;
 use App\Services\Operation\ParksService;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class UserController extends Controller
     {
         try {
             $users = $this->userService->getAllActiveUsers();
-            return $this->responseLivewire('success', '', $users);
+            return $this->responseLivewire('success', 'success', $users);
         } catch (\Exception $ex) {
             return $this->responseLivewire('error', $ex->getMessage(), []);
         }
@@ -50,7 +51,7 @@ class UserController extends Controller
             if ($request->id_centro_comercial) {
                 $park = app(ParksService::class)->findById($request->id_centro_comercial);
                 if (!$park instanceof Parks) {
-                    return $this->responseLivewire('error', 'El centro comercial no existe');
+                    return $this->responseLivewire('error', 'El parque no existe');
                 }
             }
 
@@ -100,6 +101,16 @@ class UserController extends Controller
         $user = User::where('email', $email)->first();
         if ($user) {
             throw new \Exception('El email ya está en uso');
+        }
+    }
+
+    public function getRoles(): array
+    {
+        try {
+            $roles = Roles::all();
+            return $this->responseLivewire('success', 'success', $roles);
+        } catch (\Exception $ex) {
+            return $this->responseLivewire('error', $ex->getMessage(), []);
         }
     }
 }

@@ -2,20 +2,18 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
-use App\Models\Operation\CentroComercial;
+use App\Models\Operation\Parks;
+use App\Models\Operation\Roles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles, HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -26,8 +24,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'status',
-        'id_centro_comercial',
+        'active',
+        'role_id',
+        'parks_id'
     ];
 
     /**
@@ -54,9 +53,14 @@ class User extends Authenticatable
     }
 
 
-    public function mall()
+    public function park()
     {
-        return $this->hasOne(CentroComercial::class, 'id', 'id_centro_comercial');
+        return $this->hasOne(Parks::class, 'id', 'parks_id');
+    }
+
+    public function role()
+    {
+        return $this->hasOne(Roles::class, 'id', 'role_id');
     }
 
     public function userCreator()
