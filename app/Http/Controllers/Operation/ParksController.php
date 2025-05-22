@@ -3,56 +3,70 @@
 namespace App\Http\Controllers\Operation;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Http\Requests\Operation\Parks\StoreParksRequest as ParksStoreParksRequest;
-use App\Http\Requests\Operation\Parks\UpdateParksRequest as ParksUpdateParksRequest;
-use App\Livewire\Panels\Park;
+use App\Http\Requests\Operation\Parks\StoreParksRequest;
+use App\Http\Requests\Operation\Parks\UpdateParksRequest;
 use App\Models\Operation\Parks;
-use App\Services\Operation\ParksService as parksService;
+use App\Services\Operation\ParksService;
+use Illuminate\Http\Request;
+use LaravelLang\Publisher\Console\Update;
 
 class ParksController extends Controller
 {
 
+    private ParksService $parksService;
+
+    public function __construct(ParksService $parksService)
+
+    {
+        $this->parksService = $parksService;
+    }
+
     public function index()
     {
         try {
-            $parks = Parks::all();
+            $parks = $this->parksService->getAll();
             return $this->responseLivewire('success', '', $parks);
         } catch (\Exception $ex) {
             return $this->responseLivewire('error', $ex->getMessage(), []);
         }
     }
+
     public function store(Request $request)
     {
         try {
-            $park = Parks::create($request->all());
+            $validatedData = $request->validate((new StoreParksRequest())->rules());
+            $park = $this->parksService->create($validatedData);
             return $this->responseLivewire('success', 'El centro comercial se creó exitosamente', $park);
         } catch (\Exception $ex) {
             return $this->responseLivewire('error', $ex->getMessage(), []);
         }
     }
+
     public function update(Request $request, int $parkId)
     {
         try {
-            $parks = Parks::find($parkId);
-            if (!$parks instanceof Parks) {
+            $validatedData = $request->validate((new UpdateParksRequest())->rules());
+
+            $park = $this->parksService->findById($parkId);
+            if (!$park instanceof Parks) {
                 throw new \Exception('El centro comercial no existe');
             }
-            $park = $parks->update($request->all());
+            $park = $this->parksService->update($validatedData, $park->id);
             return $this->responseLivewire('success', 'El centro comercial se actualizó exitosamente', $park);
         } catch (\Exception $ex) {
             return $this->responseLivewire('error', $ex->getMessage(), []);
         }
     }
+
     public function destroy(int $parkId): array
     {
         try {
-            $park = Parks::find($parkId);
-            if (!$park) {
-                return $this->responseLivewire('error', 'El parque no existe', []);
+            $park = $this->parksService->findById($parkId);
+            if (!$park instanceof Parks) {
+                throw new \Exception('El centro comercial no existe');
             }
-            $record = $park->where('id', $parkId)->where('is_deleted', 0);
-            $record->update(['is_deleted' => 1]);
+            $this->parksService->delete($park->id);
+
             return $this->responseLivewire('success', 'El parque se eliminó correctamente', []);
         } catch (\Exception $ex) {
             return $this->responseLivewire('error', $ex->getMessage(), []);

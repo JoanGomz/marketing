@@ -45,7 +45,7 @@ class BaseService implements BaseServiceInterface
     public function delete(int $id)
     {
         $record = $this->model->where('id', $id)->where('is_deleted', 0);
-        $record->update(['is_deleted' => 1, 'delete_at' => now(), 'user_last_update' => Auth::id()]);
+        $record->update(['is_deleted' => 1, 'user_last_update' => Auth::id()]);
         return $record;
     }
 }
