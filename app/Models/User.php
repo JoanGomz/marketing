@@ -53,11 +53,6 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Set Values
-     */
-    const CREATED_AT = 'create_at';
-    const UPDATED_AT = 'update_at';
 
     public function mall()
     {
@@ -72,22 +67,5 @@ class User extends Authenticatable
     public function userUpdate()
     {
         return $this->hasOne(self::class, 'id', 'user_last_update');
-    }
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            if (true) {
-                $model->user_creator = 1;
-            }
-        });
-
-        static::updating(function ($model) {
-            if (true) {
-                $model->user_last_update = 1;
-            }
-        });
     }
 }

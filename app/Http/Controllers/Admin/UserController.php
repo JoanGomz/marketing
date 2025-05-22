@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Contracts\Admin\UserServiceInterface;
 use App\Http\Controllers\Controller;
-use App\Models\Operation\CentroComercial;
+use App\Models\Operation\Parks;
 use App\Models\User;
-use App\Services\Operation\CentroComercialService;
+use App\Services\Operation\ParksService;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -48,16 +48,13 @@ class UserController extends Controller
             $this->validateEmail($request->email);
 
             if ($request->id_centro_comercial) {
-                $mall = new CentroComercialService(new CentroComercial())->findById($request->id_centro_comercial);
-                if (!$mall instanceof CentroComercial) {
+                $park = app(ParksService::class)->findById($request->id_centro_comercial);
+                if (!$park instanceof Parks) {
                     return $this->responseLivewire('error', 'El centro comercial no existe');
                 }
             }
 
-
             $user = $this->userService->createUser($request);
-            $user->syncRoles($request->role_check);
-
             return $this->responseLivewire('success', 'Usuario creado correctamente', $user);
         } catch (\Exception $ex) {
             return $this->responseLivewire('error', $ex->getMessage(), []);
@@ -77,7 +74,6 @@ class UserController extends Controller
             }
 
             $user = $this->userService->updateUser($request, $user);
-            $user->syncRoles($request->role_check);
             return $this->responseLivewire('success', 'Usuario Actualizado correctamente', $user);
         } catch (\Exception $ex) {
             return $this->responseLivewire('error', $ex->getMessage(), []);
