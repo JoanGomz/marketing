@@ -9,6 +9,11 @@ customElements.define("nocard-loading", myLoading);
 import('./slidebarDashboard.js').then(module => {
             module.default();
         });
+if (window.location.pathname.includes('/parques')) {
+    import('./cardSearch.js').then(module => {
+            module.default();
+        });
+}
 document.addEventListener("DOMContentLoaded", function () {
     if (window.location.pathname.includes('/conversaciones')) {
         import('./Conversation/whatsappJson.js').then(module => {

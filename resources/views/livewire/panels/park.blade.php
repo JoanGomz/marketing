@@ -41,7 +41,7 @@
                             x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90"
                             class="form my-6 p-4 bg-slate-200 rounded-lg   overflow-hidden shadow-sm sm:rounded-lg pb-4">
                             <h3 class="text-lg font-medium">Actualizar Parque</h3>
-                            <form wire:submit.prevent="updateMall" class="mt-4">
+                            <form wire:submit.prevent="updatePark" class="mt-4">
                                 <div class="mb-5">
                                     <label for="name"
                                         class="block mb-2 text-sm font-medium text-gray-900 ">Nombre</label>
@@ -54,17 +54,27 @@
                                 </div>
                                 <div class="flex gap-4 mb-5">
                                     <div class="w-full">
-                                        <label for="address"
+                                        <label for="location"
                                             class="block mb-2 text-sm font-medium text-gray-900 ">Dirección</label>
                                         <div class="relative">
-                                            <input wire:model="address" type="text" id="address"
+                                            <input wire:model="location" type="text" id="location"
                                                 class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                                 placeholder="Ej: Calle 22 5b-22" />
-                                            @error('address')
+                                            @error('location')
                                                 <span class="error text-red-600">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
+                                </div>
+                                <div class="mb-5">
+                                    <label for="capacity"
+                                        class="block mb-2 text-sm font-medium text-gray-900 ">Capacidad</label>
+                                    <input wire:model="capacity" type="number" id="capacity"
+                                        class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5       "
+                                        placeholder="Capacidad del parque" />
+                                    @error('capacity')
+                                        <span class="error text-red-600">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="flex space-x-2">
                                     <x-primary-button mode="submit">Actualizar Parque</x-primary-button>
@@ -93,25 +103,25 @@
                                 </div>
                                 <div class="flex gap-4 mb-5">
                                     <div class="w-full">
-                                        <label for="address"
+                                        <label for="location"
                                             class="block mb-2 text-sm font-medium text-gray-900 ">Dirección</label>
                                         <div class="relative">
-                                            <input wire:model="address" type="text" id="address"
+                                            <input wire:model="location" type="text" id="location"
                                                 class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                                 placeholder="Ej: Calle 22 5b-22" />
-                                            @error('address')
+                                            @error('location')
                                                 <span class="error text-red-600">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mb-5">
-                                    <label for="name"
+                                    <label for="capacity"
                                         class="block mb-2 text-sm font-medium text-gray-900 ">Capacidad</label>
-                                    <input wire:model="name" type="text" id="name"
+                                    <input wire:model="capacity" type="number" id="capacity"
                                         class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5       "
-                                        placeholder="Ej: Bulevar Niza" />
-                                    @error('name')
+                                        placeholder="Capacidad del parque" />
+                                    @error('capacity')
                                         <span class="error text-red-600">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -123,11 +133,10 @@
                         </div>
                         <!--GRID PARA LAS TARJETAS DE LOS CENTROS COMERCIALES-->
                         <div
-                            class="p-4 bg-white rounded-lg mb-2 w-full max-h-[600px] overflow-x-auto grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-6 px-4 py-4">
-                            @if (isset($centros['data']) && is_array($centros['data']) && count($centros['data']) > 0)
+                            class="bg-white rounded-lg mb-2 w-full max-h-[100vh] overflow-x-auto grid grid-cols-1 xl:grid-cols-3 gap-6 py-4">
                                 @forelse ($centros['data'] as $item)
                                     <div
-                                        class="div p-4 bg-gradient-to-br from-indigo-700 to-purple-800 rounded-xl shadow-xl overflow-hidden relative">
+                                        class="div bg-gradient-to-br from-indigo-700 to-purple-800 rounded-xl shadow-xl overflow-hidden relative">
                                         <div class="p-4 relative z-10">
                                             <!-- Badge de ID -->
                                             <span
@@ -147,11 +156,11 @@
                                                     </svg>
                                                 </div>
                                                 <h2 class="text-2xl font-bold tracking-tight text-white">
-                                                    {{ $item->nombre }}</h2>
+                                                    {{ $item->name }}</h2>
                                             </div>
 
                                             <!-- Información con iconos -->
-                                            <div class="space-y-3 mb-5">
+                                            <div class="space-y-3 mb-5 flex justify-between">
                                                 <div class="flex items-start">
                                                     <svg class="h-5 w-5 text-blue-200 mt-0.5 mr-2 flex-shrink-0"
                                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,8 +169,8 @@
                                                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                     </svg>
                                                     <p class="text-sm text-blue-100">
-                                                        <span class="font-semibold text-white">Horarios:</span><br>
-                                                        Lunes a domingos: {{ $item->horarios }}
+                                                        <span class="font-semibold text-white">Ubicación:</span><br>
+                                                        {{ $item->location }}
                                                     </p>
                                                 </div>
 
@@ -177,13 +186,13 @@
                                                         </path>
                                                     </svg>
                                                     <p class="text-sm text-blue-100">
-                                                        <span class="font-semibold text-white">Dirección:</span><br>
-                                                        {{ $item->direccion }}
+                                                        <span class="font-semibold text-white">Capacidad:</span><br>
+                                                        {{ $item->capacity }}
                                                     </p>
                                                 </div>
                                             </div>
 
-                                            <!-- Autor y Ciudad -->
+                                            <!-- Autor -->
                                             <div class="flex flex-wrap gap-2 mb-3">
                                                 <div class="flex-1">
                                                     <span
@@ -198,15 +207,13 @@
                                                 </div>
                                                 <div class="flex-1">
                                                     <span
-                                                        class="inline-block w-full px-2.5 py-1.5 rounded-lg text-xs font-medium bg-indigo-700/50 text-white backdrop-blur-sm border border-indigo-500/30">
-                                                        <svg class="h-3 w-3 inline-block mr-1" fill="none"
-                                                            stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m4 0v-5a1 1 0 011-1h2a1 1 0 011 1v5">
-                                                            </path>
-                                                        </svg>
-                                                        {{ $item->nombre_ciudad }}
+                                                        class="inline-block w-full px-2.5 py-1.5 rounded-lg text-xs font-medium bg-blue-700/50 text-white backdrop-blur-sm border border-blue-500/30">
+                                                        <span class="font-semibold">Autor act.</span>
+                                                        @if ($item->user_last_update)
+                                                            {{ $item->user_last_update }}
+                                                        @else
+                                                            <span>Desconocido</span>
+                                                        @endif
                                                     </span>
                                                 </div>
                                             </div>
@@ -237,45 +244,16 @@
                                                     </span>
                                                 </div>
                                             </div>
-
-                                            <!-- Compañía -->
-                                            <div class="flex flex-wrap gap-2 mb-5">
-                                                <div class="flex-1">
-                                                    <span
-                                                        class="inline-block w-full px-2.5 py-1.5 rounded-lg text-xs font-medium bg-blue-700/50 text-white backdrop-blur-sm border border-blue-500/30">
-                                                        <span class="font-semibold">Compañía:</span>
-                                                        @if ($item->company_name)
-                                                            {{ $item->company_name }}
-                                                        @else
-                                                            <span>No vinculada</span>
-                                                        @endif
-                                                    </span>
-                                                </div>
-                                                <div class="flex-1">
-                                                    <span
-                                                        class="inline-block w-full px-2.5 py-1.5 rounded-lg text-xs font-medium bg-indigo-700/50 text-white backdrop-blur-sm border border-indigo-500/30">
-                                                        <span class="font-semibold">Nit:</span>
-                                                        @if ($item->nit)
-                                                            {{ $item->nit }}
-                                                        @else
-                                                            <span>No vinculada</span>
-                                                        @endif
-                                                    </span>
-                                                </div>
-                                            </div>
-
                                             <!-- Botones -->
-                                            @if (auth()->user()->can('park.update') || auth()->user()->can('park.delete'))
+                                            
                                                 <div class="flex gap-2 mt-auto">
-                                                    @can('park.update')
+                                                    
                                                         <button
-                                                            wire:click="setEditingMall(
+                                                            wire:click="setEditingPark(
                                                 {{ $item->id }}, 
-                                                '{{ $item->nombre }}', 
-                                                '{{ $item->horarios }}', 
-                                                '{{ $item->direccion }}',
-                                                '{{ $item->id_ciudad }}',
-                                                '{{ $item->company_name }}'
+                                                '{{ $item->name }}', 
+                                                '{{ $item->location }}', 
+                                                '{{ $item->capacity }}'
                                                 )"
                                                             class="bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-medium px-4 py-2 rounded-lg flex-1 shadow-sm transition-colors duration-200 border border-white/10 flex items-center justify-center">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2"
@@ -286,8 +264,7 @@
                                                             </svg>
                                                             Editar
                                                         </button>
-                                                    @endcan
-                                                    @can('park.delete')
+                                                   
                                                         <button
                                                             @click="window.dispatchEvent(new CustomEvent('show-delete-modal', {
                                                             detail: { 
@@ -304,9 +281,9 @@
                                                             </svg>
                                                             Eliminar
                                                         </button>
-                                                    @endcan
+                                                    
                                                 </div>
-                                            @endif
+                                           
                                         </div>
 
                                         <!-- Efectos de profundidad y estilo -->
@@ -320,10 +297,6 @@
                                 @empty
                                     <h1>No hay parques</h1>
                                 @endforelse
-                            @else
-                                {{-- Your empty state content here --}}
-                                <p>No centers available.</p>
-                            @endif
                         </div>
                         <!--Codigo ALPINE para llamar desde livewire-->
                         <div x-init="window.addEventListener('create-form-submitted', () => {

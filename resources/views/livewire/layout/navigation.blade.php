@@ -171,7 +171,7 @@
             @endif
 
             <!-- Contenido del componente hijo -->
-            <div class="flex-1 overflow-hidden ">
+            <div class="flex-1 overflow-auto ">
                 <nocard-loading></nocard-loading>
                 {{ $slot }}
             </div>
@@ -185,7 +185,8 @@
     @livewireScripts
     <!-- Scripts personalizados al final del body -->
     @stack('scripts')
-
+    @include('components.loading-notification')
+    @livewire('components.notification')
 
 </body>
 
