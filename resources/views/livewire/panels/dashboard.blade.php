@@ -21,7 +21,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Card Usuarios con animación y gradiente -->
                 <div
-                    class="bg-gradient-to-br from-blue-500 to-purple-600 shadowCard hover:shadow overflow-hidden rounded-lg p-8 relative group">
+                    class="bg-gradient-to-br from-brand-blueStar to-brand-redStar shadowCard hover:shadow overflow-hidden rounded-lg p-8 relative group">
                     <div
                         class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out">
                     </div>
@@ -34,10 +34,9 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- Card Conversaciones con animación y gradiente -->
                 <div
-                    class="bg-gradient-to-br from-green-500 to-teal-600 shadowCard hover:shadow overflow-hidden rounded-lg p-4 relative group">
+                    class="bg-gradient-to-br from-brand-blueStar to-brand-redStar shadowCard hover:shadow overflow-hidden rounded-lg p-8 relative group">
                     <div
                         class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out">
                     </div>

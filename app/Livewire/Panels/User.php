@@ -25,8 +25,8 @@ class User extends Component
     {
         return [
             'name' => 'required|min:4|string',
-            'email' => ['required', 'min:5', 'email:rfc,dns'],
-            'role_check' => 'required|min:3',
+            'email' => 'required|min:5|email',
+            'role_check' => 'required|min:1',
             'id_mall' => 'required|min:1',
             'password' => ['nullable', 'min:8', Password::min(8)->mixedCase()]
         ];
@@ -36,7 +36,7 @@ class User extends Component
         return [
             'name' => 'required|min:4|string',
             'email' => 'required|min:5|email',
-            'role_check' => 'required|min:3',
+            'role_check' => 'required|min:1',
             'id_mall' => 'required',
             'password' => ['required', 'min:8', Password::min(8)->mixedCase()]
         ];
@@ -69,10 +69,9 @@ class User extends Component
                 'name' => $this->name,
                 'email' => $this->email,
                 'password' => $this->password,
-                'role_check' => $this->role_check,
-                'id_centro_comercial' => $this->id_mall
+                'role_id' => $this->role_check,
+                'parks_id' => $this->id_mall
             ]);
-
             $this->response = app(UserController::class)->store($request);
 
             if ($this->response['status'] == 'success') {
@@ -94,16 +93,16 @@ class User extends Component
                 $request->merge([
                     'name' => $this->name,
                     'email' => $this->email,
-                    'role_check' => $this->role_check,
-                    'id_centro_comercial' => $this->id_mall
+                    'role_id' => $this->role_check,
+                    'parks_id' => $this->id_mall
                 ]);
             } else {
                 $request->merge([
                     'name' => $this->name,
                     'email' => $this->email,
                     'password' => $this->password,
-                    'role_check' => $this->role_check,
-                    'id_centro_comercial' => $this->id_mall
+                    'role_id' => $this->role_check,
+                    'parks_id' => $this->id_mall
                 ]);
             }
 
@@ -128,11 +127,13 @@ class User extends Component
     }
     public function render()
     {
-        $data= app(UserController::class)->indexPaginated($this->page, $this->perPage, $this->search);
-        $park= app(ParksController::class)->index();
-        return view('livewire.panels.user',[
+        $data = app(UserController::class)->indexPaginated($this->page, $this->perPage, $this->search);
+        $park = app(ParksController::class)->index();
+        $roles = app(UserController::class)->getRoles();
+        return view('livewire.panels.user', [
             'data' => $data,
-            'parks' => $park
+            'parks' => $park,
+            'roles' => $roles
         ]);
     }
 }

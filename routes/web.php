@@ -11,10 +11,6 @@ Route::get('/dashboard', App\Livewire\Panels\Dashboard::class)
     ->name('dashboard');
 Route::get('/usuarios', App\Livewire\Panels\User::class)
     ->name('users');
-Route::get('/roles', App\Livewire\Panels\Role::class)
-    ->name('role');
-Route::get('/permisos', App\Livewire\Panels\Permission::class)
-    ->name('permission');
 Route::get('/conversaciones', App\Livewire\Panels\Conversation\ConversationHub::class)
     ->name('conversations');
 Route::get('/parques', App\Livewire\Panels\Park::class)

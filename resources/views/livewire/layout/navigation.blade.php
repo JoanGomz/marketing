@@ -8,7 +8,6 @@
     <title>{{ $title ?? 'Mercadeo' }}</title>
     <!-- Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -123,7 +122,6 @@
                                     Editar perfil
                                 </div>
                             </a>
-
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <div class="flex items-center">
                                     <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,7 +158,6 @@
         <main id="main-content" class="flex flex-col h-screen transition-all duration-300">
             <!-- Header spacer -->
             <div class="h-16"></div>
-
             <!-- Opcional: Barra superior de sección -->
             @if (isset($header))
                 <header class="bg-white shadow flex-shrink-0">
@@ -169,7 +166,6 @@
                     </div>
                 </header>
             @endif
-
             <!-- Contenido del componente hijo -->
             <div class="flex-1 overflow-auto ">
                 <nocard-loading></nocard-loading>
@@ -177,10 +173,8 @@
             </div>
         </main>
     </div>
-
     <!-- Capa de fondo oscuro para móviles cuando el sidebar está abierto -->
     <div id="sidebar-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden"></div>
-
     <!-- Livewire Scripts -->
     @livewireScripts
     <!-- Scripts personalizados al final del body -->
