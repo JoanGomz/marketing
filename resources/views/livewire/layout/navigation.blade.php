@@ -16,7 +16,6 @@
     <!-- Scripts de la cabecera -->
     @stack('head-scripts')
 </head>
-
 <body class="bg-[#F9FAFF] font-['Segoe_UI',Tahoma,Geneva,Verdana,sans-serif]">
     <!-- Contenedor del menú de hamburguesa - SIEMPRE VISIBLE -->
     <div id="menu-button" class="fixed top-4 left-4 z-50 cursor-pointer">
@@ -24,7 +23,6 @@
             <i class="fa-solid fa-bars text-xl pt-1"></i>
         </button>
     </div>
-
     <!-- Sidebar -->
     <div id="sidebar-wrapper" class="fixed inset-y-0 left-0 z-20 transition-all duration-300 ease-in-out">
         <aside id="sidebar"
@@ -68,7 +66,6 @@
             </nav>
         </aside>
     </div>
-
     <!-- Capa de fondo oscuro para móviles cuando el sidebar está abierto -->
     <div id="sidebar-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-10 hidden"></div>
 

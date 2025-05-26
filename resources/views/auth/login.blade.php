@@ -3,16 +3,14 @@
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <div class="bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden shadow-xl">
-        <div class="p-8">
+        <div class="p-8 pt-12">
             <div class="text-center flex flex-col justify-center items-center mb-8">
-                <img class="h-20 w-20" src="/Images/Logos/4.webp" alt="logo-noCard">
+                <img class="w-48" src="/Images/Logos/STARP.avif" alt="logo-StarPark">
                 <div class="h-0.5 w-24 bg-brand-aqua mx-auto mt-4 rounded-full"></div>
                 <p class="mt-4 text-gray-300">Ingresa tus credenciales para acceder</p>
             </div>
-
             <form method="POST" action="{{ route('login') }}" class="space-y-6">
                 @csrf
-
                 <div>
                     <div class="relative rounded-md shadow-sm">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -20,9 +18,9 @@
                         </div>
                         <input placeholder="Correo Electrónico" id="email"
                             class="w-full px-4 py-4 bg-purple-800/50 text-white placeholder-gray-400 rounded-lg 
-         border border-transparent 
-         shadow-[inset_4px_0_6px_-4px_rgba(0,0,0,0.3)]
-         focus:outline-none focus:ring-2 focus:ring-purple-500 pl-10 font-secondary text-xs"
+                            border border-transparent 
+                            shadow-[inset_4px_0_6px_-4px_rgba(0,0,0,0.3)]
+                            focus:outline-none focus:ring-2 focus:ring-purple-500 pl-10 font-secondary text-xs"
                             type="email" name="email" value="{{ old('email') }}" autofocus
                             autocomplete="username" />
                     </div>
@@ -30,7 +28,6 @@
                         <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
                     @enderror
                 </div>
-
                 <!-- Password -->
                 <div class="mt-4">
                     <div class="relative rounded-md shadow-sm">
@@ -39,18 +36,20 @@
                         </div>
                         <input name="password" type="password" placeholder="Contraseña" id="password"
                             class="w-full px-4 py-4 bg-purple-800/50 text-white placeholder-gray-400 rounded-lg 
-         border border-transparent 
-         shadow-[inset_4px_0_6px_-4px_rgba(0,0,0,0.3)]
-         focus:outline-none focus:ring-2 focus:ring-purple-500 pl-10"
+                            border border-transparent 
+                            shadow-[inset_4px_0_6px_-4px_rgba(0,0,0,0.3)]
+                            focus:outline-none focus:ring-2 focus:ring-purple-500 pl-10"
                             autocomplete="current-password" />
+                        <div class="absolute inset-y-0 z-20 right-2 pl-3 flex items-center">
+                            <i id="open-eye" class="fa-solid fa-eye-low-vision text-gray-400 cursor-pointer"></i>
+                            <i id="close-eye" style="display: none;"
+                                class="fa-solid fa-eye text-gray-400 cursor-pointer"></i>
+                        </div>
                     </div>
                     @error('password')
                         <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
                     @enderror
                 </div>
-
-
-
                 <!-- Login Button -->
                 <div class="mt-6">
                     <button type="submit"
@@ -84,9 +83,24 @@
                         </span>
                     </button>
                 </div>
-
-
             </form>
         </div>
+        <script>
+            const oEyeButton = document.getElementById("open-eye");
+            const cEyeButton = document.getElementById("close-eye");
+            const input = document.getElementById("password");
+
+            oEyeButton.addEventListener("click", function() {
+                input.setAttribute("type", "text");
+                oEyeButton.style.display = "none";
+                cEyeButton.style.display = "block";
+            });
+
+            cEyeButton.addEventListener("click", function() {
+                input.setAttribute("type", "password");
+                cEyeButton.style.display = "none";
+                oEyeButton.style.display = "block";
+            });
+        </script>
     </div>
 </x-guest-layout>

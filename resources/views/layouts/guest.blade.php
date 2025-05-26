@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <meta name="description" content="No-Card es una plataforma que permite administrar y gestionar los parques">
+        <meta name="description" content="Administra fácilmente las conversaciones con clientes y genera cotizaciones profesionales para STAR PARK. Optimiza tu gestión comercial con nuestra plataforma integral.">
         <title>Mercadeo</title>
         <!--Entro el guest.blade.php-->
         <!-- Fonts -->
@@ -15,11 +15,15 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css'])
     </head>
-    <body class="font-sans antialiased text-gray-800">
-        <div class="min-h-screen bg-gradient-button flex flex-col justify-center items-center p-4">
-            <div class="w-full max-w-md">
-                {{ $slot }}
-            </div>
+    <body class="font-sans antialiased text-gray-800">         
+    <div class="min-h-screen bg-gradient-button flex flex-col justify-center items-center p-4 relative">
+        <!-- Marca de agua -->
+        <div class="absolute bottom-0 right-2 opacity-30 z-50">
+            <img src="{{ asset('Images/Logos/3.webp') }}" alt="Logo-NoCard" class="w-24">
         </div>
-    </body>
+        <div class="w-full max-w-md">                 
+            {{ $slot }}             
+        </div>         
+    </div>     
+</body>
 </html>

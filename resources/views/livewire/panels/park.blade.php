@@ -6,7 +6,6 @@
             <p class="text-sm text-gray-500 ">Gestiona los datos de tus parques</p>
         </div>
     </div>
-
     <!-- Tarjeta principal para navegación de pestañas -->
     <div class="bg-white rounded-xl shadow-md overflow-hidden mt-4">
         <!-- Contenido de las pestañas -->
