@@ -8,12 +8,16 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', App\Livewire\Panels\Dashboard::class)
+    ->middleware(['auth', 'verified'])
     ->name('dashboard');
 Route::get('/usuarios', App\Livewire\Panels\User::class)
+    ->middleware(['auth', 'verified'])
     ->name('users');
 Route::get('/conversaciones', App\Livewire\Panels\Conversation\ConversationHub::class)
+    ->middleware(['auth', 'verified'])
     ->name('conversations');
 Route::get('/parques', App\Livewire\Panels\Park::class)
+    ->middleware(['auth', 'verified'])
     ->name('park');
 
 Route::middleware('auth')->group(function () {

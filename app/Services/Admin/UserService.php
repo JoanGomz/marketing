@@ -12,7 +12,7 @@ class UserService implements UserServiceInterface
 {
     public function getAllActiveUsers(array $columns = ['*'])
     {
-        $query = User::where('active', 1)->with('role')->with('park');
+        $query = User::where('status', 1)->with('role')->with('park');
 
         return $query->get();
     }
@@ -34,13 +34,13 @@ class UserService implements UserServiceInterface
 
     public function deleteUser(User $user)
     {
-        $user->active = 0;
+        $user->status = 0;
         $user->save();
     }
 
     public function findById(int $id)
     {
-        return User::where('id', $id)->where('active', 1)->first();
+        return User::where('id', $id)->where('status', 1)->first();
     }
 
     /**
@@ -53,7 +53,7 @@ class UserService implements UserServiceInterface
     {
         $query = User::query();
 
-        $query->where('active', 1);
+        $query->where('status', 1);
         $query->with('role');
         $query->with('park');
 

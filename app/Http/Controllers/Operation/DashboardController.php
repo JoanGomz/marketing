@@ -10,7 +10,7 @@ class DashboardController extends Controller
 {
     public function countActiveUsers()
     {
-        $count_user = User::where('active', 1)->count();
+        $count_user = User::where('status', 1)->count();
 
         return $this->responseLivewire('success', 'succes', $count_user);
     }
