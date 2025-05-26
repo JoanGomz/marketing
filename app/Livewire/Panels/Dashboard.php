@@ -2,12 +2,16 @@
 
 namespace App\Livewire\Panels;
 
+use App\Http\Controllers\Operation\DashboardController;
 use Livewire\Component;
 
 class Dashboard extends Component
 {
     public function render()
     {
-        return view('livewire.panels.dashboard');
+        $cantUsers = app(DashboardController::class)->countActiveUsers();
+        return view('livewire.panels.dashboard',[
+            'users' => $cantUsers
+        ]);
     }
 }

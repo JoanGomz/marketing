@@ -155,7 +155,7 @@
         </header>
 
         <!-- Contenedor principal con margen superior para la barra fija -->
-        <main id="main-content" class="flex flex-col h-screen transition-all duration-300">
+        <main id="main-content" class="flex flex-col h-screen ml-64 transition-all duration-300">
             <!-- Header spacer -->
             <div class="h-16"></div>
             <!-- Opcional: Barra superior de sección -->

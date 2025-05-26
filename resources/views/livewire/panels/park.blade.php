@@ -34,7 +34,7 @@
                             </div>
                         </div>
                         <!--FORMULARIO DE ACTUALIZACIÓN DE CENTROS COMERCIALES-->
-                        <div x-show="$store.forms.updateFormVisible"
+                        <div x-show="$store.forms.updateFormVisible" x-cloak
                             x-transition:enter="transition ease-out duration-300"
                             x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                             x-transition:leave="transition ease-in duration-300"
@@ -83,7 +83,7 @@
                             </form>
                         </div>
                         <!--FORMULARIO DE CREACIÓN DE CENTROS COMERCIALES-->
-                        <div x-show="$store.forms.createFormVisible"
+                        <div x-show="$store.forms.createFormVisible" x-cloak
                             x-transition:enter="transition ease-out duration-300"
                             x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                             x-transition:leave="transition ease-in duration-300"

@@ -1,4 +1,4 @@
-<div id="Info-Panel" class="w-full lg:w-1/4 bg-white border-l hidden lg:block overflow-y-auto resize-x transition-all duration-400 z-20 shadowCard">
+<div id="Info-Panel" class="w-full lg:w-1/4 bg-white border-l lg:block overflow-y-auto  transition-all duration-400 z-20 shadowCard">
     <div class="p-4">
         <h3 class="font-bold border-b pb-2 mb-3">Información del cliente</h3>
         <div class="space-y-4">

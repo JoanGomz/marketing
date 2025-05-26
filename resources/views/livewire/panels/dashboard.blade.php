@@ -29,7 +29,7 @@
                         <div class="w-full flex flex-col items-center text-white" id="spark1">
                             <i
                                 class="fa-solid fa-users font-bold p-2 fa-2xl group-hover:scale-110 transition-transform duration-300 drop-shadow-lg"></i>
-                            <p class="font-bold p-2 pt-4 text-4xl drop-shadow-md">223</p>
+                            <p class="font-bold p-2 pt-4 text-4xl drop-shadow-md">{{$users['data']}}</p>
                             <h3 class="font-bold p-2 opacity-90">Usuarios en el sistema</h3>
                         </div>
                     </div>
