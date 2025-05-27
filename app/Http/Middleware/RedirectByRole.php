@@ -22,16 +22,9 @@ class RedirectByRole
             return redirect('/');
         }
 
-        // if ($user->hasRole('SuperAdmin') && !$request->is('dashboard')) {
-        //     return redirect('/dashboard');
-        // }
 
-        if ($user->hasRole('Asesor') && !$request->is('asesor/*')) {
-            return redirect('/asesor/chatPanel');
-        }
-
-        if ($user->hasRole('cash') && !$request->is('cash/*')) {
-            return redirect('/cash/home');
+        if ($user->role_id == 2) {
+            return redirect('/conversations');
         }
 
         return $next($request);
