@@ -16,6 +16,7 @@
     <!-- Scripts de la cabecera -->
     @stack('head-scripts')
 </head>
+
 <body class="bg-[#F9FAFF] font-['Segoe_UI',Tahoma,Geneva,Verdana,sans-serif]">
     <!-- Contenedor del menú de hamburguesa - SIEMPRE VISIBLE -->
     <div id="menu-button" class="fixed top-4 left-4 z-50 cursor-pointer">
@@ -32,18 +33,23 @@
             </div>
             <nav class="flex-1 flex flex-col pt-4">
                 <ul>
-                    <li class="px-4 py-4 hover:bg-gray-700 {{ request()->routeIs('dashboard') ? 'bg-gray-700' : '' }}">
-                        <a href="{{ route('dashboard') }}" class="flex items-center gap-4">
-                            <i class="fa-solid fa-house"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="px-4 py-4 hover:bg-gray-700 {{ request()->routeIs('users') ? 'bg-gray-700' : '' }}">
-                        <a href="{{ route('users') }}" class="flex items-center gap-4">
-                            <i class="fa-solid fa-users"></i>
-                            <span>Usuarios</span>
-                        </a>
-                    </li>
+                    @if (Auth::user()->role_id === 1)
+                        <li
+                            class="px-4 py-4 hover:bg-gray-700 {{ request()->routeIs('dashboard') ? 'bg-gray-700' : '' }}">
+                            <a href="{{ route('dashboard') }}" class="flex items-center gap-4">
+                                <i class="fa-solid fa-house"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                    @endif
+                    @if (Auth::user()->role_id === 1)
+                        <li class="px-4 py-4 hover:bg-gray-700 {{ request()->routeIs('users') ? 'bg-gray-700' : '' }}">
+                            <a href="{{ route('users') }}" class="flex items-center gap-4">
+                                <i class="fa-solid fa-users"></i>
+                                <span>Usuarios</span>
+                            </a>
+                        </li>
+                    @endif
                     <li
                         class="px-4 py-4 hover:bg-gray-700 {{ request()->routeIs('conversations') ? 'bg-gray-700' : '' }}">
                         <a href="{{ route('conversations') }}" class="flex items-center gap-4">
@@ -51,12 +57,14 @@
                             <span>Conversaciones</span>
                         </a>
                     </li>
-                    <li class="px-4 py-4 hover:bg-gray-700 {{ request()->routeIs('park') ? 'bg-gray-700' : '' }}">
-                        <a href="{{ route('park') }}" class="flex items-center gap-4">
-                            <i class="fa-solid fa-gamepad"></i>
-                            <span>Parques</span>
-                        </a>
-                    </li>
+                    @if (Auth::user()->role_id === 1)
+                        <li class="px-4 py-4 hover:bg-gray-700 {{ request()->routeIs('park') ? 'bg-gray-700' : '' }}">
+                            <a href="{{ route('park') }}" class="flex items-center gap-4">
+                                <i class="fa-solid fa-gamepad"></i>
+                                <span>Parques</span>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
                 <!-- Información de versión -->
                 <div class="mt-auto flex p-4 border-t justify-center border-gray-800 w-full pb-10">
@@ -84,7 +92,11 @@
                 <div class="flex items-center">
                     <div class="flex justify-end">
                         <div class="text-sm text-white mr-4 font-bold uppercase">
-                            {{-- {{ auth()->user()->roles->first()->name }} --}}
+                            @if (Auth::user()->role_id === 1)
+                                Torre Central
+                            @else
+                                Asesor
+                            @endif
                         </div>
                     </div>
                     <div class="relative" x-data="{ open: false }" x-cloak>
@@ -93,13 +105,12 @@
                             style="box-shadow: 0 8px 12px rgba(0, 0, 0, 0.408);">
                             <div
                                 class="h-8 w-8 rounded-full bg-orange-400 flex items-center justify-center text-white font-semibold">
-                                {{-- {{ substr(Auth::user()->name, 0, 1) }} --}}
+                                {{ substr(Auth::user()->name, 0, 1) }}
                             </div>
                             <p class="ml-2 mr-1 hidden lg:flex text-sm font-medium text-white capitalize">
-                                {{-- {{ Auth::user()->name }} --}}
+                                {{ Auth::user()->name }}
                             </p>
                         </button>
-
                         <!-- Dropdown Menu -->
                         <div x-show="open" @click.away="open = false"
                             class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
@@ -109,27 +120,22 @@
                                 </div>
                             </div>
 
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <div class="flex items-center">
-                                    <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
-                                        </path>
-                                    </svg>
-                                    Editar perfil
-                                </div>
-                            </a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <div class="flex items-center">
-                                    <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                                        </path>
-                                    </svg>
-                                    Cambiar contraseña
-                                </div>
-                            </a>
-
+                            <x-dropdown-link href="{{ route('edit.profile.livewire') }}" class="flex items-center">
+                                <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                    </path>
+                                </svg>
+                                {{ __('Editar perfil') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('edit.password') }}" class="flex items-center">
+                                <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                                    </path>
+                                </svg>
+                                {{ __('Cambiar contraseña') }}
+                            </x-dropdown-link>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit"

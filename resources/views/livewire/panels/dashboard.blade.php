@@ -1,15 +1,15 @@
-<div class="min-h-screen bg-gray-100 ">
+<div class="min-h-screen bg-gray-100">
     <div class="py-4">
         <!-- Header con información de usuario -->
         <div class="mx-auto sm:px-4 lg:px-4 mb-6">
             <div class="bg-white shadowCard hover:shadow  rounded-lg  overflow-hidden">
                 <div class="p-4">
                     <h1 class="text-xl font-semibold text-gray-900 ">
-                        Bienvenid@ <a class="text-brand-blueStar ">Asesor</a> a
+                        Bienvenid@ <a class="text-brand-blueStar">{{ Auth::user()->name }}</a> a
                         Mercadeo
                     </h1>
                     <p class="text-sm text-gray-600  mt-1">
-                        Actualmente tienes el rol de <span class="font-medium">Administrador</span>
+                        Actualmente tienes el rol de <span class="font-medium">{{ (Auth::user()->role_id === 1) ? "Torre Central" : "Asesor"}}</span>
                     </p>
                 </div>
             </div>

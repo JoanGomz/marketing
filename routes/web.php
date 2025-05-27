@@ -20,6 +20,14 @@ Route::get('/parques', App\Livewire\Panels\Park::class)
     ->middleware(['auth', 'verified'])
     ->name('park');
 
+
+Route::get('/edit.profile.livewire', App\Livewire\Panels\ProfileEdit::class)
+    ->middleware(['auth', 'verified'])
+    ->name('edit.profile.livewire');
+
+Route::get('/edit.password', App\Livewire\Panels\PasswordEdit::class)
+    ->middleware(['auth', 'verified'])
+    ->name('edit.password');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -36,7 +36,6 @@ trait traitCruds
     protected function handleException(\Throwable $th, string $defaultMessage)
     {
         Log::error('Rol Management Error: ' . $th->getMessage());
-        dump($th);
         $this->callNotification(
             $defaultMessage,
             'error'
@@ -79,7 +78,7 @@ trait traitCruds
             $this->validate($this->rules());
         }
     }
-        //OPCTIONAL EN CASO DE TENER REGLAS DIFERENTES (NO OLVIDAR CREAR LA FUNCIÓN rulesOnly EN EL COMPONENTE)
+    //OPCTIONAL EN CASO DE TENER REGLAS DIFERENTES (NO OLVIDAR CREAR LA FUNCIÓN rulesOnly EN EL COMPONENTE)
     public function validateWithSpinnerUpdate()
     {
         try {

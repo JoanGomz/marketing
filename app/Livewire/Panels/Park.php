@@ -34,8 +34,8 @@ class Park extends Component
     }
     public function create()
     {
+        $this->validateWithSpinner();
         try {
-            $this->validateWithSpinner();
             $request = new \Illuminate\Http\Request();
             $request->merge([
                 'name' => $this->name,
@@ -55,8 +55,8 @@ class Park extends Component
     }
     public function updatePark()
     {
+        $this->validateWithSpinner();
         try {
-            $this->validateWithSpinner();
             $request = new \Illuminate\Http\Request();
             $request->merge([
                 'name' => $this->name,
