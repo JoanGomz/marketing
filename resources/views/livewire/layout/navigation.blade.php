@@ -33,7 +33,7 @@
             </div>
             <nav class="flex-1 flex flex-col pt-4">
                 <ul>
-                    @if (Auth::user()->role_id === 1)
+                    @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)
                         <li
                             class="px-4 py-4 hover:bg-gray-700 {{ request()->routeIs('dashboard') ? 'bg-gray-700' : '' }}">
                             <a href="{{ route('dashboard') }}" class="flex items-center gap-4">
@@ -42,7 +42,7 @@
                             </a>
                         </li>
                     @endif
-                    @if (Auth::user()->role_id === 1)
+                    @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)
                         <li class="px-4 py-4 hover:bg-gray-700 {{ request()->routeIs('users') ? 'bg-gray-700' : '' }}">
                             <a href="{{ route('users') }}" class="flex items-center gap-4">
                                 <i class="fa-solid fa-users"></i>
@@ -57,7 +57,7 @@
                             <span>Conversaciones</span>
                         </a>
                     </li>
-                    @if (Auth::user()->role_id === 1)
+                    @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)
                         <li class="px-4 py-4 hover:bg-gray-700 {{ request()->routeIs('park') ? 'bg-gray-700' : '' }}">
                             <a href="{{ route('park') }}" class="flex items-center gap-4">
                                 <i class="fa-solid fa-gamepad"></i>
@@ -92,11 +92,19 @@
                 <div class="flex items-center">
                     <div class="flex justify-end">
                         <div class="text-sm text-white mr-4 font-bold uppercase">
-                            @if (Auth::user()->role_id === 1)
-                                Torre Central
-                            @else
-                                Asesor
-                            @endif
+                            @switch(Auth::user()->role_id)
+                                @case(1)
+                                    Administrador
+                                    @break
+                                @case(2)
+                                    Torre Central
+                                    @break
+                                @case(3)
+                                    Asesor
+                                    @break
+                                @default
+                                    
+                            @endswitch
                         </div>
                     </div>
                     <div class="relative" x-data="{ open: false }" x-cloak>
@@ -172,6 +180,7 @@
             <!-- Contenido del componente hijo -->
             <div class="flex-1 overflow-auto ">
                 <nocard-loading></nocard-loading>
+                {{Auth::user()}}
                 {{ $slot }}
             </div>
         </main>

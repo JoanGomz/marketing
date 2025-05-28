@@ -26,142 +26,151 @@
                                 </div>
                                 <!-- Buscar parques -->
                                 <x-input-search mode="cardSearch" placeholder="Buscar Parques"></x-input-search>
-                                <div>
-                                    <!-- Boton Agregar Parque -->
-                                    <x-primary-button mode="showCreate">Crear Parque</x-primary-button>
-                                </div>
+                                @if (Auth::user()->role_id === 1)
+                                    <div>
+                                        <!-- Boton Agregar Parque -->
+                                        <x-primary-button mode="showCreate">Crear Parque</x-primary-button>
+                                    </div>
+                                @endif
                             </div>
                         </div>
-                        <!--FORMULARIO DE ACTUALIZACIÓN DE CENTROS COMERCIALES-->
-                        <div x-show="$store.forms.updateFormVisible" x-cloak
-                            x-transition:enter="transition ease-out duration-300"
-                            x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
-                            x-transition:leave="transition ease-in duration-300"
-                            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90"
-                            class="form my-6 p-4 bg-slate-200 rounded-lg   overflow-hidden shadow-sm sm:rounded-lg pb-4">
-                            <h3 class="text-lg font-medium">Actualizar Parque</h3>
-                            <form wire:submit="updatePark" class="mt-4">
-                                <div class="mb-5">
-                                    <div class="flex">
-                                        <label for="name"
-                                            class="block mb-2 text-sm font-medium text-gray-900 ">Nombre</label>
-                                        <span class="text-sm text-brand-redStar">*</span>
-                                    </div>
-                                    <div class="flex">
-                                        <input wire:model="name" type="text" id="name"
-                                            class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5       "
-                                            placeholder="Ej: Bulevar Niza" />
-                                        @error('name')
-                                            <span class="error text-brand-redStar">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="flex gap-4 mb-5">
-                                    <div class="w-full">
-                                        <div class="flex">
-                                            <label for="location"
-                                                class="block mb-2 text-sm font-medium text-gray-900 ">Dirección</label>
-                                            <span class="text-sm text-brand-redStar">*</span>
-                                        </div>
-                                        <div class="relative flex">
-                                            <input wire:model="location" type="text" id="location"
-                                                class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5"
-                                                placeholder="Ej: Calle 22 5b-22" />
-                                            @error('location')
-                                                <span class="error text-brand-redStar">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-5">
-                                    <div class="flex">
-                                        <label for="capacity"
-                                            class="block mb-2 text-sm font-medium text-gray-900 ">Capacidad</label>
-                                        <span class="text-sm text-brand-redStar">*</span>
-                                    </div>
-                                    <div class="flex">
-                                        <input wire:model="capacity" type="number" id="capacity"
-                                            class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5       "
-                                            placeholder="Capacidad del parque" />
-                                        @error('capacity')
-                                            <span class="error text-red-600">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="flex space-x-2">
-                                    <x-primary-button mode="submit">Actualizar Parque</x-primary-button>
-                                    <x-primary-button mode="cancelUpdate">Cancelar</x-primary-button>
-                                </div>
-                            </form>
-                        </div>
-                        <!--FORMULARIO DE CREACIÓN DE PARQUES-->
-                        <div x-show="$store.forms.createFormVisible" x-cloak
-                            x-transition:enter="transition ease-out duration-300"
-                            x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
-                            x-transition:leave="transition ease-in duration-300"
-                            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90"
-                            class="my-6 p-4 bg-slate-200 rounded-lg  ">
-                            <h3 class="text-lg font-medium">Crear Parque</h3>
-                            <form wire:submit="create" class="mt-4">
-                                <div class="mb-5">
-                                    <div class="flex w-1/2 justify-between">
+                        @if (Auth::user()->role_id === 1)
+                            <!--FORMULARIO DE ACTUALIZACIÓN DE CENTROS COMERCIALES-->
+                            <div x-show="$store.forms.updateFormVisible" x-cloak
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 scale-90"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-300"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-90"
+                                class="form my-6 p-4 bg-slate-200 rounded-lg   overflow-hidden shadow-sm sm:rounded-lg pb-4">
+                                <h3 class="text-lg font-medium">Actualizar Parque</h3>
+                                <form wire:submit="updatePark" class="mt-4">
+                                    <div class="mb-5">
                                         <div class="flex">
                                             <label for="name"
                                                 class="block mb-2 text-sm font-medium text-gray-900 ">Nombre</label>
                                             <span class="text-sm text-brand-redStar">*</span>
                                         </div>
-                                        @error('name')
-                                            <span class="error text-brand-redStar">{{ $message }}</span>
-                                        @enderror
+                                        <div class="flex">
+                                            <input wire:model="name" type="text" id="name"
+                                                class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5       "
+                                                placeholder="Ej: Bulevar Niza" />
+                                            @error('name')
+                                                <span class="error text-brand-redStar">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                     </div>
-                                    <div class="flex">
-                                        <input wire:model="name" type="text" id="name"
-                                            class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5       "
-                                            placeholder="Ej: Bulevar Niza" />
-                                    </div>
-                                </div>
-                                <div class="flex gap-4 mb-5">
-                                    <div class="w-full">
-                                        <div class="flex w-1/2 justify-between">
+                                    <div class="flex gap-4 mb-5">
+                                        <div class="w-full">
                                             <div class="flex">
                                                 <label for="location"
                                                     class="block mb-2 text-sm font-medium text-gray-900 ">Dirección</label>
                                                 <span class="text-sm text-brand-redStar">*</span>
                                             </div>
-                                            @error('location')
-                                                <span class="error text-brand-redStar">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="relative flex">
-                                            <input wire:model="location" type="text" id="location"
-                                                class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5"
-                                                placeholder="Ej: Calle 22 5b-22" />
+                                            <div class="relative flex">
+                                                <input wire:model="location" type="text" id="location"
+                                                    class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5"
+                                                    placeholder="Ej: Calle 22 5b-22" />
+                                                @error('location')
+                                                    <span class="error text-brand-redStar">{{ $message }}</span>
+                                                @enderror
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="mb-5">
-                                    <div class="flex w-1/2 justify-between">
+                                    <div class="mb-5">
                                         <div class="flex">
                                             <label for="capacity"
                                                 class="block mb-2 text-sm font-medium text-gray-900 ">Capacidad</label>
                                             <span class="text-sm text-brand-redStar">*</span>
                                         </div>
-                                        @error('capacity')
-                                            <span class="error text-red-600">{{ $message }}</span>
-                                        @enderror
+                                        <div class="flex">
+                                            <input wire:model="capacity" type="number" id="capacity"
+                                                class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5       "
+                                                placeholder="Capacidad del parque" />
+                                            @error('capacity')
+                                                <span class="error text-red-600">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                     </div>
-                                    <div class="flex gap-2 items-center">
-                                        <input wire:model="capacity" type="number" id="capacity"
-                                            class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5       "
-                                            placeholder="Capacidad del parque" />
+                                    <div class="flex space-x-2">
+                                        <x-primary-button mode="submit">Actualizar Parque</x-primary-button>
+                                        <x-primary-button mode="cancelUpdate">Cancelar</x-primary-button>
                                     </div>
-                                </div>
-                                <div class="flex space-x-2">
-                                    <x-primary-button mode="submit">Crear Parque</x-primary-button>
-                                    <x-primary-button mode="cancelCreate">Cancelar</x-primary-button>
-                                </div>
-                            </form>
-                        </div>
+                                </form>
+                            </div>
+                        @endif
+                        @if (Auth::user()->role_id === 1)
+                            <!--FORMULARIO DE CREACIÓN DE PARQUES-->
+                            <div x-show="$store.forms.createFormVisible" x-cloak
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 scale-90"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-300"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-90" class="my-6 p-4 bg-slate-200 rounded-lg  ">
+                                <h3 class="text-lg font-medium">Crear Parque</h3>
+                                <form wire:submit="create" class="mt-4">
+                                    <div class="mb-5">
+                                        <div class="flex w-1/2 justify-between">
+                                            <div class="flex">
+                                                <label for="name"
+                                                    class="block mb-2 text-sm font-medium text-gray-900 ">Nombre</label>
+                                                <span class="text-sm text-brand-redStar">*</span>
+                                            </div>
+                                            @error('name')
+                                                <span class="error text-brand-redStar">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="flex">
+                                            <input wire:model="name" type="text" id="name"
+                                                class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5       "
+                                                placeholder="Ej: Bulevar Niza" />
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-4 mb-5">
+                                        <div class="w-full">
+                                            <div class="flex w-1/2 justify-between">
+                                                <div class="flex">
+                                                    <label for="location"
+                                                        class="block mb-2 text-sm font-medium text-gray-900 ">Dirección</label>
+                                                    <span class="text-sm text-brand-redStar">*</span>
+                                                </div>
+                                                @error('location')
+                                                    <span class="error text-brand-redStar">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="relative flex">
+                                                <input wire:model="location" type="text" id="location"
+                                                    class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5"
+                                                    placeholder="Ej: Calle 22 5b-22" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-5">
+                                        <div class="flex w-1/2 justify-between">
+                                            <div class="flex">
+                                                <label for="capacity"
+                                                    class="block mb-2 text-sm font-medium text-gray-900 ">Capacidad</label>
+                                                <span class="text-sm text-brand-redStar">*</span>
+                                            </div>
+                                            @error('capacity')
+                                                <span class="error text-red-600">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="flex gap-2 items-center">
+                                            <input wire:model="capacity" type="number" id="capacity"
+                                                class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5       "
+                                                placeholder="Capacidad del parque" />
+                                        </div>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <x-primary-button mode="submit">Crear Parque</x-primary-button>
+                                        <x-primary-button mode="cancelCreate">Cancelar</x-primary-button>
+                                    </div>
+                                </form>
+                            </div>
+                        @endif
                         <!--GRID PARA LAS TARJETAS DE LOS CENTROS COMERCIALES-->
                         <div
                             class="bg-white rounded-lg mb-2 w-full max-h-[100vh] overflow-x-auto grid grid-cols-1 xl:grid-cols-3 gap-6 py-4">
@@ -276,45 +285,45 @@
                                             </div>
                                         </div>
                                         <!-- Botones -->
+                                        @if (Auth::user()->role_id === 1)
+                                            <div class="flex gap-2 mt-auto">
 
-                                        <div class="flex gap-2 mt-auto">
-
-                                            <button
-                                                wire:click="setEditingPark(
+                                                <button
+                                                    wire:click="setEditingPark(
                                                 {{ $item->id }}, 
                                                 '{{ $item->name }}', 
                                                 '{{ $item->location }}', 
                                                 '{{ $item->capacity }}'
                                                 )"
-                                                class="bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-medium px-4 py-2 rounded-lg flex-1 shadow-sm transition-colors duration-200 border border-white/10 flex items-center justify-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg>
-                                                Editar
-                                            </button>
+                                                    class="bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-medium px-4 py-2 rounded-lg flex-1 shadow-sm transition-colors duration-200 border border-white/10 flex items-center justify-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                    </svg>
+                                                    Editar
+                                                </button>
 
-                                            <button
-                                                @click="window.dispatchEvent(new CustomEvent('show-delete-modal', {
+                                                <button
+                                                    @click="window.dispatchEvent(new CustomEvent('show-delete-modal', {
                                                             detail: { 
                                                                 id: {{ $item->id }},
                                                                 name: '{{ $item->nombre }}'
                                                             }
                                                         }))"
-                                                class="bg-red-500/70 hover:bg-red-600/90 backdrop-blur-sm text-white font-medium px-4 py-2 rounded-lg flex-1 shadow-sm transition-colors duration-200 border border-red-500/30 flex items-center justify-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                                Eliminar
-                                            </button>
+                                                    class="bg-red-500/70 hover:bg-red-600/90 backdrop-blur-sm text-white font-medium px-4 py-2 rounded-lg flex-1 shadow-sm transition-colors duration-200 border border-red-500/30 flex items-center justify-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                    Eliminar
+                                                </button>
 
-                                        </div>
-
+                                            </div>
+                                        @endif
                                     </div>
 
                                     <!-- Efectos de profundidad y estilo -->

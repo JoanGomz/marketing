@@ -17,125 +17,46 @@
                         <div class="px-4 bg-white rounded-lg mb-4">
                             <div class="relative mt-1 flex flex-col gap-4 lg:flex-row justify-between">
                                 <x-input-search mode="tableSearch" placeholder="Buscar usuarios"></x-input-search>
-                                <div>
-                                    <x-primary-button mode="showCreate">
-                                        Nuevo Usuario
-                                    </x-primary-button>
-                                </div>
+                                @if (Auth::user()->role_id === 1)
+                                    <div>
+                                        <x-primary-button mode="showCreate">
+                                            Nuevo Usuario
+                                        </x-primary-button>
+                                    </div>
+                                @endif
                             </div>
                         </div>
-                        <!--Div de actualización de usuarios-->
-                        <div x-show="$store.forms.updateFormVisible" x-cloak
-                            x-transition:enter="transition ease-out duration-300"
-                            x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
-                            x-transition:leave="transition ease-in duration-300"
-                            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90"
-                            class="my-6 p-4 mx-4 bg-slate-200 rounded-lg">
-                            <h3 class="text-lg font-medium">Editar Usuario</h3>
-                            <form wire:submit.prevent="updateUser" class="max-w-full">
-                                <div class="mb-4">
-                                    <label for="name" class="block text-sm font-medium text-gray-900">Nombre</label>
-                                    <input wire:model="name" type="text"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                    @error('name')
-                                        <span class="error text-red-600">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="email" class="block text-sm font-medium text-gray-900">Email</label>
-                                    <input wire:model="email" type="email"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                    @error('email')
-                                        <span class="error text-red-600">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="mb-5 flex gap-4">
-                                    <div class="flex flex-col">
-                                        <label for="role_select"
-                                            class="block mb-2 text-sm font-medium text-gray-9xt-">Seleccionar
-                                            Rol</label>
-                                        <select class="role.select2" wire:model="role_check"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 xt-  ">
-                                            <option value="">Selecciona un rol</option>
-                                            @forelse ($roles['data'] as $item)
-                                                <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
-                                            @empty
-                                                <option>No hay roles disponibles</option>
-                                            @endforelse
-                                        </select>
-                                        @error('role_check')
+                        @if (Auth::user()->role_id === 1)
+                            <!--Div de actualización de usuarios-->
+                            <div x-show="$store.forms.updateFormVisible" x-cloak
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 scale-90"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-300"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-90"
+                                class="my-6 p-4 mx-4 bg-slate-200 rounded-lg">
+                                <h3 class="text-lg font-medium">Editar Usuario</h3>
+                                <form wire:submit.prevent="updateUser" class="max-w-full">
+                                    <div class="mb-4">
+                                        <label for="name"
+                                            class="block text-sm font-medium text-gray-900">Nombre</label>
+                                        <input wire:model="name" type="text"
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                        @error('name')
                                             <span class="error text-red-600">{{ $message }}</span>
                                         @enderror
-                                    </div>
-                                    <div class="flex flex-col">
-                                        <label for="mall"
-                                            class="block mb-2 text-sm font-medium text-gray-9xt-">Seleccionar
-                                            Centro Comercial</label>
-                                        <select class="role.select2" wire:model="id_mall"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 xt-  ">
-                                            <option value="">Selecciona una ciudad</option>
-                                            @forelse ($parks['data'] as $item)
-                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                            @empty
-                                                <option>No hay centros comerciales disponibles</option>
-                                            @endforelse
-                                        </select>
-                                        @error('id_mall')
-                                            <span class="error text-red-600">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-5 flex-1">
-                                        <label for="password"
-                                            class="block mb-2 text-sm font-medium text-gray-9xt-">Contraseña</label>
-                                        <input wire:model="password" type="password"
-                                            class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " />
-                                        @error('password')
-                                            <span class="error text-red-600">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <!-- Botones -->
-                                <div class="flex gap-4">
-                                    <x-primary-button mode="submit">Actualizar usuario</x-primary-button>
-                                    <x-primary-button mode="cancelUpdate">Cancelar</x-primary-button>
-                                </div>
-                            </form>
-                        </div>
-                        <!--Div de creación de usuarios-->
-                        <div x-show="$store.forms.createFormVisible" x-cloak
-                            x-transition:enter="transition ease-out duration-300"
-                            x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
-                            x-transition:leave="transition ease-in duration-300"
-                            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90"
-                            class="form my-6 p-4 mx-4 bg-slate-200 rounded-lg overflow-hidden shadow-sm sm:rounded-lg">
-                            <div class="p-6 text-gray-9xt-gray-900">
-                                <h3 class="text-lg font-medium">Creación de Usuarios</h3>
-                                <form wire:submit="create" class="max-w-full">
-                                    <div class="flex min-w-[200px] gap-4">
-                                        <div class="mb-5 flex-1">
-                                            <label for="name"
-                                                class="block mb-2 text-sm font-medium text-gray-9xt-">Nombre</label>
-                                            <input wire:model="name" type="text"
-                                                class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                                placeholder="Ej: Juan Perez" />
-                                            @error('name')
-                                                <span class="error text-red-600">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="mb-5 flex-1">
-                                            <label for="email"
-                                                class="block mb-2 text-sm font-medium text-gray-9xt-">Correo
-                                                Electronico</label>
-                                            <input wire:model="email"
-                                                class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                                placeholder="Ej: example@example.com" />
-                                            @error('email')
-                                                <span class="error text-red-600">{{ $message }}</span>
-                                            @enderror
-                                        </div>
                                     </div>
 
+                                    <div class="mb-4">
+                                        <label for="email"
+                                            class="block text-sm font-medium text-gray-900">Email</label>
+                                        <input wire:model="email" type="email"
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                        @error('email')
+                                            <span class="error text-red-600">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                     <div class="mb-5 flex gap-4">
                                         <div class="flex flex-col">
                                             <label for="role_select"
@@ -157,14 +78,14 @@
                                         <div class="flex flex-col">
                                             <label for="mall"
                                                 class="block mb-2 text-sm font-medium text-gray-9xt-">Seleccionar
-                                                parque</label>
+                                                Centro Comercial</label>
                                             <select class="role.select2" wire:model="id_mall"
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 xt-  ">
                                                 <option value="">Selecciona una ciudad</option>
                                                 @forelse ($parks['data'] as $item)
                                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                                 @empty
-                                                    <option>No hay parques disponibles</option>
+                                                    <option>No hay centros comerciales disponibles</option>
                                                 @endforelse
                                             </select>
                                             @error('id_mall')
@@ -174,46 +95,140 @@
                                         <div class="mb-5 flex-1">
                                             <label for="password"
                                                 class="block mb-2 text-sm font-medium text-gray-9xt-">Contraseña</label>
-                                            <div class="relative flex">
-                                                <input id="password-input" type="password" placeholder="password" wire:model="password"
-                                                    class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-12" />
-                                                <button id="toggle-password" type="button"
-                                                    class="absolute right-0 top-0 h-full px-3 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none">
-                                                    <!-- Ojo cerrado (mostrar contraseña) -->
-                                                    <svg id="eye-closed" class="w-5 h-5" fill="none"
-                                                        stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21">
-                                                        </path>
-                                                    </svg>
-
-                                                    <!-- Ojo abierto (ocultar contraseña) -->
-                                                    <svg id="eye-open" class="w-5 h-5 hidden" fill="none"
-                                                        stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z">
-                                                        </path>
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                                        </path>
-                                                    </svg>
-                                                </button>
-                                            </div>
-
+                                            <input wire:model="password" type="password"
+                                                class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " />
                                             @error('password')
                                                 <span class="error text-red-600">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
+                                    <!-- Botones -->
                                     <div class="flex gap-4">
-                                        <x-primary-button mode="submit">Crear usuario</x-primary-button>
-                                        <x-primary-button mode="cancelCreate">Cancelar</x-primary-button>
+                                        <x-primary-button mode="submit">Actualizar usuario</x-primary-button>
+                                        <x-primary-button mode="cancelUpdate">Cancelar</x-primary-button>
                                     </div>
                                 </form>
                             </div>
-                        </div>
+                        @endif
+                        @if (Auth::user()->role_id === 1)
+                            <!--Div de creación de usuarios-->
+                            <div x-show="$store.forms.createFormVisible" x-cloak
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 scale-90"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-300"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-90"
+                                class="form my-6 p-4 mx-4 bg-slate-200 rounded-lg overflow-hidden shadow-sm sm:rounded-lg">
+                                <div class="p-6 text-gray-9xt-gray-900">
+                                    <h3 class="text-lg font-medium">Creación de Usuarios</h3>
+                                    <form wire:submit="create" class="max-w-full">
+                                        <div class="flex min-w-[200px] gap-4">
+                                            <div class="mb-5 flex-1">
+                                                <label for="name"
+                                                    class="block mb-2 text-sm font-medium text-gray-9xt-">Nombre</label>
+                                                <input wire:model="name" type="text"
+                                                    class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                                    placeholder="Ej: Juan Perez" />
+                                                @error('name')
+                                                    <span class="error text-red-600">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="mb-5 flex-1">
+                                                <label for="email"
+                                                    class="block mb-2 text-sm font-medium text-gray-9xt-">Correo
+                                                    Electronico</label>
+                                                <input wire:model="email"
+                                                    class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                                    placeholder="Ej: example@example.com" />
+                                                @error('email')
+                                                    <span class="error text-red-600">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-5 flex gap-4">
+                                            <div class="flex flex-col">
+                                                <label for="role_select"
+                                                    class="block mb-2 text-sm font-medium text-gray-9xt-">Seleccionar
+                                                    Rol</label>
+                                                <select class="role.select2" wire:model="role_check"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 xt-  ">
+                                                    <option value="">Selecciona un rol</option>
+                                                    @forelse ($roles['data'] as $item)
+                                                        <option value="{{ $item['id'] }}">{{ $item['name'] }}
+                                                        </option>
+                                                    @empty
+                                                        <option>No hay roles disponibles</option>
+                                                    @endforelse
+                                                </select>
+                                                @error('role_check')
+                                                    <span class="error text-red-600">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="flex flex-col">
+                                                <label for="mall"
+                                                    class="block mb-2 text-sm font-medium text-gray-9xt-">Seleccionar
+                                                    parque</label>
+                                                <select class="role.select2" wire:model="id_mall"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 xt-  ">
+                                                    <option value="">Selecciona una ciudad</option>
+                                                    @forelse ($parks['data'] as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->name }}
+                                                        </option>
+                                                    @empty
+                                                        <option>No hay parques disponibles</option>
+                                                    @endforelse
+                                                </select>
+                                                @error('id_mall')
+                                                    <span class="error text-red-600">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="mb-5 flex-1">
+                                                <label for="password"
+                                                    class="block mb-2 text-sm font-medium text-gray-9xt-">Contraseña</label>
+                                                <div class="relative flex">
+                                                    <input id="password-input" type="password" placeholder="password"
+                                                        wire:model="password"
+                                                        class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-12" />
+                                                    <button id="toggle-password" type="button"
+                                                        class="absolute right-0 top-0 h-full px-3 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                                                        <!-- Ojo cerrado (mostrar contraseña) -->
+                                                        <svg id="eye-closed" class="w-5 h-5" fill="none"
+                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21">
+                                                            </path>
+                                                        </svg>
+
+                                                        <!-- Ojo abierto (ocultar contraseña) -->
+                                                        <svg id="eye-open" class="w-5 h-5 hidden" fill="none"
+                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z">
+                                                            </path>
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                                            </path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+
+                                                @error('password')
+                                                    <span class="error text-red-600">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="flex gap-4">
+                                            <x-primary-button mode="submit">Crear usuario</x-primary-button>
+                                            <x-primary-button mode="cancelCreate">Cancelar</x-primary-button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        @endif
                         <!--Tabla con la información de usuarios-->
                         <div
                             class="
@@ -251,9 +266,11 @@
                                         <th scope="col" class=" py-3">
                                             Parque
                                         </th>
-                                        <th scope="col" class="px-6 py-3 rounded-tr-xl">
-                                            Acción
-                                        </th>
+                                        @if (Auth::user()->role_id === 1)
+                                            <th scope="col" class="px-6 py-3 rounded-tr-xl">
+                                                Acción
+                                            </th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody class="text-center">
@@ -299,27 +316,29 @@
                                                     --
                                                 @endif
                                             </td>
-                                            <td class="px-2 py-4 flex gap-2 justify-center">
-                                                <button aria-label="Editar usuario"
-                                                    wire:click="setEditingUser(@js([
-                                                        'id' => $item['id'],
-                                                        'name' => $item['name'],
-                                                        'email' => $item['email'],
-                                                        'role' => $item['role']->id ?? '',
-                                                        'mall' => $item['park'] ? $item['park']->id : 0,
-                                                    ]))">
-                                                    <i class="fa-solid fa-square-pen fa-xl text-blue-500 "></i>
-                                                </button>
-                                                <button type="button" aria-label="Eliminar usuario"
-                                                    @click="window.dispatchEvent(new CustomEvent('show-delete-modal', {
-                                                    detail: { 
-                                                        id: {{ $item['id'] }},
-                                                        name: '{{ $item['name'] }}'
-                                                    }
-                                                }))">
-                                                    <i class="fa-solid fa-trash fa-xl text-red-500"></i>
-                                                </button>
-                                            </td>
+                                            @if (Auth::user()->role_id === 1)
+                                                <td class="px-2 py-4 flex gap-2 justify-center">
+                                                    <button aria-label="Editar usuario"
+                                                        wire:click="setEditingUser(@js([
+                                                            'id' => $item['id'],
+                                                            'name' => $item['name'],
+                                                            'email' => $item['email'],
+                                                            'role' => $item['role']->id ?? '',
+                                                            'mall' => $item['park'] ? $item['park']->id : 0,
+                                                        ]))">
+                                                        <i class="fa-solid fa-square-pen fa-xl text-blue-500 "></i>
+                                                    </button>
+                                                    <button type="button" aria-label="Eliminar usuario"
+                                                        @click="window.dispatchEvent(new CustomEvent('show-delete-modal', {
+                                                            detail: { 
+                                                                id: {{ $item['id'] }},
+                                                                name: '{{ $item['name'] }}'
+                                                            }
+                                                        }))">
+                                                        <i class="fa-solid fa-trash fa-xl text-red-500"></i>
+                                                    </button>
+                                                </td>
+                                            @endif
                                         </tr>
                                     @empty
                                         <tr>
