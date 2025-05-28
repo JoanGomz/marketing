@@ -16,7 +16,7 @@ class User extends Component
     public $name;
     public $email;
     public $role_check;
-    public int $id_mall;
+    public $id_mall;
     public $password;
     public $response;
     //METODOS VARIOS
@@ -54,7 +54,7 @@ class User extends Component
         $this->name = $userData['name'];
         $this->email = $userData['email'];
         $this->role_check = $userData['role'] ?? '';
-        $this->id_mall = $userData['mall'] ?? '';
+        $this->id_mall = $userData['mall']==='' ? '' : (int)$userData['mall'];
         $this->dispatch('open-update-form');
     }
     //METODOS DE SOLICITUDES

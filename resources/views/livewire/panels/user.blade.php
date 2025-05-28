@@ -26,7 +26,7 @@
                                 @endif
                             </div>
                         </div>
-                        @if (Auth::user()->role_id === 1)
+                        @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)
                             <!--Div de actualización de usuarios-->
                             <div x-show="$store.forms.updateFormVisible" x-cloak
                                 x-transition:enter="transition ease-out duration-300"
@@ -40,9 +40,15 @@
                                 <form wire:submit.prevent="updateUser" class="max-w-full">
                                     <div class="mb-4">
                                         <label for="name"
-                                            class="block text-sm font-medium text-gray-900">Nombre</label>
-                                        <input wire:model="name" type="text"
-                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                            class="block text-sm font-medium {{ Auth::user()->role_id === 2 ? 'text-gray-500' : 'text-gray-900' }}">
+                                            Nombre
+                                        </label>
+                                        <input wire:model="name" {{ Auth::user()->role_id === 2 ? 'disabled' : '' }}
+                                            type="text"
+                                            class="mt-1 block w-full rounded-md shadow-sm focus:ring-indigo-500 
+                      {{ Auth::user()->role_id === 2
+                          ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed'
+                          : 'bg-white border-gray-300 text-gray-900 focus:border-indigo-500' }}">
                                         @error('name')
                                             <span class="error text-red-600">{{ $message }}</span>
                                         @enderror
@@ -50,20 +56,32 @@
 
                                     <div class="mb-4">
                                         <label for="email"
-                                            class="block text-sm font-medium text-gray-900">Email</label>
-                                        <input wire:model="email" type="email"
-                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                            class="block text-sm font-medium {{ Auth::user()->role_id === 2 ? 'text-gray-500' : 'text-gray-900' }}">
+                                            Email
+                                        </label>
+                                        <input wire:model="email" {{ Auth::user()->role_id === 2 ? 'disabled' : '' }}
+                                            type="email"
+                                            class="mt-1 block w-full rounded-md shadow-sm 
+                      {{ Auth::user()->role_id === 2
+                          ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed focus:ring-gray-300'
+                          : 'bg-white border-gray-300 text-gray-900 focus:border-indigo-500 focus:ring-indigo-500' }}">
                                         @error('email')
                                             <span class="error text-red-600">{{ $message }}</span>
                                         @enderror
                                     </div>
+
                                     <div class="mb-5 flex gap-4">
                                         <div class="flex flex-col">
                                             <label for="role_select"
-                                                class="block mb-2 text-sm font-medium text-gray-9xt-">Seleccionar
-                                                Rol</label>
-                                            <select class="role.select2" wire:model="role_check"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 xt-  ">
+                                                class="block mb-2 text-sm font-medium {{ Auth::user()->role_id === 2 ? 'text-gray-500' : 'text-gray-900' }}">
+                                                Seleccionar Rol
+                                            </label>
+                                            <select wire:model="role_check"
+                                                {{ Auth::user()->role_id === 2 ? 'disabled' : '' }}
+                                                class="role.select2 text-sm rounded-lg block w-full p-2.5 
+                           {{ Auth::user()->role_id === 2
+                               ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed focus:ring-gray-300 focus:border-gray-300'
+                               : 'bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500' }}">
                                                 <option value="">Selecciona un rol</option>
                                                 @forelse ($roles['data'] as $item)
                                                     <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
@@ -75,12 +93,18 @@
                                                 <span class="error text-red-600">{{ $message }}</span>
                                             @enderror
                                         </div>
+
                                         <div class="flex flex-col">
                                             <label for="mall"
-                                                class="block mb-2 text-sm font-medium text-gray-9xt-">Seleccionar
-                                                Centro Comercial</label>
-                                            <select class="role.select2" wire:model="id_mall"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 xt-  ">
+                                                class="block mb-2 text-sm font-medium {{ Auth::user()->role_id === 2 ? 'text-gray-500' : 'text-gray-900' }}">
+                                                Seleccionar Centro Comercial
+                                            </label>
+                                            <select wire:model="id_mall"
+                                                {{ Auth::user()->role_id === 2 ? 'disabled' : '' }}
+                                                class="role.select2 text-sm rounded-lg block w-full p-2.5 
+                           {{ Auth::user()->role_id === 2
+                               ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed focus:ring-gray-300 focus:border-gray-300'
+                               : 'bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500' }}">
                                                 <option value="">Selecciona una ciudad</option>
                                                 @forelse ($parks['data'] as $item)
                                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -92,16 +116,19 @@
                                                 <span class="error text-red-600">{{ $message }}</span>
                                             @enderror
                                         </div>
+
                                         <div class="mb-5 flex-1">
-                                            <label for="password"
-                                                class="block mb-2 text-sm font-medium text-gray-9xt-">Contraseña</label>
+                                            <label for="password" class="block mb-2 text-sm font-medium text-gray-900">
+                                                Contraseña
+                                            </label>
                                             <input wire:model="password" type="password"
-                                                class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " />
+                                                class="shadow-xs text-sm rounded-lg block w-full p-2.5 bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
                                             @error('password')
                                                 <span class="error text-red-600">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
+
                                     <!-- Botones -->
                                     <div class="flex gap-4">
                                         <x-primary-button mode="submit">Actualizar usuario</x-primary-button>
@@ -266,7 +293,7 @@
                                         <th scope="col" class=" py-3">
                                             Parque
                                         </th>
-                                        @if (Auth::user()->role_id === 1)
+                                        @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)
                                             <th scope="col" class="px-6 py-3 rounded-tr-xl">
                                                 Acción
                                             </th>
@@ -316,7 +343,7 @@
                                                     --
                                                 @endif
                                             </td>
-                                            @if (Auth::user()->role_id === 1)
+                                            @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)
                                                 <td class="px-2 py-4 flex gap-2 justify-center">
                                                     <button aria-label="Editar usuario"
                                                         wire:click="setEditingUser(@js([
@@ -324,19 +351,21 @@
                                                             'name' => $item['name'],
                                                             'email' => $item['email'],
                                                             'role' => $item['role']->id ?? '',
-                                                            'mall' => $item['park'] ? $item['park']->id : 0,
+                                                            'mall' => $item['park'] ? $item['park']->id : '',
                                                         ]))">
                                                         <i class="fa-solid fa-square-pen fa-xl text-blue-500 "></i>
                                                     </button>
-                                                    <button type="button" aria-label="Eliminar usuario"
-                                                        @click="window.dispatchEvent(new CustomEvent('show-delete-modal', {
-                                                            detail: { 
-                                                                id: {{ $item['id'] }},
-                                                                name: '{{ $item['name'] }}'
-                                                            }
+                                                    @if (Auth::user()->role_id === 1)
+                                                        <button type="button" aria-label="Eliminar usuario"
+                                                            @click="window.dispatchEvent(new CustomEvent('show-delete-modal', {
+                                                        detail: { 
+                                                            id: {{ $item['id'] }},
+                                                            name: '{{ $item['name'] }}'
+                                                        }
                                                         }))">
-                                                        <i class="fa-solid fa-trash fa-xl text-red-500"></i>
-                                                    </button>
+                                                            <i class="fa-solid fa-trash fa-xl text-red-500"></i>
+                                                        </button>
+                                                    @endif
                                                 </td>
                                             @endif
                                         </tr>

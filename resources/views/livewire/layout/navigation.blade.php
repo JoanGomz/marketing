@@ -100,10 +100,9 @@
                                     Torre Central
                                     @break
                                 @case(3)
-                                    Asesor
+                                    Asesor / {{Auth::user()->load('park')['park']->name}}
                                     @break
                                 @default
-                                    
                             @endswitch
                         </div>
                     </div>
@@ -164,7 +163,6 @@
                 </div>
             </div>
         </header>
-
         <!-- Contenedor principal con margen superior para la barra fija -->
         <main id="main-content" class="flex flex-col h-screen ml-64 transition-all duration-300">
             <!-- Header spacer -->
@@ -180,7 +178,6 @@
             <!-- Contenido del componente hijo -->
             <div class="flex-1 overflow-auto ">
                 <nocard-loading></nocard-loading>
-                {{Auth::user()}}
                 {{ $slot }}
             </div>
         </main>
