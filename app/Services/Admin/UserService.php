@@ -4,7 +4,7 @@ namespace App\Services\Admin;
 
 use App\Contracts\Admin\UserServiceInterface;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -12,7 +12,16 @@ class UserService implements UserServiceInterface
 {
     public function getAllActiveUsers(array $columns = ['*'])
     {
-        $query = User::where('status', 1)->with('role')->with('park');
+        $user = Auth::user();
+
+        if ($user->role_id ==  2) {
+            $query = User::where('status', 1)
+                ->andWhere('role_id', 3)
+                ->with('role')
+                ->with('park');
+        } else {
+            $query = User::where('status', 1)->with('role')->with('park');
+        }
 
         return $query->get();
     }
@@ -52,8 +61,13 @@ class UserService implements UserServiceInterface
     public function getPaginated($page, $items, $search = '')
     {
         $query = User::query();
-
         $query->where('status', 1);
+
+        $user = Auth::user();
+        if ($user->role_id ==  2) {
+            $query->andWhere('role_id', 3);
+        }
+
         $query->with('role');
         $query->with('park');
 
