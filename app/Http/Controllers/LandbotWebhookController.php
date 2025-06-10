@@ -169,4 +169,22 @@ class LandbotWebhookController extends Controller
             ], 500);
         }
     }
+
+    public function saveNote(Request $request, $conversationId)
+    {
+        try {
+            $note = $request->input('note');
+            if (empty($note)) {
+                return response()->json(['success' => false, 'message' => 'Nota no puede estar vacía'], 400);
+            }
+
+            $conversation = LandbotConversations::findOrFail($conversationId);
+            $conversation->note = $note;
+            $conversation->save();
+
+            return response()->json(['success' => true, 'message' => 'Nota guardada correctamente']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        }
+    }
 }
