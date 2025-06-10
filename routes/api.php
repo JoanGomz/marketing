@@ -15,5 +15,5 @@ Route::post('/park', [UserController::class, 'store']);
 Route::put('/park/{id}', [UserController::class, 'update']);
 Route::delete('/park/{id}', [UserController::class, 'destroy']);
 
-Route::post('landbot/webhook', [\App\Http\Controllers\LandbotWebhookController::class, 'handleWebhook']);
+Route::get('landbot/webhook/{status}', [LandbotWebhookController::class, 'getAllConversations']);
 Route::get('landbot/webhook/test', [\App\Http\Controllers\LandbotWebhookController::class, 'test']);
