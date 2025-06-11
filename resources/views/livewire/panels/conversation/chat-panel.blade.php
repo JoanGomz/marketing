@@ -1,6 +1,7 @@
 <div class="flex-1 flex flex-col resize-x z-10">
     <!-- Cabecera de la conversación -->
-    <div class="bg-brand-darkPurple p-4  flex justify-between items-center font-bold text-white z-20" style="box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.48);">
+    <div class="bg-brand-darkPurple p-4  flex justify-between items-center font-bold text-white z-20"
+        style="box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.48);">
         <div class="flex items-center">
             <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 mr-3">
                 C
@@ -9,11 +10,10 @@
                 <div class="font-bold">Carlos Gómez</div>
                 <div class="flex items-center text-sm">
                     <div class="w-2 h-2 mr-2 rounded-full bg-green-400"></div>
-                    <span id="estado-chat"  class="font-bold">Asignado</span>
+                    <span id="estado-chat" class="font-bold">Asignado</span>
                 </div>
             </div>
         </div>
-
         <div class="flex gap-4">
             <button id="info-button" class="rounded-md p-2 pr-6 text-sm px-6 bg-gray-500">Información</button>
             <select id="estado" class="rounded-md p-2  pr-6 text-sm text-black bg-[#94D4A0]">
@@ -33,14 +33,54 @@
     </div>
 
     <!-- Historial de mensajes -->
-    <div id="content-conversation" class="flex-1 overflow-y-auto p-4 bg-gray-50" style="background-image: url('/Images/Asesor/patron.png'); background-size: 100%;
+    <div id="content-conversation" class="flex-1 overflow-y-auto p-4 bg-gray-50"
+        style="background-image: url('/Images/Asesor/patron.png'); background-size: 100%;
             background-repeat: repeat;">
-        <!-- Mensajes del sistema -->
         <div class="flex justify-center mb-4">
             <div class="bg-gray-200 text-gray-600 text-xs rounded-full px-3 py-1">
                 Hoy, 9:30 AM
             </div>
         </div>
+        <!-- Mensajes del sistema -->
+        @forelse ($data["messages"] as $item)
+            @if ($item['is_bot'] === 0)
+                <!-- Mensaje del cliente -->
+                <div class="mb-4 flex justify-start min-w-[400px]">
+                    <div class="max-w-md rounded-lg p-4 bg-white border min-w-[400px] shadowCard">
+                        <div>{{ $item['conversation_data']['body'] }}</div>
+                        <div class="text-xs mt-1 text-gray-500">
+                            {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}</div>
+                    </div>
+                </div>
+                <div class="text-xs mt-1 text-blue-100">
+                    {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}</div>
+            @else
+                <!-- Mensaje del asesor -->
+                <div class="mb-4 flex justify-end">
+                    <div class="max-w-md rounded-lg p-4 bg-brand-blueStar text-white shadowCard">
+                        @if (!isset($item['conversation_data']['buttons']))
+                            <div>{{ $item['conversation_data']['body'] }}</div>
+                        @else
+                            <div class="font-bold">{{ $item['conversation_data']['title'] }}</div>
+                            <div>{{ $item['conversation_data']['body'] }}</div>
+                            <div class="font-light text-xs mt-2">{{ $item['conversation_data']['footer'] }}</div>
+                            @foreach ($item['conversation_data']['buttons'] as $button)
+                                <div class="mt-2">
+                                    <button
+                                        class="bg-[#0997AF] hover:bg-blue-600 text-white px-4 py-2 rounded-lg w-full text-left">{{ $button['label'] }}</button>
+                                </div>
+                            @endforeach
+                        @endif
+                        <div class="flex justify-end">
+                            <div class="text-xs mt-1 right-2 text-blue-100">
+                                {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}</div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        @empty
+        @endforelse
+
     </div>
 
     <!-- Input para responder -->

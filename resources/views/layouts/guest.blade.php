@@ -18,12 +18,13 @@
     <body class="font-sans antialiased text-gray-800">         
     <div class="min-h-screen bg-gradient-button flex flex-col justify-center items-center p-4 relative">
         <!-- Marca de agua -->
-        <div class="absolute bottom-0 right-2 opacity-30 z-50">
-            <img src="{{ asset('Images/Logos/3.webp') }}" alt="Logo-NoCard" class="w-24">
+        <div class="absolute bottom-4 right-4 opacity-30 z-50">
+            <img src="{{ asset('Images/Logos/spoon-trasp.png') }}" alt="Logo-Spoon" class="w-24">
         </div>
         <div class="w-full max-w-md">                 
             {{ $slot }}             
-        </div>         
+        </div>    
+        @stack('scripts')     
     </div>     
 </body>
 </html>

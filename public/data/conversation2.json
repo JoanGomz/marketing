@@ -1,0 +1,392 @@
+{
+    "success": true,
+    "customerPhone": "573118839426",
+    "messages": [
+        {
+            "id": 134,
+            "customer_id": null,
+            "message_id": "468769239_1748982264_683f59f8de9dd",
+            "content": null,
+            "conversation_data": {
+                "body": "Hola"
+            },
+            "message_timestamp": "2025-06-03T20:24:24.000000Z",
+            "is_finished": false,
+            "conversation_date": "2025-06-03T20:24:24.000000Z",
+            "created_at": null,
+            "updated_at": null,
+            "create_at": "2025-06-03 20:24:25",
+            "update_at": "2025-06-03 20:24:25",
+            "is_bot": 0,
+            "is_first_message": null,
+            "customer_phone": "573118839426",
+            "Landbot_chat_id": "468769239"
+        },
+        {
+            "id": 135,
+            "customer_id": null,
+            "message_id": "468769239_1748982268_683f59fcb9699",
+            "content": null,
+            "conversation_data": {
+                "body": "*¡Vaya!* 😕\nNo encontramos información sobre tu cuenta.\nPor favor, verifica tus datos o regístrate para comenzar."
+            },
+            "message_timestamp": "2025-06-03T20:24:28.000000Z",
+            "is_finished": false,
+            "conversation_date": "2025-06-03T20:24:28.000000Z",
+            "created_at": null,
+            "updated_at": null,
+            "create_at": "2025-06-03 20:24:29",
+            "update_at": "2025-06-03 20:24:29",
+            "is_bot": 1,
+            "is_first_message": null,
+            "customer_phone": "573118839426",
+            "Landbot_chat_id": "468769239"
+        },
+        {
+            "id": 136,
+            "customer_id": null,
+            "message_id": "468769239_1748982269_683f59fd49021",
+            "content": null,
+            "conversation_data": {
+                "body": "Hola *Lunaa*, ¡qué bueno verte de nuevo en Starpark! 🌟\n¿Qué te gustaría hacer ahora? 🤔",
+                "image": null,
+                "title": "¡Bienvenido! 🎉",
+                "footer": "👉 Elige una opción para continuar.",
+                "buttons": [
+                    {
+                        "type": "POSTBACK",
+                        "label": "Jugar",
+                        "payload": "$2622fc7f-4de8-4e10-9ec4-e63c573db8ef"
+                    },
+                    {
+                        "type": "POSTBACK",
+                        "label": "Ver cuenta",
+                        "payload": "$3540900f-2141-44d0-8139-c65b57dc3069"
+                    },
+                    {
+                        "type": "POSTBACK",
+                        "label": "Recargar",
+                        "payload": "$c59892f6-a803-45c5-93be-8f758f0639c5"
+                    }
+                ]
+            },
+            "message_timestamp": "2025-06-03T20:24:29.000000Z",
+            "is_finished": false,
+            "conversation_date": "2025-06-03T20:24:29.000000Z",
+            "created_at": null,
+            "updated_at": null,
+            "create_at": "2025-06-03 20:24:29",
+            "update_at": "2025-06-03 20:24:29",
+            "is_bot": 1,
+            "is_first_message": null,
+            "customer_phone": "573118839426",
+            "Landbot_chat_id": "468769239"
+        },
+        {
+            "id": 137,
+            "customer_id": null,
+            "message_id": "468769239_1748982299_683f5a1b966df",
+            "content": null,
+            "conversation_data": {
+                "body": "Recargar",
+                "payload": "$c59892f6-a803-45c5-93be-8f758f0639c5"
+            },
+            "message_timestamp": "2025-06-03T20:24:59.000000Z",
+            "is_finished": false,
+            "conversation_date": "2025-06-03T20:24:59.000000Z",
+            "created_at": null,
+            "updated_at": null,
+            "create_at": "2025-06-03 20:25:00",
+            "update_at": "2025-06-03 20:25:00",
+            "is_bot": 0,
+            "is_first_message": null,
+            "customer_phone": "573118839426",
+            "Landbot_chat_id": "468769239"
+        },
+        {
+            "id": 138,
+            "customer_id": null,
+            "message_id": "468769239_1748982300_683f5a1c732ba",
+            "content": null,
+            "conversation_data": {
+                "body": "Hola Lunaa, recuerda que puedes recargar en taquilla usando tu número de documento o tu número de WhatsApp.\n¡Así podrás disfrutar del mejor parque del país! 🌟",
+                "image": null,
+                "title": "Recargas 💳",
+                "footer": "🎢 ¡Nos vemos en Starpark!",
+                "buttons": [
+                    {
+                        "type": "POSTBACK",
+                        "label": "Regresar",
+                        "payload": "$d8416bc5-3443-4564-bc83-e2fc24e8bbe5"
+                    }
+                ]
+            },
+            "message_timestamp": "2025-06-03T20:25:00.000000Z",
+            "is_finished": false,
+            "conversation_date": "2025-06-03T20:25:00.000000Z",
+            "created_at": null,
+            "updated_at": null,
+            "create_at": "2025-06-03 20:25:00",
+            "update_at": "2025-06-03 20:25:00",
+            "is_bot": 1,
+            "is_first_message": null,
+            "customer_phone": "573118839426",
+            "Landbot_chat_id": "468769239"
+        },
+        {
+            "id": 139,
+            "customer_id": null,
+            "message_id": "468769239_1748982314_683f5a2ad34d0",
+            "content": null,
+            "conversation_data": {
+                "body": "Regresar",
+                "payload": "$d8416bc5-3443-4564-bc83-e2fc24e8bbe5"
+            },
+            "message_timestamp": "2025-06-03T20:25:14.000000Z",
+            "is_finished": false,
+            "conversation_date": "2025-06-03T20:25:14.000000Z",
+            "created_at": null,
+            "updated_at": null,
+            "create_at": "2025-06-03 20:25:15",
+            "update_at": "2025-06-03 20:25:15",
+            "is_bot": 0,
+            "is_first_message": null,
+            "customer_phone": "573118839426",
+            "Landbot_chat_id": "468769239"
+        },
+        {
+            "id": 140,
+            "customer_id": null,
+            "message_id": "468769239_1748982315_683f5a2b8c3c5",
+            "content": null,
+            "conversation_data": {
+                "body": "Hola *Lunaa*, ¡qué bueno verte de nuevo en Starpark! 🌟\n¿Qué te gustaría hacer ahora? 🤔",
+                "image": null,
+                "title": "¡Bienvenido! 🎉",
+                "footer": "👉 Elige una opción para continuar.",
+                "buttons": [
+                    {
+                        "type": "POSTBACK",
+                        "label": "Jugar",
+                        "payload": "$2622fc7f-4de8-4e10-9ec4-e63c573db8ef"
+                    },
+                    {
+                        "type": "POSTBACK",
+                        "label": "Ver cuenta",
+                        "payload": "$3540900f-2141-44d0-8139-c65b57dc3069"
+                    },
+                    {
+                        "type": "POSTBACK",
+                        "label": "Recargar",
+                        "payload": "$c59892f6-a803-45c5-93be-8f758f0639c5"
+                    }
+                ]
+            },
+            "message_timestamp": "2025-06-03T20:25:15.000000Z",
+            "is_finished": false,
+            "conversation_date": "2025-06-03T20:25:15.000000Z",
+            "created_at": null,
+            "updated_at": null,
+            "create_at": "2025-06-03 20:25:15",
+            "update_at": "2025-06-03 20:25:15",
+            "is_bot": 1,
+            "is_first_message": null,
+            "customer_phone": "573118839426",
+            "Landbot_chat_id": "468769239"
+        },
+        {
+            "id": 141,
+            "customer_id": null,
+            "message_id": "468769239_1748982330_683f5a3a89b1f",
+            "content": null,
+            "conversation_data": {
+                "body": "Jugar",
+                "payload": "$2622fc7f-4de8-4e10-9ec4-e63c573db8ef"
+            },
+            "message_timestamp": "2025-06-03T20:25:30.000000Z",
+            "is_finished": false,
+            "conversation_date": "2025-06-03T20:25:30.000000Z",
+            "created_at": null,
+            "updated_at": null,
+            "create_at": "2025-06-03 20:25:30",
+            "update_at": "2025-06-03 20:25:30",
+            "is_bot": 0,
+            "is_first_message": null,
+            "customer_phone": "573118839426",
+            "Landbot_chat_id": "468769239"
+        },
+        {
+            "id": 142,
+            "customer_id": null,
+            "message_id": "468769239_1748982332_683f5a3c92b8c",
+            "content": null,
+            "conversation_data": {
+                "body": "Lunaa, este es tu código: *👍🏻265*\nCon él podrás jugar, pero recuerda no compartirlo con nadie. 😉\nEste código expira en 1 hora. ¡Diviértete! 🎉",
+                "image": null,
+                "title": "Tu código 🎮",
+                "footer": "⏳ ¡Aprovecha y juega ya!",
+                "buttons": [
+                    {
+                        "type": "POSTBACK",
+                        "label": "Regresar al menú",
+                        "payload": "$ad45701e-f534-4c1e-9ccf-7203e2229c55"
+                    }
+                ]
+            },
+            "message_timestamp": "2025-06-03T20:25:32.000000Z",
+            "is_finished": false,
+            "conversation_date": "2025-06-03T20:25:32.000000Z",
+            "created_at": null,
+            "updated_at": null,
+            "create_at": "2025-06-03 20:25:32",
+            "update_at": "2025-06-03 20:25:32",
+            "is_bot": 1,
+            "is_first_message": null,
+            "customer_phone": "573118839426",
+            "Landbot_chat_id": "468769239"
+        },
+        {
+            "id": 143,
+            "customer_id": null,
+            "message_id": "468769239_1748982343_683f5a4763d77",
+            "content": null,
+            "conversation_data": {
+                "body": "Regresar al menú",
+                "payload": "$ad45701e-f534-4c1e-9ccf-7203e2229c55"
+            },
+            "message_timestamp": "2025-06-03T20:25:43.000000Z",
+            "is_finished": false,
+            "conversation_date": "2025-06-03T20:25:43.000000Z",
+            "created_at": null,
+            "updated_at": null,
+            "create_at": "2025-06-03 20:25:43",
+            "update_at": "2025-06-03 20:25:43",
+            "is_bot": 0,
+            "is_first_message": null,
+            "customer_phone": "573118839426",
+            "Landbot_chat_id": "468769239"
+        },
+        {
+            "id": 144,
+            "customer_id": null,
+            "message_id": "468769239_1748982344_683f5a4814d0d",
+            "content": null,
+            "conversation_data": {
+                "body": "Hola *Lunaa*, ¡qué bueno verte de nuevo en Starpark! 🌟\n¿Qué te gustaría hacer ahora? 🤔",
+                "image": null,
+                "title": "¡Bienvenido! 🎉",
+                "footer": "👉 Elige una opción para continuar.",
+                "buttons": [
+                    {
+                        "type": "POSTBACK",
+                        "label": "Jugar",
+                        "payload": "$2622fc7f-4de8-4e10-9ec4-e63c573db8ef"
+                    },
+                    {
+                        "type": "POSTBACK",
+                        "label": "Ver cuenta",
+                        "payload": "$3540900f-2141-44d0-8139-c65b57dc3069"
+                    },
+                    {
+                        "type": "POSTBACK",
+                        "label": "Recargar",
+                        "payload": "$c59892f6-a803-45c5-93be-8f758f0639c5"
+                    }
+                ]
+            },
+            "message_timestamp": "2025-06-03T20:25:44.000000Z",
+            "is_finished": false,
+            "conversation_date": "2025-06-03T20:25:44.000000Z",
+            "created_at": null,
+            "updated_at": null,
+            "create_at": "2025-06-03 20:25:44",
+            "update_at": "2025-06-03 20:25:44",
+            "is_bot": 1,
+            "is_first_message": null,
+            "customer_phone": "573118839426",
+            "Landbot_chat_id": "468769239"
+        },
+        {
+            "id": 145,
+            "customer_id": null,
+            "message_id": "468769239_1748982348_683f5a4cc0221",
+            "content": null,
+            "conversation_data": {
+                "body": "Ver cuenta",
+                "payload": "$3540900f-2141-44d0-8139-c65b57dc3069"
+            },
+            "message_timestamp": "2025-06-03T20:25:48.000000Z",
+            "is_finished": false,
+            "conversation_date": "2025-06-03T20:25:48.000000Z",
+            "created_at": null,
+            "updated_at": null,
+            "create_at": "2025-06-03 20:25:49",
+            "update_at": "2025-06-03 20:25:49",
+            "is_bot": 0,
+            "is_first_message": null,
+            "customer_phone": "573118839426",
+            "Landbot_chat_id": "468769239"
+        },
+        {
+            "id": 146,
+            "customer_id": null,
+            "message_id": "468769239_1748982352_683f5a509b8c0",
+            "content": null,
+            "conversation_data": {
+                "body": "*¡Vaya!* 😕\nNo encontramos información sobre tu cuenta.\nPor favor, verifica tus datos o regístrate para comenzar."
+            },
+            "message_timestamp": "2025-06-03T20:25:52.000000Z",
+            "is_finished": false,
+            "conversation_date": "2025-06-03T20:25:52.000000Z",
+            "created_at": null,
+            "updated_at": null,
+            "create_at": "2025-06-03 20:25:52",
+            "update_at": "2025-06-03 20:25:52",
+            "is_bot": 1,
+            "is_first_message": null,
+            "customer_phone": "573118839426",
+            "Landbot_chat_id": "468769239"
+        },
+        {
+            "id": 147,
+            "customer_id": null,
+            "message_id": "468769239_1748982353_683f5a518dbd8",
+            "content": null,
+            "conversation_data": {
+                "body": "Hola *Lunaa*, ¡qué bueno verte de nuevo en Starpark! 🌟\n¿Qué te gustaría hacer ahora? 🤔",
+                "image": null,
+                "title": "¡Bienvenido! 🎉",
+                "footer": "👉 Elige una opción para continuar.",
+                "buttons": [
+                    {
+                        "type": "POSTBACK",
+                        "label": "Jugar",
+                        "payload": "$2622fc7f-4de8-4e10-9ec4-e63c573db8ef"
+                    },
+                    {
+                        "type": "POSTBACK",
+                        "label": "Ver cuenta",
+                        "payload": "$3540900f-2141-44d0-8139-c65b57dc3069"
+                    },
+                    {
+                        "type": "POSTBACK",
+                        "label": "Recargar",
+                        "payload": "$c59892f6-a803-45c5-93be-8f758f0639c5"
+                    }
+                ]
+            },
+            "message_timestamp": "2025-06-03T20:25:53.000000Z",
+            "is_finished": false,
+            "conversation_date": "2025-06-03T20:25:53.000000Z",
+            "created_at": null,
+            "updated_at": null,
+            "create_at": "2025-06-03 20:25:53",
+            "update_at": "2025-06-03 20:25:53",
+            "is_bot": 1,
+            "is_first_message": null,
+            "customer_phone": "573118839426",
+            "Landbot_chat_id": "468769239"
+        }
+    ],
+    "total_messages": 14
+}

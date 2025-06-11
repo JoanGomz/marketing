@@ -67,9 +67,13 @@
                     @endif
                 </ul>
                 <!-- Información de versión -->
-                <div class="mt-auto flex p-4 border-t justify-center border-gray-800 w-full pb-10">
+                <div class="mt-auto flex flex-col gap-2 items-center p-4 border-t justify-center border-gray-800 w-full pb-2">
                     <img class="w-32" style="filter: drop-shadow(6px 4px 2px rgba(0, 0, 0, 0.427))"
-                        fetchpriority="high" src="/Images/Logos/7.webp" alt="logo-noCard">
+                        fetchpriority="high" src="/Images/Logos/spoon-hor-3.png" alt="logo-Spoon">
+                    <div class="text-xs text-gray-400 flex flex-col items-center">
+                        <p>Versión: 1</p>
+                        <p class="mt-1">© 2025 NoCard</p>
+                    </div>
                 </div>
             </nav>
         </aside>

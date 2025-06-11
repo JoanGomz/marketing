@@ -34,16 +34,16 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fa-solid fa-lock text-gray-400"></i>
                         </div>
-                        <input name="password" type="password" placeholder="Contraseña" id="password"
-                            class="w-full px-4 py-4 bg-purple-800/50 text-white placeholder-gray-400 rounded-lg 
+                        <input name="password" type="password" placeholder="Contraseña"
+                            class="password w-full px-4 py-4 bg-purple-800/50 text-white placeholder-gray-400 rounded-lg 
                             border border-transparent 
                             shadow-[inset_4px_0_6px_-4px_rgba(0,0,0,0.3)]
                             focus:outline-none focus:ring-2 focus:ring-purple-500 pl-10"
                             autocomplete="current-password" />
                         <div class="absolute inset-y-0 z-20 right-2 pl-3 flex items-center">
-                            <i id="open-eye" class="fa-solid fa-eye-low-vision text-gray-400 cursor-pointer"></i>
-                            <i id="close-eye" style="display: none;"
-                                class="fa-solid fa-eye text-gray-400 cursor-pointer"></i>
+                            <i  class="open-eye fa-solid fa-eye-low-vision text-gray-400 cursor-pointer"></i>
+                            <i  style=" display: none;"
+                                class="close-eye fa-solid fa-eye text-gray-400 cursor-pointer"></i>
                         </div>
                     </div>
                     @error('password')
@@ -64,7 +64,6 @@
                             class="absolute top-0 right-0 h-0 w-0.5 bg-white transition-all duration-300 delay-150 group-hover:h-full"></span>
                         <span
                             class="absolute bottom-0 left-0 h-0 w-0.5 bg-white transition-all duration-300 delay-150 group-hover:h-full"></span>
-
                         <!-- Efecto de onda/brillo -->
                         <span
                             class="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
@@ -85,22 +84,8 @@
                 </div>
             </form>
         </div>
-        <script>
-            const oEyeButton = document.getElementById("open-eye");
-            const cEyeButton = document.getElementById("close-eye");
-            const input = document.getElementById("password");
-
-            oEyeButton.addEventListener("click", function() {
-                input.setAttribute("type", "text");
-                oEyeButton.style.display = "none";
-                cEyeButton.style.display = "block";
-            });
-
-            cEyeButton.addEventListener("click", function() {
-                input.setAttribute("type", "password");
-                cEyeButton.style.display = "none";
-                oEyeButton.style.display = "block";
-            });
-        </script>
+        @push('scripts')
+            @vite(['resources/js/view-password.js'])
+        @endpush
     </div>
 </x-guest-layout>

@@ -39,32 +39,26 @@
                                 <h3 class="text-lg font-medium">Editar Usuario</h3>
                                 <form wire:submit.prevent="updateUser" class="max-w-full">
                                     <div class="mb-4">
-                                        <label for="name"
+                                        <label for="name_update"
                                             class="block text-sm font-medium {{ Auth::user()->role_id === 2 ? 'text-gray-500' : 'text-gray-900' }}">
                                             Nombre
                                         </label>
                                         <input wire:model="name" {{ Auth::user()->role_id === 2 ? 'disabled' : '' }}
-                                            type="text"
-                                            class="mt-1 block w-full rounded-md shadow-sm focus:ring-indigo-500 
-                      {{ Auth::user()->role_id === 2
-                          ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed'
-                          : 'bg-white border-gray-300 text-gray-900 focus:border-indigo-500' }}">
+                                            type="text" name="name_update" id="name_update"
+                                            class="mt-1 block w-full rounded-md shadow-sm focus:ring-indigo-500 {{ Auth::user()->role_id === 2 ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed' : 'bg-white border-gray-300 text-gray-900 focus:border-indigo-500' }}">
                                         @error('name')
                                             <span class="error text-red-600">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <div class="mb-4">
-                                        <label for="email"
+                                        <label for="email_update"
                                             class="block text-sm font-medium {{ Auth::user()->role_id === 2 ? 'text-gray-500' : 'text-gray-900' }}">
                                             Email
                                         </label>
                                         <input wire:model="email" {{ Auth::user()->role_id === 2 ? 'disabled' : '' }}
-                                            type="email"
-                                            class="mt-1 block w-full rounded-md shadow-sm 
-                      {{ Auth::user()->role_id === 2
-                          ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed focus:ring-gray-300'
-                          : 'bg-white border-gray-300 text-gray-900 focus:border-indigo-500 focus:ring-indigo-500' }}">
+                                            type="email" name="email_update" id="email_update"
+                                            class="mt-1 block w-full rounded-md shadow-sm {{ Auth::user()->role_id === 2 ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed focus:ring-gray-300' : 'bg-white border-gray-300 text-gray-900 focus:border-indigo-500 focus:ring-indigo-500' }}">
                                         @error('email')
                                             <span class="error text-red-600">{{ $message }}</span>
                                         @enderror
@@ -72,16 +66,13 @@
 
                                     <div class="mb-5 flex gap-4">
                                         <div class="flex flex-col">
-                                            <label for="role_select"
+                                            <label for="role_select_update"
                                                 class="block mb-2 text-sm font-medium {{ Auth::user()->role_id === 2 ? 'text-gray-500' : 'text-gray-900' }}">
                                                 Seleccionar Rol
                                             </label>
-                                            <select wire:model="role_check"
+                                            <select wire:model="role_check" name="role_select_update" id="role_select_update"
                                                 {{ Auth::user()->role_id === 2 ? 'disabled' : '' }}
-                                                class="role.select2 text-sm rounded-lg block w-full p-2.5 
-                           {{ Auth::user()->role_id === 2
-                               ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed focus:ring-gray-300 focus:border-gray-300'
-                               : 'bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500' }}">
+                                                class="role.select2 text-sm rounded-lg block w-full p-2.5 {{ Auth::user()->role_id === 2 ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed focus:ring-gray-300 focus:border-gray-300' : 'bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500' }}">
                                                 <option value="">Selecciona un rol</option>
                                                 @forelse ($roles['data'] as $item)
                                                     <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
@@ -95,16 +86,13 @@
                                         </div>
 
                                         <div class="flex flex-col">
-                                            <label for="mall"
+                                            <label for="mall_update"
                                                 class="block mb-2 text-sm font-medium {{ Auth::user()->role_id === 2 ? 'text-gray-500' : 'text-gray-900' }}">
                                                 Seleccionar Centro Comercial
                                             </label>
-                                            <select wire:model="id_mall"
+                                            <select wire:model="id_mall" name="mall_update" id="mall_update"
                                                 {{ Auth::user()->role_id === 2 ? 'disabled' : '' }}
-                                                class="role.select2 text-sm rounded-lg block w-full p-2.5 
-                           {{ Auth::user()->role_id === 2
-                               ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed focus:ring-gray-300 focus:border-gray-300'
-                               : 'bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500' }}">
+                                                class="role.select2 text-sm rounded-lg block w-full p-2.5 {{ Auth::user()->role_id === 2 ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed focus:ring-gray-300 focus:border-gray-300' : 'bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500' }}">
                                                 <option value="">Selecciona una ciudad</option>
                                                 @forelse ($parks['data'] as $item)
                                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -118,11 +106,19 @@
                                         </div>
 
                                         <div class="mb-5 flex-1">
-                                            <label for="password" class="block mb-2 text-sm font-medium text-gray-900">
+                                            <label for="password_update" class="block mb-2 text-sm font-medium text-gray-900">
                                                 Contraseña
                                             </label>
-                                            <input wire:model="password" type="password"
-                                                class="shadow-xs text-sm rounded-lg block w-full p-2.5 bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
+                                            <div class="relative">
+                                                <input wire:model="password" type="password" name="password_update" id="password_update"
+                                                    class="password shadow-xs text-sm rounded-lg block w-full p-2.5 bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
+                                                <div class="absolute inset-y-0 z-20 right-2 pl-3 flex items-center">
+                                                    <i 
+                                                        class="open-eye fa-solid fa-eye-low-vision text-gray-400 cursor-pointer"></i>
+                                                    <i style="display: none;"
+                                                        class="close-eye fa-solid fa-eye text-gray-400 cursor-pointer"></i>
+                                                </div>
+                                            </div>
                                             @error('password')
                                                 <span class="error text-red-600">{{ $message }}</span>
                                             @enderror
@@ -154,7 +150,7 @@
                                             <div class="mb-5 flex-1">
                                                 <label for="name"
                                                     class="block mb-2 text-sm font-medium text-gray-9xt-">Nombre</label>
-                                                <input wire:model="name" type="text"
+                                                <input wire:model="name" type="text" name="name" id="name"
                                                     class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                                                     placeholder="Ej: Juan Perez" />
                                                 @error('name')
@@ -165,7 +161,7 @@
                                                 <label for="email"
                                                     class="block mb-2 text-sm font-medium text-gray-9xt-">Correo
                                                     Electronico</label>
-                                                <input wire:model="email"
+                                                <input wire:model="email" name="email" id="email"
                                                     class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                                                     placeholder="Ej: example@example.com" />
                                                 @error('email')
@@ -179,7 +175,7 @@
                                                 <label for="role_select"
                                                     class="block mb-2 text-sm font-medium text-gray-9xt-">Seleccionar
                                                     Rol</label>
-                                                <select class="role.select2" wire:model="role_check"
+                                                <select class="role.select2" wire:model="role_check" name="role_select" id="role_select"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 xt-  ">
                                                     <option value="">Selecciona un rol</option>
                                                     @forelse ($roles['data'] as $item)
@@ -197,7 +193,7 @@
                                                 <label for="mall"
                                                     class="block mb-2 text-sm font-medium text-gray-9xt-">Seleccionar
                                                     parque</label>
-                                                <select class="role.select2" wire:model="id_mall"
+                                                <select class="role.select2" wire:model="id_mall" name="mall" id="mall"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 xt-  ">
                                                     <option value="">Selecciona una ciudad</option>
                                                     @forelse ($parks['data'] as $item)
@@ -213,36 +209,20 @@
                                             </div>
                                             <div class="mb-5 flex-1">
                                                 <label for="password"
-                                                    class="block mb-2 text-sm font-medium text-gray-9xt-">Contraseña</label>
-                                                <div class="relative flex">
-                                                    <input id="password-input" type="password" placeholder="password"
-                                                        wire:model="password"
-                                                        class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-12" />
-                                                    <button id="toggle-password" type="button"
-                                                        class="absolute right-0 top-0 h-full px-3 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none">
-                                                        <!-- Ojo cerrado (mostrar contraseña) -->
-                                                        <svg id="eye-closed" class="w-5 h-5" fill="none"
-                                                            stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21">
-                                                            </path>
-                                                        </svg>
-
-                                                        <!-- Ojo abierto (ocultar contraseña) -->
-                                                        <svg id="eye-open" class="w-5 h-5 hidden" fill="none"
-                                                            stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z">
-                                                            </path>
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                                            </path>
-                                                        </svg>
-                                                    </button>
+                                                    class="block mb-2 text-sm font-medium text-gray-900">
+                                                    Contraseña
+                                                </label>
+                                                <div class="relative">
+                                                    <input wire:model="password" type="password" name="password" id="password"
+                                                        class="password shadow-xs text-sm rounded-lg block w-full p-2.5 bg-gray-50 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
+                                                    <div
+                                                        class="absolute inset-y-0 z-20 right-2 pl-3 flex items-center">
+                                                        <i
+                                                            class="open-eye fa-solid fa-eye-low-vision text-gray-400 cursor-pointer"></i>
+                                                        <i  style="display: none;"
+                                                            class="close-eye fa-solid fa-eye text-gray-400 cursor-pointer"></i>
+                                                    </div>
                                                 </div>
-
                                                 @error('password')
                                                     <span class="error text-red-600">{{ $message }}</span>
                                                 @enderror
@@ -346,13 +326,7 @@
                                             @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)
                                                 <td class="px-2 py-4 flex gap-2 justify-center">
                                                     <button aria-label="Editar usuario"
-                                                        wire:click="setEditingUser(@js([
-                                                            'id' => $item['id'],
-                                                            'name' => $item['name'],
-                                                            'email' => $item['email'],
-                                                            'role' => $item['role']->id ?? '',
-                                                            'mall' => $item['park'] ? $item['park']->id : '',
-                                                        ]))">
+                                                        wire:click="setEditingUser(@js([ 'id' => $item['id'], 'name' => $item['name'], 'email' => $item['email'], 'role' => $item['role']->id ?? '', 'mall' => $item['park'] ? $item['park']->id : '', ]))">
                                                         <i class="fa-solid fa-square-pen fa-xl text-blue-500 "></i>
                                                     </button>
                                                     @if (Auth::user()->role_id === 1)
@@ -393,31 +367,12 @@
                         </div>
                         <!--MODAL DE CONFIRMACIÓN-->
                         @include('components.confirmation-modal')
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                const passwordInput = document.getElementById('password-input');
-                                const toggleButton = document.getElementById('toggle-password');
-                                const eyeClosed = document.getElementById('eye-closed');
-                                const eyeOpen = document.getElementById('eye-open');
-
-                                toggleButton.addEventListener('click', function() {
-                                    if (passwordInput.type === 'password') {
-                                        // Mostrar contraseña
-                                        passwordInput.type = 'text';
-                                        eyeClosed.classList.add('hidden');
-                                        eyeOpen.classList.remove('hidden');
-                                    } else {
-                                        // Ocultar contraseña
-                                        passwordInput.type = 'password';
-                                        eyeOpen.classList.add('hidden');
-                                        eyeClosed.classList.remove('hidden');
-                                    }
-                                });
-                            });
-                        </script>
                     </div>
                 </div>
             </div>
         </div>
+        @push('scripts')
+            @vite(['resources/js/view-password.js'])
+        @endpush
     </div>
 </div>
