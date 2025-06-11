@@ -23,7 +23,7 @@ class RedirectByRole
         }
 
 
-        if ($user->role_id == 2) {
+        if ($user->role_id == 3) {
             return redirect('/conversations');
         }
 
