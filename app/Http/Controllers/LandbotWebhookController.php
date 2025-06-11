@@ -130,12 +130,12 @@ class LandbotWebhookController extends Controller
                 ->orderBy('message_timestamp', 'asc')
                 ->get();
 
-            return response()->json([
-                'success' => true,
+            $response = [
                 'conversation_id' => $conversation_id,
                 'messages' => $messages,
                 'total_messages' => $messages->count()
-            ]);
+            ];
+            return $this->responseLivewire('success', 'success', $response);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -158,10 +158,7 @@ class LandbotWebhookController extends Controller
 
             $conversations = $query->orderBy('id', 'desc')->get();
 
-            return response()->json([
-                'success' => true,
-                'conversations' => $conversations
-            ]);
+            return $this->responseLivewire('success', 'success', $conversations);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -182,7 +179,25 @@ class LandbotWebhookController extends Controller
             $conversation->note = $note;
             $conversation->save();
 
-            return response()->json(['success' => true, 'message' => 'Nota guardada correctamente']);
+            return $this->responseLivewire('success', 'Nota guardada correctamente', []);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function changeStatusConversation(Request $request, $conversationId)
+    {
+        try {
+            $status = $request->input('status');
+            if (empty($status)) {
+                return response()->json(['success' => false, 'message' => 'Estado no puede estar vacío'], 400);
+            }
+
+            $conversation = LandbotConversations::findOrFail($conversationId);
+            $conversation->status = $status;
+            $conversation->save();
+
+            return $this->responseLivewire('success', 'Estado de la conversación actualizado correctamente', []);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
         }
