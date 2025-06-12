@@ -4,9 +4,8 @@ export default function () {
         if (contenedor) {
             contenedor.scrollTo({
                 top: contenedor.scrollHeight,
-                behavior: 'smooth'
+                behavior: 'instant'
             });
         }
     }
-    smoothScrollToBottom();
 }

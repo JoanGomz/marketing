@@ -43,7 +43,6 @@ class ConversationsList extends Component
         $request->merge(['status' => 'activo']);
         $response = app(LandbotWebhookController::class)->changeStatusConversation($request,$conversationId);
     }
-
     public function render()
     {
         try {

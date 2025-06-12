@@ -7,21 +7,27 @@
                 C
             </div>
             <div>
-                <div class="font-bold">{{ $userName ? $userName : "Selecciona Chat"}}</div>
+                <div class="font-bold">{{ $userName ? $userName : 'Selecciona Chat' }}</div>
                 <div class="flex items-center text-sm">
                     <div class="w-2 h-2 mr-2 rounded-full bg-green-400"></div>
-                    <span id="estado-chat" class="font-bold capitalize">{{ $conversationStatus ? $conversationStatus : "--"}}</span>
+                    <span id="estado-chat"
+                        class="font-bold capitalize">{{ $conversationStatus ? $conversationStatus : '--' }}</span>
                 </div>
             </div>
         </div>
         <div class="flex gap-4">
             <button id="info-button" class="rounded-md p-2 pr-6 text-sm px-6 bg-gray-500">Información</button>
-            <select id="estado" class="rounded-md p-2  pr-6 text-sm text-black bg-[#94D4A0]">
+            <select wire:model.live="status" class="form-select text-black">
+                <option value="">Estado</option>
+                <option value="en espera">En espera</option>
+                <option value="pendiente">Pendiente</option>
+            </select>
+            {{-- <select id="estado" class="rounded-md p-2  pr-6 text-sm text-black bg-[#94D4A0]">
                 <option value="">Cambiar estado</option>
                 <option value="pending">Pendiente</option>
                 <option value="waiting">En espera</option>
                 <option value="completed">Finalizado</option>
-            </select>
+            </select> --}}
             <select id="asesor" class="rounded-md p-2 pr-6 text-sm text-black">
                 <option value="">Asignar a</option>
                 <option value="1">Juan Pérez</option>
@@ -32,9 +38,16 @@
     </div>
 
     <!-- Historial de mensajes -->
-    <div id="content-conversation" class="flex-1 overflow-y-auto p-4 bg-gray-50"
-        style="background-image: url('/Images/Asesor/patron.png'); background-size: 100%;
-            background-repeat: repeat;">
+    <div id="content-conversation" class="relative flex-1 overflow-y-auto p-4 bg-gray-50"
+        style="background-image: url('/Images/Asesor/patron.png'); background-size: 100%; background-repeat: repeat;">
+        <div wire:loading
+            class="absolute inset-0 z-20 flex items-center justify-center bg-white/80 h-full backdrop-blur-sm">
+            <div
+                class="flex flex-col items-center gap-3 p-6 bg-white/90 rounded-xl shadow-lg border border-gray-200 h-full w-full justify-center">
+                <div class="w-8 h-8 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+                <span class="text-sm text-gray-600 font-medium">Cargando...</span>
+            </div>
+        </div>
         {{-- <div class="flex justify-center mb-4">
             <div class="bg-gray-200 text-gray-600 text-xs rounded-full px-3 py-1">
                 Hoy, 9:30 AM
@@ -81,14 +94,14 @@
             @empty
             @endforelse
         @else
-        
         @endif
     </div>
 
     <!-- Input para responder -->
     <div class="p-4 bg-white border-t">
-        <div class="flex items-center bg-gray-100 rounded-lg px-4 py-2">
-            <input type="text" placeholder="Escribe tu respuesta..." class="flex-1 bg-transparent border-none">
+        <form class="flex items-center bg-gray-100 rounded-lg px-4 py-2" wire:submit.prevent="sendMessage">
+            <input wire:model="text" type="text" placeholder="Escribe tu respuesta..."
+                class="flex-1 bg-transparent border-none">
             <div class="flex space-x-2 ml-2">
                 <button class="text-gray-500 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -108,7 +121,7 @@
             <button class="ml-2 bg-brand-blueStar text-white rounded-md px-4 py-2 shadowCard">
                 Enviar
             </button>
-        </div>
+        </form>
         <div class="flex justify-between mt-2 text-xs text-gray-500">
             <div>
                 <input type="checkbox" id="internal" class="mr-1">
