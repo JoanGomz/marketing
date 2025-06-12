@@ -129,7 +129,6 @@ class LandbotWebhookController extends Controller
             $messages = LandbotMessage::where('conversation_id', $conversation_id)
                 ->orderBy('message_timestamp', 'asc')
                 ->get();
-
             $response = [
                 'conversation_id' => $conversation_id,
                 'messages' => $messages,

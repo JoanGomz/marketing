@@ -2,21 +2,23 @@
 
 namespace App\Livewire\Panels\Conversation;
 
+use App\Http\Controllers\LandbotWebhookController;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ChatPanel extends Component
 {
-    public $data;
-    public function mount(){
-        $this->data=$this->leerJson();
-    }
-    public function leerJson(){
-        $pathJson= public_path('data/conversation2.json');
-         if (!file_exists($pathJson)) {
-            return [];
-        }
-        $data = file_get_contents($pathJson);
-        return json_decode($data, true) ?? [];
+    public $conversationId;
+    public $userName;
+    public $conversationStatus;
+    public $mensajes=[];
+    #[On('load-conversation')]
+    public function loadConversation($conversationId,$userName,$status)
+    {
+        $this->userName=$userName;
+        $this->conversationStatus=$status;
+        $this->mensajes=app(LandbotWebhookController::class)->getConversationHistory($conversationId);
+        $this->conversationId = $conversationId;
     }
     public function render()
     {
