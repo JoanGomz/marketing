@@ -43,7 +43,7 @@ class LandbotWebhookController extends Controller
 
             return response()->json([
                 'success' => false,
-                'error' => 'Error interno del servidor'
+                'error' => 'Error interno del servidor' . $e->getMessage()
             ], 500);
         }
     }
@@ -113,7 +113,9 @@ class LandbotWebhookController extends Controller
         ]);
 
         $conversation->updated_at = Carbon::now();
-        $conversation->status = 'pendiente';
+        if ($data['_raw']['author_type'] == 'user') {
+            $conversation->status = 'pendiente';
+        }
         $conversation->save();
 
         return $messageId;

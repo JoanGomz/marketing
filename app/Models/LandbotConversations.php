@@ -7,18 +7,10 @@ use App\Models\BaseModel;
 class LandbotConversations extends BaseModel
 {
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
+
     protected $table = 'landbot_conversations';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+
     protected $fillable = [
         'id',
         'nombre',
@@ -34,6 +26,6 @@ class LandbotConversations extends BaseModel
     public function lastMessage()
     {
         return $this->hasOne(LandbotMessage::class, 'conversation_id')
-            ->latest('created_at'); // ultimo mensaje
+            ->latest('created_at'); // ult
     }
 }
