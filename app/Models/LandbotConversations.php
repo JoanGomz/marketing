@@ -30,4 +30,10 @@ class LandbotConversations extends BaseModel
         'status',
         'user_asing_id',
     ];
+
+    public function lastMessage()
+    {
+        return $this->hasOne(LandbotMessage::class, 'conversation_id')
+            ->latest('created_at'); // ultimo mensaje
+    }
 }

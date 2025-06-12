@@ -16,6 +16,12 @@ class Cliente extends BaseModel
     protected $table = 'client';
 
     /**
+     * Set Values
+     */
+    const CREATED_AT = 'create_at';
+    const UPDATED_AT = 'update_at';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
