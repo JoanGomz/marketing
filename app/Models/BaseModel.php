@@ -14,18 +14,19 @@ class BaseModel extends Model
         'user_last_update',
         'user_creator'
     ];
+
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($model) {
-            if (Auth::check()) {
+            if (Auth::check() && $model->isFillable('user_creator')) {
                 $model->user_creator = Auth::id();
             }
         });
 
         static::updating(function ($model) {
-            if (Auth::check()) {
+            if (Auth::check() && $model->isFillable('user_last_update')) {
                 $model->user_last_update = Auth::id();
             }
         });
