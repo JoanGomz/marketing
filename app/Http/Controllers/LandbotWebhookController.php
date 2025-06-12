@@ -29,9 +29,9 @@ class LandbotWebhookController extends Controller
             $data['customer']['phone'] = $phoneWithoutCountryCode;
             DB::beginTransaction();
             $newConversarion = $this->saveConversation($data);
-            $response = $this->saveMessage($data, $newConversarion->id);
+            $response = $this->saveMessage($data, $newConversarion);
             DB::commit();
-            return $response;
+            return $this->responseLivewire('success', 'success', $response);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error procesando webhook de Landbot', [
@@ -69,7 +69,7 @@ class LandbotWebhookController extends Controller
     /**
      * Endpoint de prueba para verificar que el webhook funciona
      */
-    public function saveMessage($data, $conversationId)
+    public function saveMessage($data, $conversation)
     {
         // Procesar los datos según la estructura de Landbot
         $chatId = $data['_raw']['chat'];
@@ -88,7 +88,7 @@ class LandbotWebhookController extends Controller
             'landbot_chat_id' => $chatId,
             // 'is_first_message' => (bool)$isFirstMessage,
             'is_bot' => $data['_raw']['author_type'] == 'bot' ? 1 : 0,
-            'conversation_id' => $conversationId,
+            'conversation_id' => $conversation->id,
         ];
 
         // Verificar si ya existe un mensaje similar reciente (evitar duplicados)
@@ -113,11 +113,11 @@ class LandbotWebhookController extends Controller
             'landbot_chat_id' => $chatId,
         ]);
 
-        return response()->json([
-            'success' => true,
-            'action' => 'created',
-            'message_id' => $messageId
-        ]);
+        $conversation->updated_at = Carbon::now();
+        $conversation->status = 'pendiente';
+        $conversation->save();
+
+        return $messageId;
     }
 
     /**
@@ -150,13 +150,14 @@ class LandbotWebhookController extends Controller
     public function getAllConversations($status = null)
     {
         try {
-            $query = LandbotConversations::query();
+            // Incluir siempre: id, foreign_key, y los campos que necesitas
+            $query = LandbotConversations::with(['lastMessage:id,conversation_id,conversation_data']);
 
             if ($status) {
                 $query->where('status', $status);
             }
 
-            $conversations = $query->orderBy('id', 'desc')->get();
+            $conversations = $query->orderBy('updated_at', 'desc')->get();
 
             return $this->responseLivewire('success', 'success', $conversations);
         } catch (\Exception $e) {

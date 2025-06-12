@@ -113,4 +113,14 @@ class UserController extends Controller
             return $this->responseLivewire('error', $ex->getMessage(), []);
         }
     }
+
+    public function getAsesor()
+    {
+        try {
+            $asesores = User::where('role_id', 3)->get();
+            return $this->responseLivewire('success', 'success', $asesores);
+        } catch (\Exception $ex) {
+            return $this->responseLivewire('error', $ex->getMessage(), []);
+        }
+    }
 }
