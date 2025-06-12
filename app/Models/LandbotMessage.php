@@ -18,7 +18,7 @@ class LandbotMessage extends Model
         'is_finished',
         'conversation_date',
         'landbot_chat_id',
-        'is_bot',
+        'author_type',
         'customer_phone',
         'conversation_id'
     ];

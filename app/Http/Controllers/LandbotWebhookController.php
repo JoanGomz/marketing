@@ -86,8 +86,7 @@ class LandbotWebhookController extends Controller
             'customer_phone' => $data['customer']['phone'],
             'conversation_date' => Carbon::now(),
             'landbot_chat_id' => $chatId,
-            // 'is_first_message' => (bool)$isFirstMessage,
-            'is_bot' => $data['_raw']['author_type'] == 'bot' ? 1 : 0,
+            'author_type' => $data['_raw']['author_type'] == 'user' ? 'cliente' : $data['_raw']['author_type'],
             'conversation_id' => $conversation->id,
         ];
 
