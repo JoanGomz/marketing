@@ -10,7 +10,7 @@
                 class="w-full bg-gray-400 placeholder-white pl-8 rounded-md">
         </div>
     </div>
-
+    
     <div class="p-2 border-b flex justify-between">
         <button id="all" data-filter="all" wire:click="$set('status', '')"
             class="px-1 py-1 rounded-md text-sm font-medium {{ $status === '' ? 'bg-brand-aqua' : '' }} hover:bg-brand-aqua bg-opacity-70 text-brand-darkPurple">

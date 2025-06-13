@@ -59,7 +59,8 @@ class ConversationsList extends Component
                 $conversationId = $firstConversation['id'];
                 $userName = $firstConversation['nombre'];
                 $status = $firstConversation['status'];
-
+                $telefono = $firstConversation['telefono'];
+                $notas= $firstConversation['notas'];
                 $this->selectedConversationId = $conversationId;
 
                 $this->js("
@@ -68,6 +69,14 @@ class ConversationsList extends Component
                             conversationId: {$conversationId},
                             userName: '{$userName}',
                             status: '{$status}'
+                        });
+                    }, 50);
+                ");
+                $this->js("
+                    setTimeout(() => {
+                        \$wire.dispatch('load-info-client', {
+                            telClient: {$telefono},
+                            note: '{$notas}'
                         });
                     }, 50);
                 ");

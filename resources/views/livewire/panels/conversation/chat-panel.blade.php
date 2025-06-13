@@ -39,7 +39,7 @@
 
     <!-- Historial de mensajes -->
     <div id="content-conversation" class="relative flex-1 overflow-y-auto p-4 bg-gray-50"
-        style="background-image: url('/Images/Asesor/patron.png'); background-size: 100%; background-repeat: repeat;" wire:poll.6s="updateConversation">
+        style="background-image: url('/Images/Asesor/patron.png'); background-size: 100%; background-repeat: repeat;" >
         <div 
             class="absolute inset-0 z-20 flex items-center justify-center bg-white/80 h-full backdrop-blur-sm hidden">
             <div
@@ -123,10 +123,6 @@
             </button>
         </form>
         <div class="flex justify-between mt-2 text-xs text-gray-500">
-            <div>
-                <input type="checkbox" id="internal" class="mr-1">
-                <label for="internal">Nota interna</label>
-            </div>
             <div>
                 <button class="text-brand-blueStar hover:underline">Usar plantilla</button>
             </div>
