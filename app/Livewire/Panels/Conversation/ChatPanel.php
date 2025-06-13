@@ -15,6 +15,30 @@ class ChatPanel extends Component
 
     public $status;
     public $text;
+    public function updateConversation()
+    {
+        if (!$this->conversationId) {
+            return;
+        }
+
+        $newMessages = app(LandbotWebhookController::class)->getConversationHistory($this->conversationId);
+
+
+        $currentCount = count($this->mensajes['data']['messages'] ?? []);
+        $newCount = count($newMessages['data']['messages'] ?? []);
+
+        if ($currentCount === $newCount) {
+            // No hay mensajes nuevos, salir sin renderizar
+            $this->skipRender();
+            return;
+        }
+
+        // Solo actualizar si hay mensajes nuevos
+        $this->mensajes = $newMessages;
+
+        // Solo hacer scroll si hay mensajes nuevos
+        $this->dispatch('smoothScrollToBottom');
+    }
     #[On('load-conversation')]
     public function loadConversation($conversationId, $userName, $status)
     {
@@ -23,16 +47,41 @@ class ChatPanel extends Component
         $this->mensajes = app(LandbotWebhookController::class)->getConversationHistory($conversationId);
         $this->conversationId = $conversationId;
         $this->dispatch('smoothScrollToBottom');
+        // dump($this->mensajes);
     }
-    public function updatedStatus(){
+    public function updatedStatus()
+    {
         $request = new \Illuminate\Http\Request();
         $request->merge(['status' => $this->status]);
-        $response = app(LandbotWebhookController::class)->changeStatusConversation($request,$this->conversationId);
+        $response = app(LandbotWebhookController::class)->changeStatusConversation($request, $this->conversationId);
     }
     public function sendMessage()
     {
+        $firstMessage = $this->mensajes['data']['messages'][0];
         $request = new \Illuminate\Http\Request();
-        $request->merge(['text' => $this->text]);
+        $request->merge([
+            'messages' => [
+                [
+                    '_raw' => [
+                        'chat' => $firstMessage['landbot_chat_id'],
+                        'author_type' => 'usuario',
+                    ],
+                    'data' => [
+                        'body' => $this->text
+                    ],
+                    'customer' => [
+                        'phone' => $firstMessage['customer_phone'],
+                        'name' => $this->userName,
+                    ]
+                ]
+            ]
+        ]);
+        $response = app(LandbotWebhookController::class)->handleWebhook($request);
+        if ($response['status'] === "success") {
+            $this->updateConversation();
+            $this->dispatch('smoothScrollToBottom');
+        }
+        $this->text = "";
     }
     public function render()
     {

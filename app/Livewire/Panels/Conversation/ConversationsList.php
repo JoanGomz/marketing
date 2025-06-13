@@ -20,7 +20,6 @@ class ConversationsList extends Component
 
     public function mount()
     {
-        // Solo inicializar propiedades, no cargar datos
         $this->loading = false;
     }
 

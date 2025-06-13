@@ -7,7 +7,7 @@
                 C
             </div>
             <div>
-                <div class="font-bold">{{ $userName ? $userName : 'Selecciona Chat' }}</div>
+                <div class="font-bold">{{ $userName ? $userName : '--' }}</div>
                 <div class="flex items-center text-sm">
                     <div class="w-2 h-2 mr-2 rounded-full bg-green-400"></div>
                     <span id="estado-chat"
@@ -39,9 +39,9 @@
 
     <!-- Historial de mensajes -->
     <div id="content-conversation" class="relative flex-1 overflow-y-auto p-4 bg-gray-50"
-        style="background-image: url('/Images/Asesor/patron.png'); background-size: 100%; background-repeat: repeat;">
-        <div wire:loading
-            class="absolute inset-0 z-20 flex items-center justify-center bg-white/80 h-full backdrop-blur-sm">
+        style="background-image: url('/Images/Asesor/patron.png'); background-size: 100%; background-repeat: repeat;" wire:poll.6s="updateConversation">
+        <div 
+            class="absolute inset-0 z-20 flex items-center justify-center bg-white/80 h-full backdrop-blur-sm hidden">
             <div
                 class="flex flex-col items-center gap-3 p-6 bg-white/90 rounded-xl shadow-lg border border-gray-200 h-full w-full justify-center">
                 <div class="w-8 h-8 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
@@ -56,11 +56,11 @@
         <!-- Mensajes del sistema -->
         @if ($mensajes)
             @forelse ($mensajes["data"]['messages'] as $item)
-                @if ($item->is_bot === 0)
+                @if ($item['author_type'] === "cliente")
                     <!-- Mensaje del cliente -->
-                    <div class="mb-4 flex justify-start min-w-[400px]">
+                    <div wire:key="message-{{ $item['id'] ?? $index }}" class="mb-4 flex justify-start min-w-[400px]">
                         <div class="max-w-md rounded-lg p-4 bg-white border min-w-[400px] shadowCard">
-                            <div>{{ $item['conversation_data'] }}</div>
+                            <div>{{ $item['conversation_data']['body'] }}</div>
                             <div class="text-xs mt-1 text-gray-500">
                                 {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}</div>
                         </div>
@@ -69,7 +69,7 @@
                         {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}</div>
                 @else
                     <!-- Mensaje del ases0or -->
-                    <div class="mb-4 flex justify-end">
+                    <div wire:key="message-{{ $item['id'] ?? $index }}" class="mb-4 flex justify-end">
                         <div class="max-w-md rounded-lg p-4 bg-brand-blueStar text-white shadowCard">
                             @if (!isset($item['conversation_data']['buttons']))
                                 <div>{{ $item['conversation_data']['body'] }}</div>
