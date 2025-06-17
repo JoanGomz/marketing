@@ -6,6 +6,7 @@ use App\Models\LandbotConversations;
 use Illuminate\Http\Request;
 use App\Models\LandbotMessage;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -118,7 +119,49 @@ class LandbotWebhookController extends Controller
         }
         $conversation->save();
 
+        if ($data['_raw']['author_type'] == 'usuario') { // Si el mensaje es del usuario de marketing
+            $this->sendText($data, $conversation);
+        }
+
         return $messageId;
+    }
+
+    public function sendText($data, $conversation)
+    {
+        //data_send
+        $json_landbot = [
+            "message" => $data['data']['body']
+        ];
+
+        $client = new Client([
+            'base_uri' => env('LANDBOT_API_URL'),
+            'headers' => [
+                'Content-Type' => env('LANDBOT_CONTENT_TYPE'),
+                'Authorization' => 'token ' . env('LANDBOT_API_KEY')
+            ],
+            'timeout' => 50,
+            'http_errors' => false
+        ]);
+
+        $response = $client->post("/customers/{$conversation->landbot_customer_id}/send_text/", [
+            'json' => $json_landbot
+        ]);
+
+        if ($response->getStatusCode() == 412) {
+            Log::error('Error al enviar mensaje a Landbot', [
+                'status_code' => $response->getStatusCode(),
+                'body' => (string)$response->getBody()
+            ]);
+            throw new \Exception(': No se pueden enviar mensajes por WhatsApp 24h después del último mensaje del cliente');
+        }
+
+        if ($response->getStatusCode() !== 200) {
+            Log::error('Error al enviar mensaje a Landbot', [
+                'status_code' => $response->getStatusCode(),
+                'body' => (string)$response->getBody()
+            ]);
+            throw new \Exception(': ' . (string)$response->getBody());
+        }
     }
 
     /**
