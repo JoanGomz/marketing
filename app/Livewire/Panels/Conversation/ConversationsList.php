@@ -3,6 +3,7 @@
 namespace App\Livewire\Panels\Conversation;
 
 use App\Http\Controllers\LandbotWebhookController;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ConversationsList extends Component
@@ -22,7 +23,10 @@ class ConversationsList extends Component
     {
         $this->loading = false;
     }
+    #[On('updateConversations')]
+    public function updateConversations(){
 
+    }
     public function selectConversation($conversationId, $userName, $status)
     {
         $this->selectedConversationId = $conversationId;
@@ -36,8 +40,6 @@ class ConversationsList extends Component
 
         $this->dispatch('conversation-selected', conversationId: $conversationId);
 
-        //Cambiar estado a activo de la conversación seleccionada
-        //No se crea otra función por temas de rendimiento
         $request = new \Illuminate\Http\Request();
         $request->merge(['status' => 'activo']);
         $response = app(LandbotWebhookController::class)->changeStatusConversation($request,$conversationId);

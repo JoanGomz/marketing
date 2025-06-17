@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSent;
 use App\Models\LandbotConversations;
 use Illuminate\Http\Request;
 use App\Models\LandbotMessage;
@@ -107,6 +108,7 @@ class LandbotWebhookController extends Controller
 
         // Guardar nuevo mensaje
         $newMessage = LandbotMessage::create($messageData);
+        broadcast(new MessageSent($newMessage));
         Log::info('Nuevo mensaje guardado', [
             'id' => $newMessage->id,
             'landbot_chat_id' => $chatId,

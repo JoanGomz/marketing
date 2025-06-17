@@ -38,67 +38,61 @@
     </div>
 
     <!-- Historial de mensajes -->
-    <div id="content-conversation" class="relative flex-1 overflow-y-auto p-4 bg-gray-50"
-        style="background-image: url('/Images/Asesor/patron.png'); background-size: 100%; background-repeat: repeat;" >
-        <div 
-            class="absolute inset-0 z-20 flex items-center justify-center bg-white/80 h-full backdrop-blur-sm hidden">
-            <div
-                class="flex flex-col items-center gap-3 p-6 bg-white/90 rounded-xl shadow-lg border border-gray-200 h-full w-full justify-center">
-                <div class="w-8 h-8 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
-                <span class="text-sm text-gray-600 font-medium">Cargando...</span>
-            </div>
-        </div>
-        {{-- <div class="flex justify-center mb-4">
+    <div class="flex-1 flex flex-col min-h-0">
+        <div class="flex-1 p-4 overflow-y-auto space-y-2 bg-gray-50 "
+            style="background-image: url('/Images/Asesor/patron.png'); background-size: 100%; background-repeat: repeat;">
+            {{-- <div class="flex justify-center mb-4">
             <div class="bg-gray-200 text-gray-600 text-xs rounded-full px-3 py-1">
                 Hoy, 9:30 AM
             </div>
         </div> --}}
-        <!-- Mensajes del sistema -->
-        @if ($mensajes)
-            @forelse ($mensajes["data"]['messages'] as $item)
-                @if ($item['author_type'] === "cliente")
-                    <!-- Mensaje del cliente -->
-                    <div wire:key="message-{{ $item['id'] ?? $index }}" class="mb-4 flex justify-start min-w-[400px]">
-                        <div class="max-w-md rounded-lg p-4 bg-white border min-w-[400px] shadowCard">
-                            <div>{{ $item['conversation_data']['body'] }}</div>
-                            <div class="text-xs mt-1 text-gray-500">
-                                {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}</div>
-                        </div>
-                    </div>
-                    <div class="text-xs mt-1 text-blue-100">
-                        {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}</div>
-                @else
-                    <!-- Mensaje del ases0or -->
-                    <div wire:key="message-{{ $item['id'] ?? $index }}" class="mb-4 flex justify-end">
-                        <div class="max-w-md rounded-lg p-4 bg-brand-blueStar text-white shadowCard">
-                            @if (!isset($item['conversation_data']['buttons']))
-                                {{-- <div>{{ $item['conversation_data']['body'] }}</div> --}}
-                            @else
-                                <div class="font-bold">{{ $item['conversation_data']['title'] }}</div>
-                                {{-- <div>{{ $item['conversation_data']['body'] }}</div> --}}
-                                <div class="font-light text-xs mt-2">{{ $item['conversation_data']['footer'] }}</div>
-                                @foreach ($item['conversation_data']['buttons'] as $button)
-                                    <div class="mt-2">
-                                        <button
-                                            class="bg-[#0997AF] hover:bg-blue-600 text-white px-4 py-2 rounded-lg w-full text-left">{{ $button['label'] }}</button>
-                                    </div>
-                                @endforeach
-                            @endif
-                            <div class="flex justify-end">
-                                <div class="text-xs mt-1 right-2 text-blue-100">
+            <!-- Mensajes del sistema -->
+            @if ($mensajes)
+                @forelse ($mensajes["data"]['messages'] as $item)
+                    @if ($item['author_type'] === 'cliente')
+                        <!-- Mensaje del cliente -->
+                        <div wire:key="message-{{ $item['id'] ?? $index }}"
+                            class="mb-4 flex justify-start min-w-[400px]">
+                            <div class="max-w-md rounded-lg p-4 bg-white border min-w-[400px] shadowCard">
+                                <div>{{ $item['conversation_data']['body'] }}</div>
+                                <div class="text-xs mt-1 text-gray-500">
                                     {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}</div>
                             </div>
                         </div>
-                    </div>
-                @endif
-            @empty
-            @endforelse
-        @else
-        @endif
-    </div>
+                        <div class="text-xs mt-1 text-blue-100">
+                            {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}</div>
+                    @else
+                        <!-- Mensaje del ases0or -->
+                        <div wire:key="message-{{ $item['id'] ?? $index }}" class="mb-4 flex justify-end">
+                            <div class="max-w-md rounded-lg p-4 bg-brand-blueStar text-white shadowCard">
+                                @if (!isset($item['conversation_data']['buttons']))
+                                    {{-- <div>{{ $item['conversation_data']['body'] }}</div> --}}
+                                @else
+                                    <div class="font-bold">{{ $item['conversation_data']['title'] }}</div>
+                                    {{-- s --}}
+                                    <div class="font-light text-xs mt-2">{{ $item['conversation_data']['footer'] }}
+                                    </div>
+                                    @foreach ($item['conversation_data']['buttons'] as $button)
+                                        <div class="mt-2">
+                                            <button
+                                                class="bg-[#0997AF] hover:bg-blue-600 text-white px-4 py-2 rounded-lg w-full text-left">{{ $button['label'] }}</button>
+                                        </div>
+                                    @endforeach
+                                @endif
+                                <div class="flex justify-end">
+                                    <div class="text-xs mt-1 right-2 text-blue-100">
+                                        {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                @empty
+                @endforelse
+            @else
+            @endif
 
-    <!-- Input para responder -->
-    <div class="p-4 bg-white border-t">
+
+        </div>
         <form class="flex items-center bg-gray-100 rounded-lg px-4 py-2" wire:submit.prevent="sendMessage">
             <input wire:model="text" type="text" placeholder="Escribe tu respuesta..."
                 class="flex-1 bg-transparent border-none">
@@ -122,10 +116,32 @@
                 Enviar
             </button>
         </form>
-        <div class="flex justify-between mt-2 text-xs text-gray-500">
-            <div>
-                <button class="text-brand-blueStar hover:underline">Usar plantilla</button>
-            </div>
-        </div>
+
     </div>
+
 </div>
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const conectarPrueba = () => {
+                if (window.ably && window.ably.connection.state === 'connected') {
+                    const channel = window.ably.channels.get('chat');
+
+                    // ← CAMBIAR: Escuchar CUALQUIER mensaje en el canal
+                    channel.subscribe((message) => {
+                        Livewire.dispatch('updateConversations');
+
+                        // 2. Si es de la conversación actual, actualizar chat
+                        if (currentConversationId && message.data.conversation_id ==
+                            currentConversationId) {
+                            Livewire.dispatch('updateChat');
+                        }
+                    });
+                } else {
+                    setTimeout(conectarPrueba, 200);
+                }
+            };
+            conectarPrueba();
+        });
+    </script>
+@endpush

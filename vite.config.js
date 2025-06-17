@@ -6,9 +6,7 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/app.css',
-                'resources/js/app.js',
-                'resources/js/Cash/home/calculadora.js',  // Añade tu archivo de calculadora
-                'resources/js/Cash/home/productos.js'     // Añade tu archivo de productos
+                'resources/js/app.js'
             ],
             refresh: true,
         }),

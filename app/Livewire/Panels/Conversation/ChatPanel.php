@@ -15,6 +15,7 @@ class ChatPanel extends Component
 
     public $status;
     public $text;
+    #[On('updateChat')]
     public function updateConversation()
     {
         if (!$this->conversationId) {
@@ -79,7 +80,6 @@ class ChatPanel extends Component
         $response = app(LandbotWebhookController::class)->handleWebhook($request);
         if ($response['status'] === "success") {
             $this->updateConversation();
-            $this->dispatch('smoothScrollToBottom');
         }
         $this->text = "";
     }

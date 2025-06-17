@@ -3,48 +3,53 @@
 namespace App\Events;
 
 use App\Models\LandbotMessage;
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
 
 class MessageSent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
-
-    /**
-     * Create a new event instance.
-     */
     public $message;
+
     public function __construct(LandbotMessage $message)
     {
         $this->message = $message;
+        $this->sendToAbly();
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
-     */
-    public function broadcastOn(): array
+    private function sendToAbly()
     {
-        return [
-            new Channel('chat'),
-        ];
-    }
-     public function broadcastWith()
-    {
-        return [
-            'message' => $this->message->toArray(),
-            'conversation_id' => $this->message->conversation_id,
-        ];
-    }
+        try {
+            $data = [
+                'name' => 'MessageSent',
+                'data' => [
+                    'message' => $this->message->toArray(),
+                    'conversation_id' => $this->message->conversation_id,
+                ]
+            ];
 
-    public function broadcastAs()
-    {
-        return 'MessageSent';
+            $ch = curl_init();
+            curl_setopt_array($ch, [
+                CURLOPT_URL => 'https://rest.ably.io/channels/chat/messages',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => json_encode($data),
+                CURLOPT_HTTPHEADER => [
+                    'Authorization: Basic ' . base64_encode(env('ABLY_KEY')),
+                    'Content-Type: application/json'
+                ],
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_SSL_VERIFYHOST => false,
+                CURLOPT_TIMEOUT => 10,
+            ]);
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if ($httpCode !== 201) {
+                error_log("Error enviando a Ably: HTTP $httpCode - $response");
+            }
+
+        } catch (\Exception $e) {
+            error_log('Error en MessageSent: ' . $e->getMessage());
+        }
     }
 }
