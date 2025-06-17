@@ -72,10 +72,10 @@
                     <div wire:key="message-{{ $item['id'] ?? $index }}" class="mb-4 flex justify-end">
                         <div class="max-w-md rounded-lg p-4 bg-brand-blueStar text-white shadowCard">
                             @if (!isset($item['conversation_data']['buttons']))
-                                <div>{{ $item['conversation_data']['body'] }}</div>
+                                {{-- <div>{{ $item['conversation_data']['body'] }}</div> --}}
                             @else
                                 <div class="font-bold">{{ $item['conversation_data']['title'] }}</div>
-                                <div>{{ $item['conversation_data']['body'] }}</div>
+                                {{-- <div>{{ $item['conversation_data']['body'] }}</div> --}}
                                 <div class="font-light text-xs mt-2">{{ $item['conversation_data']['footer'] }}</div>
                                 @foreach ($item['conversation_data']['buttons'] as $button)
                                     <div class="mt-2">

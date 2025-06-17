@@ -45,7 +45,7 @@
 
                 <div
                     class="text-xs mb-2 truncate {{ $selectedConversationId === $item->id ? 'text-gray-200' : 'text-gray-600' }}">
-                    {{ $item['lastMessage']['conversation_data']['body'] ?? 'Sin mensaje' }}
+                    {{-- {{ $item['lastMessage']['conversation_data']['body'] ?? 'Sin mensaje' }} --}}
                 </div>
 
                 <div class="flex items-center justify-between">

@@ -1,6 +1,22 @@
 // app.js - Versión Optimizada
 import './bootstrap';
 import '../css/app.css';
+import * as Ably from 'ably';
+window.ably = new Ably.Realtime({
+    key: import.meta.env.VITE_ABLY_KEY,
+    logLevel: 1, // Solo errores
+});
+
+// Verificar conexión
+window.ably.connection.on('connected', () => {
+    console.log('✅ Conectado a Ably');
+});
+
+window.ably.connection.on('disconnected', () => {
+    console.log('❌ Desconectado de Ably');
+});
+
+console.log('🚀 Ably configurado');
 // Importar componentes web
 import myLoading from './WebComponents/My-Loading.js';
 

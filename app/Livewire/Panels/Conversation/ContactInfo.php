@@ -14,7 +14,7 @@ class ContactInfo extends Component
     public $telClient;
     public $notes;
     #[On("load-info-client")]
-    public function loadData($telClient, $notes)
+    public function loadData($telClient, $notes=null)
     {
         $this->telClient=$telClient;
         $this->$notes=$notes;
