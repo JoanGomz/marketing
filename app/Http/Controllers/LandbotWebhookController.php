@@ -199,7 +199,6 @@ class LandbotWebhookController extends Controller
             $conversation = LandbotConversations::findOrFail($conversationId);
             $conversation->status = $status;
             $conversation->save();
-
             return $this->responseLivewire('success', 'Estado de la conversación actualizado correctamente', []);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => $e->getMessage()], 500);

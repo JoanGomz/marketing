@@ -25,7 +25,7 @@ class ConversationsList extends Component
     }
     #[On('updateConversations')]
     public function updateConversations(){
-
+        $this->status='';
     }
     public function selectConversation($conversationId, $userName, $status)
     {
@@ -37,8 +37,6 @@ class ConversationsList extends Component
             userName: $userName,
             status: $status
         )->to('panels.conversation.chat-panel');
-
-        $this->dispatch('conversation-selected', conversationId: $conversationId);
 
         $request = new \Illuminate\Http\Request();
         $request->merge(['status' => 'activo']);

@@ -39,7 +39,7 @@
 
     <!-- Historial de mensajes -->
     <div class="flex-1 flex flex-col min-h-0">
-        <div class="flex-1 p-4 overflow-y-auto space-y-2 bg-gray-50 "
+        <div class="flex-1 p-4 overflow-y-auto space-y-2 bg-gray-50 " id="content-conversation"
             style="background-image: url('/Images/Asesor/patron.png'); background-size: 100%; background-repeat: repeat;">
             {{-- <div class="flex justify-center mb-4">
             <div class="bg-gray-200 text-gray-600 text-xs rounded-full px-3 py-1">
@@ -48,48 +48,67 @@
         </div> --}}
             <!-- Mensajes del sistema -->
             @if ($mensajes)
-                @forelse ($mensajes["data"]['messages'] as $item)
-                    @if ($item['author_type'] === 'cliente')
-                        <!-- Mensaje del cliente -->
-                        <div wire:key="message-{{ $item['id'] ?? $index }}"
-                            class="mb-4 flex justify-start min-w-[400px]">
-                            <div class="max-w-md rounded-lg p-4 bg-white border min-w-[400px] shadowCard">
-                                <div>{{ $item['conversation_data']['body'] }}</div>
-                                <div class="text-xs mt-1 text-gray-500">
-                                    {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}</div>
-                            </div>
-                        </div>
-                        <div class="text-xs mt-1 text-blue-100">
-                            {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}</div>
+    @forelse ($mensajes["data"]['messages'] as $item)
+        @php
+            // Manejar conversation_data de forma segura
+            if (is_array($item['conversation_data'])) {
+                $conversationData = $item['conversation_data'];
+            } elseif (is_string($item['conversation_data'])) {
+                $conversationData = json_decode($item['conversation_data'], true) ?: [];
+            } else {
+                $conversationData = [];
+            }
+            
+            // Función helper para obtener valores de forma segura
+            $getBodyText = function($data) {
+                if (isset($data['body'])) {
+                    return is_string($data['body']) ? $data['body'] : '';
+                }
+                return '';
+            };
+        @endphp
+
+        @if ($item['author_type'] === 'cliente')
+            <!-- Mensaje del cliente -->
+            <div wire:key="message-{{ $item['id'] ?? $loop->index }}" class="mb-4 flex justify-start min-w-[400px]">
+                <div class="max-w-md rounded-lg p-4 bg-white border min-w-[400px] shadowCard">
+                    <div>{{ $getBodyText($conversationData) }}</div>
+                    <div class="text-xs mt-1 text-gray-500">
+                        {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}
+                    </div>
+                </div>
+            </div>
+        @else
+            <!-- Mensaje del asesor -->
+            <div wire:key="message-{{ $item['id'] ?? $loop->index }}" class="mb-4 flex justify-end">
+                <div class="max-w-md rounded-lg p-4 bg-brand-blueStar text-white shadowCard">
+                    @if (!isset($conversationData['buttons']))
+                        <div>{{ $getBodyText($conversationData) }}</div>
                     @else
-                        <!-- Mensaje del ases0or -->
-                        <div wire:key="message-{{ $item['id'] ?? $index }}" class="mb-4 flex justify-end">
-                            <div class="max-w-md rounded-lg p-4 bg-brand-blueStar text-white shadowCard">
-                                @if (!isset($item['conversation_data']['buttons']))
-                                    {{-- <div>{{ $item['conversation_data']['body'] }}</div> --}}
-                                @else
-                                    <div class="font-bold">{{ $item['conversation_data']['title'] }}</div>
-                                    {{-- s --}}
-                                    <div class="font-light text-xs mt-2">{{ $item['conversation_data']['footer'] }}
-                                    </div>
-                                    @foreach ($item['conversation_data']['buttons'] as $button)
-                                        <div class="mt-2">
-                                            <button
-                                                class="bg-[#0997AF] hover:bg-blue-600 text-white px-4 py-2 rounded-lg w-full text-left">{{ $button['label'] }}</button>
-                                        </div>
-                                    @endforeach
-                                @endif
-                                <div class="flex justify-end">
-                                    <div class="text-xs mt-1 right-2 text-blue-100">
-                                        {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}</div>
+                        <div class="font-bold">{{ $conversationData['title'] ?? '' }}</div>
+                        <div class="font-light text-xs mt-2">{{ $conversationData['footer'] ?? '' }}</div>
+                        @if(is_array($conversationData['buttons']))
+                            @foreach ($conversationData['buttons'] as $button)
+                                <div class="mt-2">
+                                    <button class="bg-[#0997AF] hover:bg-blue-600 text-white px-4 py-2 rounded-lg w-full text-left">
+                                        {{ is_array($button) ? ($button['label'] ?? '') : $button }}
+                                    </button>
                                 </div>
-                            </div>
-                        </div>
+                            @endforeach
+                        @endif
                     @endif
-                @empty
-                @endforelse
-            @else
-            @endif
+                    <div class="flex justify-end">
+                        <div class="text-xs mt-1 right-2 text-blue-100">
+                            {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+    @empty
+        <div class="text-center text-gray-500">No hay mensajes</div>
+    @endforelse
+@endif
 
 
         </div>

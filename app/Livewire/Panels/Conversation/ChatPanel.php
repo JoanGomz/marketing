@@ -24,7 +24,6 @@ class ChatPanel extends Component
 
         $newMessages = app(LandbotWebhookController::class)->getConversationHistory($this->conversationId);
 
-
         $currentCount = count($this->mensajes['data']['messages'] ?? []);
         $newCount = count($newMessages['data']['messages'] ?? []);
 
@@ -36,9 +35,6 @@ class ChatPanel extends Component
 
         // Solo actualizar si hay mensajes nuevos
         $this->mensajes = $newMessages;
-
-        // Solo hacer scroll si hay mensajes nuevos
-        $this->dispatch('smoothScrollToBottom');
     }
     #[On('load-conversation')]
     public function loadConversation($conversationId, $userName, $status)
@@ -48,13 +44,15 @@ class ChatPanel extends Component
         $this->mensajes = app(LandbotWebhookController::class)->getConversationHistory($conversationId);
         $this->conversationId = $conversationId;
         $this->dispatch('smoothScrollToBottom');
-        // dump($this->mensajes);
     }
     public function updatedStatus()
     {
         $request = new \Illuminate\Http\Request();
         $request->merge(['status' => $this->status]);
         $response = app(LandbotWebhookController::class)->changeStatusConversation($request, $this->conversationId);
+        if($response['status']==="success"){
+           $this->dispatch('updateConversations'); 
+        }
     }
     public function sendMessage()
     {

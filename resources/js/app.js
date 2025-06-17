@@ -2,23 +2,13 @@
 import './bootstrap';
 import '../css/app.css';
 import * as Ably from 'ably';
+import myLoading from './WebComponents/My-Loading.js';
+
 window.ably = new Ably.Realtime({
     key: import.meta.env.VITE_ABLY_KEY,
     logLevel: 1, // Solo errores
 });
 
-// Verificar conexión
-window.ably.connection.on('connected', () => {
-    console.log('✅ Conectado a Ably');
-});
-
-window.ably.connection.on('disconnected', () => {
-    console.log('❌ Desconectado de Ably');
-});
-
-console.log('🚀 Ably configurado');
-// Importar componentes web
-import myLoading from './WebComponents/My-Loading.js';
 
 // Registro de componentes web
 customElements.define("nocard-loading", myLoading);
@@ -49,7 +39,7 @@ document.addEventListener('livewire:init', () => {
 document.addEventListener('livewire:init', () => {
     // Resetear scroll cuando empiece a cargar
     Livewire.hook('morph.updating', () => {
-        const container = document.getElementById('content-conversation');
+        const container = document.getElementsByClassName('content-conversation');
         if (container) {
             container.scrollTop = 0;
         }
@@ -66,9 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
             // });
         });
         import('./Conversation/info-client.js').then(module => {
-            module.default();
-        });
-        import('./Conversation/chatJson.js').then(module => {
             module.default();
         });
     }
