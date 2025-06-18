@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\Operation\Cliente\StoreClienteRequest;
 use App\Http\Requests\Operation\Cliente\UpdateClienteRequest;
-
+use App\Models\LandbotConversations;
 use App\Models\Operation\Cliente;
 
 use App\Services\Operation\ClienteService as ClientService;
@@ -61,6 +61,12 @@ class ClienteController extends Controller
             $this->validations($request);
 
             $client = $this->clientService->create($validatedData);
+
+            $conversation = LandbotConversations::where('id', $request['conversation_id'])->first();
+            if ($conversation) {
+                $conversation->client_id = $client->id;
+                $conversation->save();
+            }
 
             return $this->responseLivewire('success', 'El cliente se creó exitosamente', $client);
         } catch (\Exception $ex) {
