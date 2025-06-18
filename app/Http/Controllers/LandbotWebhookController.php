@@ -129,23 +129,25 @@ class LandbotWebhookController extends Controller
     public function sendText($data, $conversation)
     {
         //data_send
-        $json_landbot = [
-            "message" => $data['data']['body']
-        ];
+    $json_landbot = [
+        "message" => $data['data']['body']
+    ];
 
-        $client = new Client([
-            'base_uri' => env('LANDBOT_API_URL'),
-            'headers' => [
-                'Content-Type' => env('LANDBOT_CONTENT_TYPE'),
-                'Authorization' => 'token ' . env('LANDBOT_API_KEY')
-            ],
-            'timeout' => 50,
-            'http_errors' => false
-        ]);
+    $client = new Client([
+        'base_uri' => env('LANDBOT_API_URL'),
+        'headers' => [
+            'Content-Type' => env('LANDBOT_CONTENT_TYPE'),
+            'Authorization' => 'token ' . env('LANDBOT_API_KEY')
+        ],
+        'timeout' => 50,
+        'http_errors' => false,
+        // Agregar verificación SSL
+        'verify' => storage_path('certificates/cacert.pem') // Asegúrate de tener el archivo aquí
+    ]);
 
-        $response = $client->post("v1/customers/{$conversation->landbot_customer_id}/send_text/", [
-            'json' => $json_landbot
-        ]);
+    $response = $client->post("v1/customers/{$conversation->landbot_customer_id}/send_text/", [
+        'json' => $json_landbot
+    ]);
 
         if ($response->getStatusCode() == 412) {
             Log::error('Error al enviar mensaje a Landbot', [

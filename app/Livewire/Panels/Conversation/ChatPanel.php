@@ -35,6 +35,7 @@ class ChatPanel extends Component
 
         // Solo actualizar si hay mensajes nuevos
         $this->mensajes = $newMessages;
+        $this->dispatch('scrollChat');
     }
     #[On('load-conversation')]
     public function loadConversation($conversationId, $userName, $status)
@@ -78,6 +79,8 @@ class ChatPanel extends Component
         $response = app(LandbotWebhookController::class)->handleWebhook($request);
         if ($response['status'] === "success") {
             $this->updateConversation();
+        }else{
+            dump($response);
         }
         $this->text = "";
     }

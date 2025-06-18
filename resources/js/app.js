@@ -47,14 +47,6 @@ document.addEventListener('livewire:init', () => {
 });
 document.addEventListener("DOMContentLoaded", function () {
     if (window.location.pathname.includes('/conversaciones')) {
-        import('./Conversation/whatsappJson.js').then(module => {
-            module.default();
-
-            // Después cargamos conversationSearch.js
-            // import('Conversation/conversationSearch.js').then(module => {
-            //     module.default();
-            // });
-        });
         import('./Conversation/info-client.js').then(module => {
             module.default();
         });

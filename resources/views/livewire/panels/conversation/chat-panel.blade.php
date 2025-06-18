@@ -48,67 +48,69 @@
         </div> --}}
             <!-- Mensajes del sistema -->
             @if ($mensajes)
-    @forelse ($mensajes["data"]['messages'] as $item)
-        @php
-            // Manejar conversation_data de forma segura
-            if (is_array($item['conversation_data'])) {
-                $conversationData = $item['conversation_data'];
-            } elseif (is_string($item['conversation_data'])) {
-                $conversationData = json_decode($item['conversation_data'], true) ?: [];
-            } else {
-                $conversationData = [];
-            }
-            
-            // Función helper para obtener valores de forma segura
-            $getBodyText = function($data) {
-                if (isset($data['body'])) {
-                    return is_string($data['body']) ? $data['body'] : '';
-                }
-                return '';
-            };
-        @endphp
+                @forelse ($mensajes["data"]['messages'] as $item)
+                    @php
+                        // Manejar conversation_data de forma segura
+                        if (is_array($item['conversation_data'])) {
+                            $conversationData = $item['conversation_data'];
+                        } elseif (is_string($item['conversation_data'])) {
+                            $conversationData = json_decode($item['conversation_data'], true) ?: [];
+                        } else {
+                            $conversationData = [];
+                        }
 
-        @if ($item['author_type'] === 'cliente')
-            <!-- Mensaje del cliente -->
-            <div wire:key="message-{{ $item['id'] ?? $loop->index }}" class="mb-4 flex justify-start min-w-[400px]">
-                <div class="max-w-md rounded-lg p-4 bg-white border min-w-[400px] shadowCard">
-                    <div>{{ $getBodyText($conversationData) }}</div>
-                    <div class="text-xs mt-1 text-gray-500">
-                        {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}
-                    </div>
-                </div>
-            </div>
-        @else
-            <!-- Mensaje del asesor -->
-            <div wire:key="message-{{ $item['id'] ?? $loop->index }}" class="mb-4 flex justify-end">
-                <div class="max-w-md rounded-lg p-4 bg-brand-blueStar text-white shadowCard">
-                    @if (!isset($conversationData['buttons']))
-                        <div>{{ $getBodyText($conversationData) }}</div>
-                    @else
-                        <div class="font-bold">{{ $conversationData['title'] ?? '' }}</div>
-                        <div class="font-light text-xs mt-2">{{ $conversationData['footer'] ?? '' }}</div>
-                        @if(is_array($conversationData['buttons']))
-                            @foreach ($conversationData['buttons'] as $button)
-                                <div class="mt-2">
-                                    <button class="bg-[#0997AF] hover:bg-blue-600 text-white px-4 py-2 rounded-lg w-full text-left">
-                                        {{ is_array($button) ? ($button['label'] ?? '') : $button }}
-                                    </button>
+                        // Función helper para obtener valores de forma segura
+                        $getBodyText = function ($data) {
+                            if (isset($data['body'])) {
+                                return is_string($data['body']) ? $data['body'] : '';
+                            }
+                            return '';
+                        };
+                    @endphp
+
+                    @if ($item['author_type'] === 'cliente')
+                        <!-- Mensaje del cliente -->
+                        <div wire:key="message-{{ $item['id'] ?? $loop->index }}"
+                            class="mb-4 flex justify-start min-w-[400px]">
+                            <div class="max-w-md rounded-lg p-4 bg-white border min-w-[400px] shadowCard">
+                                <div>{{ $getBodyText($conversationData) }}</div>
+                                <div class="text-xs mt-1 text-gray-500">
+                                    {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}
                                 </div>
-                            @endforeach
-                        @endif
-                    @endif
-                    <div class="flex justify-end">
-                        <div class="text-xs mt-1 right-2 text-blue-100">
-                            {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        @endif
-    @empty
-        <div class="text-center text-gray-500">No hay mensajes</div>
-    @endforelse
-@endif
+                    @else
+                        <!-- Mensaje del asesor -->
+                        <div wire:key="message-{{ $item['id'] ?? $loop->index }}" class="mb-4 flex justify-end">
+                            <div class="max-w-md rounded-lg p-4 bg-brand-blueStar text-white shadowCard">
+                                @if (!isset($conversationData['buttons']))
+                                    <div>{{ $getBodyText($conversationData) }}</div>
+                                @else
+                                    <div class="font-bold">{{ $conversationData['title'] ?? '' }}</div>
+                                    <div class="font-light text-xs mt-2">{{ $conversationData['footer'] ?? '' }}</div>
+                                    @if (is_array($conversationData['buttons']))
+                                        @foreach ($conversationData['buttons'] as $button)
+                                            <div class="mt-2">
+                                                <button
+                                                    class="bg-[#0997AF] hover:bg-blue-600 text-white px-4 py-2 rounded-lg w-full text-left">
+                                                    {{ is_array($button) ? $button['label'] ?? '' : $button }}
+                                                </button>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                @endif
+                                <div class="flex justify-end">
+                                    <div class="text-xs mt-1 right-2 text-blue-100">
+                                        {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                @empty
+                    <div class="text-center text-gray-500">No hay mensajes</div>
+                @endforelse
+            @endif
 
 
         </div>
@@ -142,25 +144,33 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const messagesContainer = document.getElementById("content-conversation");
+
             const conectarPrueba = () => {
                 if (window.ably && window.ably.connection.state === 'connected') {
                     const channel = window.ably.channels.get('chat');
 
-                    // ← CAMBIAR: Escuchar CUALQUIER mensaje en el canal
                     channel.subscribe((message) => {
+                        Livewire.dispatch('updateChat');
                         Livewire.dispatch('updateConversations');
-
-                        // 2. Si es de la conversación actual, actualizar chat
-                        if (currentConversationId && message.data.conversation_id ==
-                            currentConversationId) {
-                            Livewire.dispatch('updateChat');
-                        }
+                        scrollChat();
                     });
                 } else {
                     setTimeout(conectarPrueba, 200);
                 }
             };
+
             conectarPrueba();
+
+            function scrollChat() {
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                // alert("Entro"); // Remover en producción
+            }
+
+            // ✅ AGREGAR: Escuchar el evento de Livewire
+            document.addEventListener('scrollChat', function() {
+                scrollChat();
+            });
         });
     </script>
 @endpush
