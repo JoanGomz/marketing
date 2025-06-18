@@ -36,6 +36,7 @@ trait traitCruds
     protected function handleException(\Throwable $th, string $defaultMessage)
     {
         Log::error('Rol Management Error: ' . $th->getMessage());
+        dump($th->getMessage());
         $this->callNotification(
             $defaultMessage,
             'error'
