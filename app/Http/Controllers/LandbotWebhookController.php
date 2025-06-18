@@ -42,10 +42,7 @@ class LandbotWebhookController extends Controller
                 'data' => $request->all()
             ]);
 
-            return response()->json([
-                'success' => false,
-                'error' => 'Error interno del servidor' . $e->getMessage()
-            ], 500);
+            return $this->responseLivewire('error', 'Error interno del servidor', $e->getMessage());
         }
     }
 
@@ -57,6 +54,7 @@ class LandbotWebhookController extends Controller
             $conversation->nombre = $data['customer']['name'];
             $conversation->telefono = $data['customer']['phone'];
             $conversation->landbot_chat_id = $data['_raw']['chat'];
+            $conversation->landbot_customer_id = $data['customer']['id'];
             $conversation->status = 'pendiente';
             if (!$conversation->save()) {
                 Log::error('Error al guardar la conversación', ['data' => $data]);
@@ -143,7 +141,7 @@ class LandbotWebhookController extends Controller
             'http_errors' => false
         ]);
 
-        $response = $client->post("/customers/{$conversation->landbot_customer_id}/send_text/", [
+        $response = $client->post("v1/customers/{$conversation->landbot_customer_id}/send_text/", [
             'json' => $json_landbot
         ]);
 
@@ -173,7 +171,6 @@ class LandbotWebhookController extends Controller
             $messages = LandbotMessage::where('conversation_id', $conversation_id)
                 ->orderBy('message_timestamp', 'asc')
                 ->get();
-
             $response = [
                 'conversation_id' => $conversation_id,
                 'messages' => $messages,
@@ -224,7 +221,7 @@ class LandbotWebhookController extends Controller
             $conversation->note = $note;
             $conversation->save();
 
-            return $this->responseLivewire('success', 'Nota guardada correctamente', []);
+            return $this->responseLivewire('success', 'Nota guardada correctamente', $conversation);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
         }
@@ -241,7 +238,6 @@ class LandbotWebhookController extends Controller
             $conversation = LandbotConversations::findOrFail($conversationId);
             $conversation->status = $status;
             $conversation->save();
-
             return $this->responseLivewire('success', 'Estado de la conversación actualizado correctamente', []);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
