@@ -3,11 +3,13 @@
 namespace App\Livewire\Panels\Conversation;
 
 use App\Http\Controllers\LandbotWebhookController;
+use App\Traits\traitCruds;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ChatPanel extends Component
 {
+    use traitCruds;
     public $conversationId;
     public $userName;
     public $conversationStatus;
@@ -80,7 +82,7 @@ class ChatPanel extends Component
         if ($response['status'] === "success") {
             $this->updateConversation();
         }else{
-            dump($response);
+            $this->callNotification("Ocurrio un error al enviar el mensaje", $response['status']);
         }
         $this->text = "";
     }

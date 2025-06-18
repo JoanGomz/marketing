@@ -32,7 +32,7 @@
     <div>
         @forelse ($conversations['data'] as $item)
             <div class="chat-item p-4 border-b cursor-pointer transition-colors {{ $selectedConversationId === $item->id ? 'bg-gray-500 text-white' : 'hover:bg-gray-50' }}"
-                wire:click="selectConversation({{ $item->id }}, '{{ $item->nombre }}', '{{ $item->status }}')"
+                wire:click="selectConversation({{ $item->id }}, '{{ $item->nombre }}', '{{ $item->status }}','{{$item->telefono}}','{{$item->notas}}')"
                 data-status="{{ strtolower($item->status) }}">
 
                 <div class="flex justify-between items-start mb-1">

@@ -27,7 +27,7 @@ class ConversationsList extends Component
     public function updateConversations(){
         $this->status='';
     }
-    public function selectConversation($conversationId, $userName, $status)
+    public function selectConversation($conversationId, $userName, $status,$telefono,$nota=null)
     {
         $this->selectedConversationId = $conversationId;
 
@@ -37,7 +37,13 @@ class ConversationsList extends Component
             userName: $userName,
             status: $status
         )->to('panels.conversation.chat-panel');
-
+        $this->dispatch(
+            'load-info-client',
+            telClient: $telefono,
+            userName: $userName,
+            note: $nota,
+            conversationId: $conversationId
+        )->to('panels.conversation.contact-info');
         $request = new \Illuminate\Http\Request();
         $request->merge(['status' => 'activo']);
         $response = app(LandbotWebhookController::class)->changeStatusConversation($request,$conversationId);
@@ -76,7 +82,9 @@ class ConversationsList extends Component
                     setTimeout(() => {
                         \$wire.dispatch('load-info-client', {
                             telClient: {$telefono},
-                            note: '{$notas}'
+                            userName: '{$userName}',
+                            note: '{$notas}',
+                            conversationId: {$conversationId},
                         });
                     }, 50);
                 ");
