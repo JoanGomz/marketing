@@ -29,7 +29,6 @@ class ClienteService extends BaseService
         $query = $this->model::query();
 
         $query->where('is_deleted', 0);
-        $query->with('city');
 
         // buscador
         if (!empty($search)) {
@@ -48,7 +47,7 @@ class ClienteService extends BaseService
 
     public function findByIdentification(string $identification, string $type)
     {
-        return $this->model->where('identificacion', $identification)->where('tipo_documento', $type)->where('is_deleted', 0)->with('city')->first();
+        return $this->model->where('identificacion', $identification)->where('tipo_documento', $type)->where('is_deleted', 0)->first();
     }
 
     public function findUser(string $search)
@@ -59,7 +58,6 @@ class ClienteService extends BaseService
                 $query->where('celular', $search)
                     ->orWhere('identificacion', $search);
             })
-            ->with(['city', 'wallet'])
             ->first();
     }
 }
