@@ -191,7 +191,6 @@ class LandbotWebhookController extends Controller
     public function getAllConversations($status = null)
     {
         try {
-            // Incluir siempre: id, foreign_key, y los campos que necesitas
             $query = LandbotConversations::with(['lastMessage:id,conversation_id,conversation_data']);
 
             if ($status) {
