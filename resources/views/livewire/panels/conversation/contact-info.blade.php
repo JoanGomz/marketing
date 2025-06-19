@@ -11,7 +11,7 @@
             <div>
                 <p class="text-sm text-gray-500">Nombre completo</p>
                 <p class="font-medium">
-                    {{ $dataClient && $dataClient['message'] !== 'Usuario no encontrado' ? $dataClient['data']['nombre'] ?? ($nameWhatsApp ?? '--') : $nameWhatsApp ?? '--' }}
+                    {{ $dataClient && $dataClient['message'] !== 'Usuario no encontrado' ? $dataClient['data']['nombre_completo'] ?? ($nameWhatsApp ?? '--') : $nameWhatsApp ?? '--' }}
                 </p>
             </div>
             <div>
@@ -27,9 +27,9 @@
                 </p>
             </div>
             <div>
-                <p class="text-sm text-gray-500">Cliente desde</p>
+                <p class="text-sm text-gray-500">Género</p>
                 <p class="font-medium">
-                    {{ $dataClient && $dataClient['message'] !== 'Usuario no encontrado' ? $dataClient['data']['desde'] ?? '--' : '--' }}
+                    {{ $dataClient && $dataClient['message'] !== 'Usuario no encontrado' ? $dataClient['data']['genero'] ?? '--' : '--' }}
                 </p>
             </div>
         </div>
@@ -38,8 +38,7 @@
             @if ($dataClient)
                 @if ($dataClient['message'] != 'Usuario no encontrado')
                     <div class="text-sm p-2 bg-gray-50 rounded border">
-                        <div class="text-xs text-gray-500">Usuario con problemas frecuentes en la recarga por PSE.
-                            revisar
+                        <div class="text-xs text-gray-500">{{$notes ? $notes : "Sin notas"}}
                         </div>
                     </div>
                 @endif
@@ -157,9 +156,9 @@
                     <!-- Tercera fila: Celular, Género y Fecha de Nacimiento -->
                     <div class="flex flex-wrap gap-4 mb-5">
                         <div class="flex-1">
-                            <label for="celular" class="block mb-2 text-sm font-medium text-gray-900 ">Celular</label>
-                            <input wire:model="celular" type="text" id="celular"
-                                class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5       "
+                            <label for="celular" class="block mb-2 text-sm font-medium text-gray-900">Celular</label>
+                            <input wire:model="celular" type="text" id="celular" disabled
+                                class="cursor-not-allowed shadow-xs bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5       "
                                 placeholder="Ej: 3103035137" minlength="10" maxlength="10" />
                             @error('celular')
                                 <span class="error text-red-600">{{ $message }}</span>

@@ -41,12 +41,6 @@
     <div class="flex-1 flex flex-col min-h-0">
         <div class="flex-1 p-4 overflow-y-auto space-y-2 bg-gray-50 " id="content-conversation"
             style="background-image: url('/Images/Asesor/patron.png'); background-size: 100%; background-repeat: repeat;">
-            {{-- <div class="flex justify-center mb-4">
-            <div class="bg-gray-200 text-gray-600 text-xs rounded-full px-3 py-1">
-                Hoy, 9:30 AM
-            </div>
-        </div> --}}
-            <!-- Mensajes del sistema -->
             @if ($mensajes)
                 @forelse ($mensajes["data"]['messages'] as $item)
                     @php
@@ -62,9 +56,18 @@
                         // Función helper para obtener valores de forma segura
                         $getBodyText = function ($data) {
                             if (isset($data['body'])) {
-                                return is_string($data['body']) ? $data['body'] : '';
+                                return is_string($data['body'])
+                                    ? $data['body']
+                                    : (isset($data['body']['text'])
+                                        ? $data['body']['text']
+                                        : '');
                             }
                             return '';
+                        };
+
+                        // Función para verificar si es un mensaje con botones o listas
+                        $hasInteractiveElements = function ($data) {
+                            return isset($data['buttons']) || isset($data['action']);
                         };
                     @endphp
 
@@ -83,12 +86,35 @@
                         <!-- Mensaje del asesor -->
                         <div wire:key="message-{{ $item['id'] ?? $loop->index }}" class="mb-4 flex justify-end">
                             <div class="max-w-md rounded-lg p-4 bg-brand-blueStar text-white shadowCard">
-                                @if (!isset($conversationData['buttons']))
+                                @if (!$hasInteractiveElements($conversationData))
+                                    <!-- Mensaje de texto simple -->
                                     <div>{{ $getBodyText($conversationData) }}</div>
                                 @else
-                                    <div class="font-bold">{{ $conversationData['title'] ?? '' }}</div>
-                                    <div class="font-light text-xs mt-2">{{ $conversationData['footer'] ?? '' }}</div>
-                                    @if (is_array($conversationData['buttons']))
+                                    <!-- Mensaje con elementos interactivos -->
+
+                                    <!-- Header del mensaje -->
+                                    @if (isset($conversationData['header']['text']))
+                                        <div class="font-bold text-lg mb-2">{{ $conversationData['header']['text'] }}
+                                        </div>
+                                    @elseif (isset($conversationData['title']))
+                                        <div class="font-bold">{{ $conversationData['title'] }}</div>
+                                    @endif
+
+                                    <!-- Cuerpo del mensaje -->
+                                    @if ($getBodyText($conversationData))
+                                        <div class="mb-3">{{ $getBodyText($conversationData) }}</div>
+                                    @endif
+
+                                    <!-- Footer del mensaje -->
+                                    @if (isset($conversationData['footer']['text']) && $conversationData['footer']['text'])
+                                        <div class="font-light text-xs mb-3">{{ $conversationData['footer']['text'] }}
+                                        </div>
+                                    @elseif (isset($conversationData['footer']) && is_string($conversationData['footer']))
+                                        <div class="font-light text-xs mb-3">{{ $conversationData['footer'] }}</div>
+                                    @endif
+
+                                    <!-- Botones tradicionales -->
+                                    @if (isset($conversationData['buttons']) && is_array($conversationData['buttons']))
                                         @foreach ($conversationData['buttons'] as $button)
                                             <div class="mt-2">
                                                 <button
@@ -98,7 +124,36 @@
                                             </div>
                                         @endforeach
                                     @endif
+
+                                    <!-- WhatsApp List (action con sections) -->
+                                    @if (isset($conversationData['action']['sections']) && is_array($conversationData['action']['sections']))
+                                        <div class="mt-3">
+                                            @if (isset($conversationData['action']['button']))
+                                                <div class="text-sm font-medium mb-2 text-blue-200">
+                                                    {{ $conversationData['action']['button'] }}</div>
+                                            @endif
+
+                                            @foreach ($conversationData['action']['sections'] as $section)
+                                                @if (isset($section['rows']) && is_array($section['rows']))
+                                                    <div class="space-y-1">
+                                                        @foreach ($section['rows'] as $row)
+                                                            <div
+                                                                class="bg-white/10 hover:bg-white/20 rounded-lg p-3 cursor-pointer transition-colors">
+                                                                <div class="font-medium">{{ $row['title'] ?? '' }}
+                                                                </div>
+                                                                @if (isset($row['description']) && $row['description'])
+                                                                    <div class="text-xs text-blue-200 mt-1">
+                                                                        {{ $row['description'] }}</div>
+                                                                @endif
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                @endif
+                                            @endforeach
+                                        </div>
+                                    @endif
                                 @endif
+
                                 <div class="flex justify-end">
                                     <div class="text-xs mt-1 right-2 text-blue-100">
                                         {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}
@@ -115,8 +170,10 @@
 
         </div>
         <form class="flex items-center bg-gray-100 rounded-lg px-4 py-2" wire:submit.prevent="sendMessage">
-            <input wire:model="text" type="text" placeholder="Escribe tu respuesta..."
-                class="flex-1 bg-transparent border-none">
+            <input wire:model="text" type="text"
+                placeholder="{{ $canWrite ? ' Escribe tu respuesta...' : 'No puedes enviar mensajes después de 24 horas del ultimo mensaje del cliente' }}"
+                {{ $canWrite ? '' : 'disabled' }}
+                class="flex-1 bg-transparent border-none {{ $canWrite ? '' : 'cursor-not-allowed' }}">
             <div class="flex space-x-2 ml-2">
                 <button class="text-gray-500 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"

@@ -3,6 +3,7 @@
 namespace App\Livewire\Panels\Conversation;
 
 use App\Http\Controllers\LandbotWebhookController;
+use Carbon\Carbon;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -23,19 +24,33 @@ class ConversationsList extends Component
     {
         $this->loading = false;
     }
-    #[On('updateConversations')]
-    public function updateConversations(){
-        $this->status='';
-    }
-    public function selectConversation($conversationId, $userName, $status,$telefono,$nota=null)
+    private function determineCanWrite($fecha)
     {
+        $lastMessageCarbon = Carbon::parse($fecha);
+        $now = Carbon::now();
+
+        if ($lastMessageCarbon->diffInHours($now) > 24) {
+            return false;
+        }
+        return true;
+    }
+    #[On('updateConversations')]
+    public function updateConversations()
+    {
+        $this->status = '';
+    }
+    public function selectConversation($conversationId, $userName, $status, $telefono, $nota = null, $updated_data)
+    {
+        $canWrite = $this->determineCanWrite($updated_data);
         $this->selectedConversationId = $conversationId;
 
         $this->dispatch(
             'load-conversation',
             conversationId: $conversationId,
             userName: $userName,
-            status: $status
+            status: $status,
+            canWrite: $canWrite
+
         )->to('panels.conversation.chat-panel');
         $this->dispatch(
             'load-info-client',
@@ -46,11 +61,21 @@ class ConversationsList extends Component
         )->to('panels.conversation.contact-info');
         $request = new \Illuminate\Http\Request();
         $request->merge(['status' => 'activo']);
-        $response = app(LandbotWebhookController::class)->changeStatusConversation($request,$conversationId);
+        $response = app(LandbotWebhookController::class)->changeStatusConversation($request, $conversationId);
     }
     public function render()
     {
         try {
+            function determineCanWrite($fecha)
+            {
+                $lastMessageCarbon = Carbon::parse($fecha);
+                $now = Carbon::now();
+
+                if ($lastMessageCarbon->diffInHours($now) > 24) {
+                    return false;
+                }
+                return true;
+            }
             // Construir query string para detectar cambios
             $currentQuery = md5($this->search . $this->status);
 
@@ -66,7 +91,8 @@ class ConversationsList extends Component
                 $userName = $firstConversation['nombre'];
                 $status = $firstConversation['status'];
                 $telefono = $firstConversation['telefono'];
-                $notas= $firstConversation['notas'];
+                $notas = $firstConversation['notas'];
+                $canWrite = determineCanWrite($firstConversation['updated_at']);
                 $this->selectedConversationId = $conversationId;
 
                 $this->js("
@@ -74,7 +100,8 @@ class ConversationsList extends Component
                         \$wire.dispatch('load-conversation', {
                             conversationId: {$conversationId},
                             userName: '{$userName}',
-                            status: '{$status}'
+                            status: '{$status}',
+                            canWrite: $canWrite
                         });
                     }, 50);
                 ");
