@@ -101,8 +101,7 @@ class ChatPanel extends Component
     public function launchBot()
     {
         $response = app(LandbotWebhookController::class)->restartBot($this->conversationId);
-        dump($response);
-        $this->callNotification($response['data'], $response['status']);
+        $this->callNotification($response['message'], $response['status']);
     }
     public function render()
     {

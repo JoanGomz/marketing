@@ -272,6 +272,8 @@ class LandbotWebhookController extends Controller
                     'Authorization' => 'token ' . env('LANDBOT_API_KEY')
                 ],
                 'timeout' => 50,
+                'http_errors' => false,
+                'verify' => storage_path('certificates/cacert.pem')
             ]);
 
             $bot_id = env('LANDBOT_BOT_ID');
