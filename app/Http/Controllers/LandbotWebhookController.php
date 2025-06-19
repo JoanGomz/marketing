@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use PhpParser\Node\Expr\FuncCall;
 
 class LandbotWebhookController extends Controller
 {
@@ -221,7 +222,7 @@ class LandbotWebhookController extends Controller
             }
 
             $conversation = LandbotConversations::findOrFail($conversationId);
-            $conversation->note = $note;
+            $conversation->notas = $note;
             $conversation->save();
 
             return $this->responseLivewire('success', 'Nota guardada correctamente', $conversation);
@@ -242,6 +243,29 @@ class LandbotWebhookController extends Controller
             $conversation->status = $status;
             $conversation->save();
             return $this->responseLivewire('success', 'Estado de la conversación actualizado correctamente', []);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function restartBot($conversation_id)
+    {
+        try {
+            $conversation = LandbotConversations::findOrFail($conversation_id);
+            $client = new Client([
+                'base_uri' => env('LANDBOT_API_URL'),
+                'headers' => [
+                    'Content-Type' => env('LANDBOT_CONTENT_TYPE'),
+                    'Authorization' => 'token ' . env('LANDBOT_API_KEY')
+                ],
+                'timeout' => 50,
+            ]);
+
+            $bot_id = env('LANDBOT_BOT_ID');
+            $response = $client->post("v1/customers/{$conversation->landbot_customer_id}/assign_bot/{$bot_id}", [
+                'json' => []
+            ]);
+            return $this->responseLivewire('success', 'Bot reiniciado correctamente', $response->getBody());
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
         }

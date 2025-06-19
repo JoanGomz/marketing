@@ -20,6 +20,7 @@ class LandbotConversations extends BaseModel
         'deleted_at',
         'updated_at',
         'status',
+        'notas',
         'user_asing_id',
         'landbot_customer_id',
         'client_id',
