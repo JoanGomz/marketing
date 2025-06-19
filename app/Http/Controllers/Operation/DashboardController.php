@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Operation;
 
 use App\Http\Controllers\Controller;
 use App\Models\LandbotConversations;
+use App\Models\LandbotMessage;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -40,6 +41,36 @@ class DashboardController extends Controller
                 'conversaciones_por_sede' => $conversationsByPark
             ];
 
+            return $this->responseLivewire('success', 'success', $data);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getStacticsEvents()
+    {
+        try {
+            //fiesta cumpleaños
+            $happyBirthdayCount = LandbotMessage::where('conversation_data', 'LIKE', '%Fiesta Cumplea%')->count();
+
+            //Eventos Corporativos
+            $corporateEventsCount = LandbotMessage::where('conversation_data', 'LIKE', '%Eventos corporativos%')->count();
+
+            //Evento de colegios
+            $schoolEventsCount = LandbotMessage::where('conversation_data', 'LIKE', '%Evento de colegios%')->count();
+
+            //Evento de conjuntos
+            $communityEventsCount = LandbotMessage::where('conversation_data', 'LIKE', '%Evento de conjuntos%')->count();
+
+            $data = [
+                'happy_birthday' => $happyBirthdayCount,
+                'corporate_events' => $corporateEventsCount,
+                'school_events' => $schoolEventsCount,
+                'community_events' => $communityEventsCount
+            ];
             return $this->responseLivewire('success', 'success', $data);
         } catch (\Exception $e) {
             return response()->json([
