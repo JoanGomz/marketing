@@ -4,6 +4,7 @@ namespace App\Livewire\Panels\Conversation;
 
 use App\Http\Controllers\LandbotWebhookController;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -81,7 +82,7 @@ class ConversationsList extends Component
             $currentQuery = md5($this->search . $this->status);
 
             // Cargar conversaciones con parámetros
-            $conversations = app(LandbotWebhookController::class)->getAllConversations($this->status);
+            $conversations = app(LandbotWebhookController::class)->getAllConversations($this->status,Auth::user()->id);
 
             // Auto-seleccionar primera conversación si es primera carga Y hay datos
             if ($this->firstLoad == 0 && isset($conversations['data']) && count($conversations['data']) > 0) {

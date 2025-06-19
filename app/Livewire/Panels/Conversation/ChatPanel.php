@@ -15,11 +15,13 @@ class ChatPanel extends Component
     public $conversationId;
     public $userName;
     public $conversationStatus;
+    public $assigned;
     public $mensajes = [];
     public $canWrite;
     public $status;
     public $text;
 
+    public $showConfirmModal = false;
     protected function rulesMessage()
     {
         return [
@@ -58,18 +60,49 @@ class ChatPanel extends Component
         $this->conversationId = $conversationId;
         $this->dispatch('smoothScrollToBottom');
     }
+    public function endConversation()
+    {
+        $request = new \Illuminate\Http\Request();
+        $request->merge(['status' => "finalizado"]);
+        $response = app(LandbotWebhookController::class)->changeStatusConversation($request, $this->conversationId);
+        if ($response['status'] === "success") {
+            $this->dispatch('updateConversations');
+        }
+        $this->status = "finalizado";
+        $this->conversationStatus = $this->status;
+    }
     public function updatedStatus()
     {
+        if ($this->status === "finalizado") {
+            $this->showConfirmModal = true;
+            $this->status = "pendiente";
+        }
         $request = new \Illuminate\Http\Request();
         $request->merge(['status' => $this->status]);
         $response = app(LandbotWebhookController::class)->changeStatusConversation($request, $this->conversationId);
         if ($response['status'] === "success") {
             $this->dispatch('updateConversations');
+            $this->conversationStatus = $this->status;
+        }
+    }
+    public function updatedAssigned()
+    {
+        try {
+            $request = new \Illuminate\Http\Request();
+            $request->merge(['user_id' => $this->assigned]);
+            $response = app(LandbotWebhookController::class)->assignUserToConversation($request, $this->conversationId);
+            if ($response['status'] === "success") {
+                $this->updateConversation();
+                $this->callNotification($response['message'], $response['status']);
+            } else {
+                $this->callNotification($response['message'], $response['status']);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
         }
     }
     public function sendMessage()
     {
-
         $this->validate($this->rulesMessage());
         $firstMessage = $this->mensajes['data']['messages'][0];
         $request = new \Illuminate\Http\Request();

@@ -83,6 +83,8 @@
                                     bg-blue-400
                                 @elseif($item->status === 'en espera')
                                     bg-purple-400
+                                @elseif($item->status === 'finalizado')
+                                    bg-gray-400
                                 @else
                                     bg-brand-aqua @endif
                             "></span>
