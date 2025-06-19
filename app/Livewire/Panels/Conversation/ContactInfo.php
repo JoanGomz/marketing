@@ -3,6 +3,7 @@
 namespace App\Livewire\Panels\Conversation;
 
 use App\Http\Controllers\Base\CiudadController;
+use App\Http\Controllers\LandbotWebhookController;
 use App\Http\Controllers\Operation\ClienteController;
 use App\Traits\traitCruds;
 use Livewire\Attributes\On;
@@ -63,11 +64,17 @@ class ContactInfo extends Component
         $this->telClient = $telClient;
         $this->notes = $note;
         $this->conversationId = $conversationId;
+        $this->celular=$telClient;
         $request = new \Illuminate\Http\Request();
         $request->merge(['search' => $telClient]);
         $this->dataClient = app(ClienteController::class)->getUser($request);
     }
-    public function saveNote() {}
+    public function saveNote() {
+        $request = new \Illuminate\Http\Request();
+        $request->merge(['note' => $this->noteText]);
+        $response=app(LandbotWebhookController::class)->saveNote($request, $this->conversationId);
+        dump($response);
+    }
     //Método para crear cliente en caso de no encontrar el cliente en el buscador
     public function create()
     {
@@ -93,7 +100,8 @@ class ContactInfo extends Component
             $this->response = app(ClienteController::class)->store($request);
 
             if ($this->response['status'] == 'success') {
-                $this->dispatch('create-form-submitted');
+                $this->js("window.dispatchEvent(new CustomEvent('open-client-modal'))");
+                $this->loadData($this->celular,$this->nombre_completo,$this->notes,$this->conversationId);
             }
             $this->endPetition();
         } catch (\Throwable $th) {

@@ -14,7 +14,7 @@ class ChatPanel extends Component
     public $userName;
     public $conversationStatus;
     public $mensajes = [];
-
+    public $canWrite;
     public $status;
     public $text;
     #[On('updateChat')]
@@ -40,10 +40,11 @@ class ChatPanel extends Component
         $this->dispatch('scrollChat');
     }
     #[On('load-conversation')]
-    public function loadConversation($conversationId, $userName, $status)
+    public function loadConversation($conversationId, $userName, $status, $canWrite)
     {
         $this->userName = $userName;
         $this->conversationStatus = $status;
+        $this->canWrite=$canWrite;
         $this->mensajes = app(LandbotWebhookController::class)->getConversationHistory($conversationId);
         $this->conversationId = $conversationId;
         $this->dispatch('smoothScrollToBottom');
@@ -82,7 +83,7 @@ class ChatPanel extends Component
         if ($response['status'] === "success") {
             $this->updateConversation();
         }else{
-            $this->callNotification("Ocurrio un error al enviar el mensaje", $response['status']);
+            $this->callNotification($response['data'], $response['status']);
         }
         $this->text = "";
     }

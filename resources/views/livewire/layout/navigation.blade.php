@@ -65,6 +65,13 @@
                             </a>
                         </li>
                     @endif
+                    <li
+                        class="px-4 py-4 hover:bg-gray-700 {{ request()->routeIs('client') ? 'bg-gray-700' : '' }}">
+                        <a href="{{ route('client') }}" class="flex items-center gap-4">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Clientes</span>
+                        </a>
+                    </li>
                 </ul>
                 <!-- Información de versión -->
                 <div class="mt-auto flex flex-col gap-2 items-center p-4 border-t justify-center border-gray-800 w-full pb-2">

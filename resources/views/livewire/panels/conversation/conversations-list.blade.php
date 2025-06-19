@@ -32,7 +32,7 @@
     <div>
         @forelse ($conversations['data'] as $item)
             <div class="chat-item p-4 border-b cursor-pointer transition-colors {{ $selectedConversationId === $item->id ? 'bg-gray-500 text-white' : 'hover:bg-gray-50' }}"
-                wire:click="selectConversation({{ $item->id }}, '{{ $item->nombre }}', '{{ $item->status }}','{{$item->telefono}}','{{$item->notas}}')"
+                wire:click="selectConversation({{ json_encode($item['id']) }}, {{ json_encode($item['nombre']) }}, {{ json_encode($item['status']) }}, {{ json_encode($item['telefono']) }}, {{ json_encode($item['notas'] ?? '') }}, {{ json_encode($item['updated_at']) }})"
                 data-status="{{ strtolower($item->status) }}">
 
                 <div class="flex justify-between items-start mb-1">
@@ -45,7 +45,7 @@
 
                 <div
                     class="text-xs mb-2 truncate {{ $selectedConversationId === $item->id ? 'text-gray-200' : 'text-gray-600' }}">
-                    {{-- {{ $item['lastMessage']['conversation_data']['body'] ?? 'Sin mensaje' }} --}}
+                    {{ $item['lastMessage']['conversation_data']['body'] ?? 'Sin mensaje' }}
                 </div>
 
                 <div class="flex items-center justify-between">
