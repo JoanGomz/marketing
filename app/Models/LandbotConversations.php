@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
+use App\Models\Operation\Cliente;
 
 class LandbotConversations extends BaseModel
 {
@@ -28,6 +29,11 @@ class LandbotConversations extends BaseModel
     public function lastMessage()
     {
         return $this->hasOne(LandbotMessage::class, 'conversation_id')
-            ->latest('created_at'); // ult
+            ->latest('created_at');
+    }
+
+    public function client()
+    {
+        return $this->belongsTo(Cliente::class, 'client_id', 'id');
     }
 }
