@@ -9,7 +9,17 @@
             <div>
                 <div class="font-bold">{{ $userName ? $userName : '--' }}</div>
                 <div class="flex items-center text-sm">
-                    <div class="w-2 h-2 mr-2 rounded-full bg-green-400"></div>
+                    <div
+                        class="w-2 h-2 mr-2 rounded-full @if ($conversationStatus === 'pendiente') bg-yellow-400
+                                @elseif($conversationStatus === 'asignado a')
+                                    bg-blue-400
+                                @elseif($conversationStatus === 'en espera')
+                                    bg-purple-400
+                                @elseif($conversationStatus === 'finalizado')
+                                    bg-gray-400
+                                @else
+                                    bg-brand-aqua @endif">
+                    </div>
                     <span id="estado-chat"
                         class="font-bold capitalize">{{ $conversationStatus ? $conversationStatus : '--' }}</span>
                 </div>
@@ -21,6 +31,7 @@
                 <option value="">Estado</option>
                 <option value="en espera">En espera</option>
                 <option value="pendiente">Pendiente</option>
+                <option value="finalizado">Finalizado</option>
             </select>
             {{-- <select id="estado" class="rounded-md p-2  pr-6 text-sm text-black bg-[#94D4A0]">
                 <option value="">Cambiar estado</option>
@@ -29,7 +40,7 @@
                 <option value="completed">Finalizado</option>
             </select> --}}
             @if (Auth::user()->role_id != 3)
-                <select id="asesor" class="rounded-md p-2 pr-6 text-sm text-black">
+                <select id="asesor" wire:model.live="assigned" class="rounded-md p-2 pr-6 text-sm text-black">
                     <option value="">Asignar a</option>
                     @foreach ($advisors['data'] as $item)
                         <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -210,7 +221,25 @@
         </form>
 
     </div>
+    @if ($showConfirmModal)
+        <div class="fixed inset-0  flex items-center justify-center z-50 " wire:click="$set('showConfirmModal', false)">
+            <div class="bg-white rounded-lg p-6 ml-64 max-w-sm mx-4">
+                <h3 class="text-lg font-semibold mb-4">Confirmar Finalización</h3>
+                <p class="text-gray-600 mb-6">¿Estás seguro de que deseas finalizar esta conversación?</p>
 
+                <div class="flex justify-end space-x-3">
+                    <button wire:click="$set('showConfirmModal', false)"
+                        class="px-4 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-50">
+                        Cancelar
+                    </button>
+                    <button wire:click="endConversation"
+                        class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                        Finalizar
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>
 @push('scripts')
     <script>
@@ -222,6 +251,12 @@
                     const channel = window.ably.channels.get('chat');
 
                     channel.subscribe((message) => {
+                        Livewire.dispatch('updateChat');
+                        Livewire.dispatch('updateConversations');
+
+                        scrollChat();
+                    });
+                    channel.subscribe('ConversationUpdate', function(message) {
                         Livewire.dispatch('updateChat');
                         Livewire.dispatch('updateConversations');
                         scrollChat();

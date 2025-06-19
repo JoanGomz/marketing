@@ -36,7 +36,9 @@
                 data-status="{{ strtolower($item->status) }}">
 
                 <div class="flex justify-between items-start mb-1">
-                    <div class="font-bold">~{{ $item->nombre }}</div>
+                    <div class="font-bold">
+                        {{ $item['client']->nombre ?? ("~".$item->nombre ?? 'Sin nombre') }}
+                    </div>
                     <div
                         class="text-xs {{ $selectedConversationId === $item->id ? 'text-gray-200' : 'text-gray-500' }}">
                         {{ $item->telefono }}
@@ -81,6 +83,8 @@
                                     bg-blue-400
                                 @elseif($item->status === 'en espera')
                                     bg-purple-400
+                                @elseif($item->status === 'finalizado')
+                                    bg-gray-400
                                 @else
                                     bg-brand-aqua @endif
                             "></span>

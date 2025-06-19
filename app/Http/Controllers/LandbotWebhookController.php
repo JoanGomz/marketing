@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\conversationUpdate;
 use App\Events\MessageSent;
 use App\Models\LandbotConversations;
 use Illuminate\Http\Request;
@@ -276,6 +277,8 @@ class LandbotWebhookController extends Controller
                     'Authorization' => 'token ' . env('LANDBOT_API_KEY')
                 ],
                 'timeout' => 50,
+                'http_errors' => false,
+                'verify' => storage_path('certificates/cacert.pem')
             ]);
 
             $bot_id = env('LANDBOT_BOT_ID');
@@ -303,7 +306,7 @@ class LandbotWebhookController extends Controller
             $conversation->user_asing_id = $userId;
             $conversation->is_assigned = 1;
             $conversation->save();
-
+            event(new conversationUpdate());
             return $this->responseLivewire('success', 'Usuario asignado a la conversación correctamente', []);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
