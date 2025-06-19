@@ -253,6 +253,12 @@
                     channel.subscribe((message) => {
                         Livewire.dispatch('updateChat');
                         Livewire.dispatch('updateConversations');
+
+                        scrollChat();
+                    });
+                    channel.subscribe('ConversationUpdate', function(message) {
+                        Livewire.dispatch('updateChat');
+                        Livewire.dispatch('updateConversations');
                         scrollChat();
                     });
                 } else {

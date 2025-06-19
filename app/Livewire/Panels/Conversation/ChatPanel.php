@@ -98,7 +98,7 @@ class ChatPanel extends Component
                 $this->callNotification($response['message'], $response['status']);
             }
         } catch (\Throwable $th) {
-            //throw $th;
+            dump($th);
         }
     }
     public function sendMessage()
