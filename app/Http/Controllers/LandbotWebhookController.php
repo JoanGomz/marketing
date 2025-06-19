@@ -252,7 +252,7 @@ class LandbotWebhookController extends Controller
 
             $conversation = LandbotConversations::findOrFail($conversationId);
             $conversation->status = $status;
-            if ($status == 'finalizada') {
+            if ($status == 'finalizado') {
                 $conversation->is_assigned = 0;
                 $conversation->user_asing_id = null;
             }
@@ -308,6 +308,25 @@ class LandbotWebhookController extends Controller
             $conversation->save();
             event(new conversationUpdate());
             return $this->responseLivewire('success', 'Usuario asignado a la conversación correctamente', []);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function unassignUser()
+    {
+        try {
+            $conversation = LandbotConversations::where('is_assigned', 1)
+                ->where('status', '!=', 'finalizada')
+                ->first();
+
+            foreach ($conversation as $conv) {
+                $conv->user_asing_id = null;
+                $conv->is_assigned = 0;
+                $conv->save();
+            }
+
+            return $this->responseLivewire('success', 'Usuario desasignado de la conversación correctamente', []);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
         }
