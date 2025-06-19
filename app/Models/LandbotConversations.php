@@ -25,6 +25,7 @@ class LandbotConversations extends BaseModel
         'user_asing_id',
         'landbot_customer_id',
         'client_id',
+        'is_assigned',
     ];
 
     public function lastMessage()
