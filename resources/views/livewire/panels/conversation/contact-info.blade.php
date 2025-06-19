@@ -35,14 +35,10 @@
         </div>
         <div class="pt-4 border-t flex flex-col gap-4">
             <h4 class="font-medium mb-2">Notas</h4>
-            @if ($dataClient)
-                @if ($dataClient['message'] != 'Usuario no encontrado')
-                    <div class="text-sm p-2 bg-gray-50 rounded border">
-                        <div class="text-xs text-gray-500">{{$notes ? $notes : "Sin notas"}}
-                        </div>
-                    </div>
-                @endif
-            @endif
+            <div class="text-sm p-2 bg-gray-50 rounded border">
+                <div class="text-sm text-gray-700">{{ $notes ? $notes : 'Sin notas' }}
+                </div>
+            </div>
             <form wire:submit.prevent="saveNote">
                 <textarea wire:model="noteText" class="w-full p-2 border rounded-md text-sm resize-none" rows="2"
                     placeholder="Agregar notas... (Enter: guardar, Shift+Enter: nueva línea)" x-data

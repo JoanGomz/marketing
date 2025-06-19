@@ -28,18 +28,19 @@
                 <option value="waiting">En espera</option>
                 <option value="completed">Finalizado</option>
             </select> --}}
-            <select id="asesor" class="rounded-md p-2 pr-6 text-sm text-black">
-                <option value="">Asignar a</option>
-                <option value="1">Juan Pérez</option>
-                <option value="2">Ana López</option>
-                <option value="3">Carlos Ruiz</option>
-            </select>
+            @if (Auth::user()->role_id != 3)
+                <select id="asesor" class="rounded-md p-2 pr-6 text-sm text-black">
+                    <option value="">Asignar a</option>
+                    @foreach ($advisors['data'] as $item)
+                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    @endforeach
+                </select>
+            @endif
         </div>
     </div>
-
     <!-- Historial de mensajes -->
     <div class="flex-1 flex flex-col min-h-0">
-        <div class="flex-1 p-4 overflow-y-auto space-y-2 bg-gray-50 " id="content-conversation"
+        <div class="flex-1 p-4 overflow-y-auto overflow-x-hidden space-y-2 bg-gray-50 " id="content-conversation"
             style="background-image: url('/Images/Asesor/patron.png'); background-size: 100%; background-repeat: repeat;">
             @if ($mensajes)
                 @forelse ($mensajes["data"]['messages'] as $item)
@@ -153,7 +154,6 @@
                                         </div>
                                     @endif
                                 @endif
-
                                 <div class="flex justify-end">
                                     <div class="text-xs mt-1 right-2 text-blue-100">
                                         {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}
@@ -166,14 +166,28 @@
                     <div class="text-center text-gray-500">No hay mensajes</div>
                 @endforelse
             @endif
-
-
         </div>
         <form class="flex items-center bg-gray-100 rounded-lg px-4 py-2" wire:submit.prevent="sendMessage">
-            <input wire:model="text" type="text"
-                placeholder="{{ $canWrite ? ' Escribe tu respuesta...' : 'No puedes enviar mensajes después de 24 horas del ultimo mensaje del cliente' }}"
-                {{ $canWrite ? '' : 'disabled' }}
-                class="flex-1 bg-transparent border-none {{ $canWrite ? '' : 'cursor-not-allowed' }}">
+            <div class="cursor-pointer p-2 text-bg-brand-darkPurple" title="Reiniciar bot" wire:click="launchBot">
+                <i class="fa-solid fa-robot fa-xl text-brand-purple"></i>
+            </div>
+            <div class="flex-1">
+                <input wire:model="text" type="text" id="message-input"
+                    placeholder="{{ $canWrite ? 'Escribe tu respuesta...' : 'Chat bloqueado - 24h transcurridas' }}"
+                    {{ $canWrite ? '' : 'disabled' }} autocomplete="off"
+                    class="w-full bg-transparent border-none outline-none {{ $canWrite ? 'text-gray-900' : 'cursor-not-allowed text-gray-400' }}">
+
+                @error('text')
+                    <div class="text-red-500 text-xs mt-1">
+                        {{ $message }}
+                    </div>
+                @enderror
+                @if (!$canWrite)
+                    <div class="text-gray-500 text-xs mt-1">
+                        No puedes enviar mensajes después de 24 horas del último mensaje del cliente
+                    </div>
+                @endif
+            </div>
             <div class="flex space-x-2 ml-2">
                 <button class="text-gray-500 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"

@@ -10,7 +10,7 @@
                 class="w-full bg-gray-400 placeholder-white pl-8 rounded-md">
         </div>
     </div>
-    
+
     <div class="p-2 border-b flex justify-between">
         <button id="all" data-filter="all" wire:click="$set('status', '')"
             class="px-1 py-1 rounded-md text-sm font-medium {{ $status === '' ? 'bg-brand-aqua' : '' }} hover:bg-brand-aqua bg-opacity-70 text-brand-darkPurple">
@@ -45,7 +45,31 @@
 
                 <div
                     class="text-xs mb-2 truncate {{ $selectedConversationId === $item->id ? 'text-gray-200' : 'text-gray-600' }}">
-                    {{ $item['lastMessage']['conversation_data']['body'] ?? 'Sin mensaje' }}
+                    @php
+                        $messageText = 'Sin mensaje';
+
+                        if (isset($item['lastMessage']['conversation_data'])) {
+                            $data = $item['lastMessage']['conversation_data'];
+
+                            // Si conversation_data es string JSON, decodificarlo
+                            if (is_string($data)) {
+                                $data = json_decode($data, true) ?? [];
+                            }
+                            if (isset($data['body']['text'])) {
+                                $messageText = $data['body']['text'];
+                            } elseif (isset($data['body']) && is_string($data['body'])) {
+                                $messageText = $data['body'];
+                            } elseif (isset($data['header']['text'])) {
+                                $messageText = $data['header']['text'];
+                            } elseif (isset($data['text'])) {
+                                $messageText = $data['text'];
+                            } elseif (isset($data['action']['button'])) {
+                                $messageText = 'Menú: ' . $data['action']['button'];
+                            }
+                        }
+                    @endphp
+
+                    {{ $messageText }}
                 </div>
 
                 <div class="flex items-center justify-between">

@@ -41,16 +41,17 @@ class ConversationsList extends Component
     }
     public function selectConversation($conversationId, $userName, $status, $telefono, $nota = null, $updated_data)
     {
+        if ($conversationId === $this->selectedConversationId) {
+            return;
+        }
         $canWrite = $this->determineCanWrite($updated_data);
         $this->selectedConversationId = $conversationId;
-
         $this->dispatch(
             'load-conversation',
             conversationId: $conversationId,
             userName: $userName,
             status: $status,
             canWrite: $canWrite
-
         )->to('panels.conversation.chat-panel');
         $this->dispatch(
             'load-info-client',

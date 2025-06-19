@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Panels\Conversation;
 
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\LandbotWebhookController;
 use App\Traits\traitCruds;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -17,6 +19,13 @@ class ChatPanel extends Component
     public $canWrite;
     public $status;
     public $text;
+
+    protected function rulesMessage()
+    {
+        return [
+            'text' => 'required|min:1|string'
+        ];
+    }
     #[On('updateChat')]
     public function updateConversation()
     {
@@ -44,7 +53,7 @@ class ChatPanel extends Component
     {
         $this->userName = $userName;
         $this->conversationStatus = $status;
-        $this->canWrite=$canWrite;
+        $this->canWrite = $canWrite;
         $this->mensajes = app(LandbotWebhookController::class)->getConversationHistory($conversationId);
         $this->conversationId = $conversationId;
         $this->dispatch('smoothScrollToBottom');
@@ -54,12 +63,14 @@ class ChatPanel extends Component
         $request = new \Illuminate\Http\Request();
         $request->merge(['status' => $this->status]);
         $response = app(LandbotWebhookController::class)->changeStatusConversation($request, $this->conversationId);
-        if($response['status']==="success"){
-           $this->dispatch('updateConversations'); 
+        if ($response['status'] === "success") {
+            $this->dispatch('updateConversations');
         }
     }
     public function sendMessage()
     {
+
+        $this->validate($this->rulesMessage());
         $firstMessage = $this->mensajes['data']['messages'][0];
         $request = new \Illuminate\Http\Request();
         $request->merge([
@@ -82,13 +93,24 @@ class ChatPanel extends Component
         $response = app(LandbotWebhookController::class)->handleWebhook($request);
         if ($response['status'] === "success") {
             $this->updateConversation();
-        }else{
+        } else {
             $this->callNotification($response['data'], $response['status']);
         }
-        $this->text = "";
+        $this->reset('text');
+    }
+    public function launchBot()
+    {
+        $response = app(LandbotWebhookController::class)->restartBot($this->conversationId);
+        dump($response);
+        $this->callNotification($response['data'], $response['status']);
     }
     public function render()
     {
-        return view('livewire.panels.conversation.chat-panel');
+        if (Auth::user()->role_id != 3) {
+            $advisors = app(UserController::class)->getAsesor();
+        }
+        return view('livewire.panels.conversation.chat-panel', [
+            'advisors' => $advisors
+        ]);
     }
 }
