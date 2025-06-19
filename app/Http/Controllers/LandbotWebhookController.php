@@ -248,6 +248,10 @@ class LandbotWebhookController extends Controller
 
             $conversation = LandbotConversations::findOrFail($conversationId);
             $conversation->status = $status;
+            if ($status == 'finalizada') {
+                $conversation->is_assigned = 0;
+                $conversation->user_asing_id = null;
+            }
             $conversation->save();
             return $this->responseLivewire('success', 'Estado de la conversación actualizado correctamente', []);
         } catch (\Exception $e) {
@@ -294,6 +298,7 @@ class LandbotWebhookController extends Controller
 
             $conversation = LandbotConversations::findOrFail($conversationId);
             $conversation->user_asing_id = $userId;
+            $conversation->is_assigned = 1;
             $conversation->save();
 
             return $this->responseLivewire('success', 'Usuario asignado a la conversación correctamente', []);
