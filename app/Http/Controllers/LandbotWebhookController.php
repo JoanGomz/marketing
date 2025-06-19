@@ -10,7 +10,6 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use PhpParser\Node\Expr\FuncCall;
 
 class LandbotWebhookController extends Controller
 {
@@ -193,13 +192,18 @@ class LandbotWebhookController extends Controller
     /**
      * Obtener todas las conversaciones
      */
-    public function getAllConversations($status = null)
+    public function getAllConversations($status = null, $userAsingId = null)
     {
         try {
             $query = LandbotConversations::with(['lastMessage:id,conversation_id,conversation_data']);
+            $query = LandbotConversations::with(['client:id,nombre']);
 
             if ($status) {
                 $query->where('status', $status);
+            }
+
+            if ($userAsingId) {
+                $query->where('user_asing_id', $userAsingId);
             }
 
             $conversations = $query->orderBy('updated_at', 'desc')->get();
@@ -213,6 +217,9 @@ class LandbotWebhookController extends Controller
         }
     }
 
+    /**
+     * Guardar una nota en la conversación
+     */
     public function saveNote(Request $request, $conversationId)
     {
         try {
@@ -231,6 +238,9 @@ class LandbotWebhookController extends Controller
         }
     }
 
+    /**
+     * Cambiar el estado de una conversación
+     */
     public function changeStatusConversation(Request $request, $conversationId)
     {
         try {
@@ -248,6 +258,9 @@ class LandbotWebhookController extends Controller
         }
     }
 
+    /**
+     * Reiniciar el bot para una conversación específica
+     */
     public function restartBot($conversation_id)
     {
         try {
@@ -262,10 +275,31 @@ class LandbotWebhookController extends Controller
             ]);
 
             $bot_id = env('LANDBOT_BOT_ID');
-            $response = $client->post("v1/customers/{$conversation->landbot_customer_id}/assign_bot/{$bot_id}", [
-                'json' => []
+            $response = $client->put("v1/customers/{$conversation->landbot_customer_id}/assign_bot/{$bot_id}/", [
+                'json' => ["launch" => true,]
             ]);
             return $this->responseLivewire('success', 'Bot reiniciado correctamente', $response->getBody());
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Asignar un usuario a una conversación
+     */
+    public function assignUserToConversation(Request $request, $conversationId)
+    {
+        try {
+            $userId = $request->input('user_id');
+            if (empty($userId)) {
+                return response()->json(['success' => false, 'message' => 'ID de usuario no puede estar vacío'], 400);
+            }
+
+            $conversation = LandbotConversations::findOrFail($conversationId);
+            $conversation->user_asing_id = $userId;
+            $conversation->save();
+
+            return $this->responseLivewire('success', 'Usuario asignado a la conversación correctamente', []);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
         }
