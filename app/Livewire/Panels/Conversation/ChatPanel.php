@@ -138,11 +138,6 @@ class ChatPanel extends Component
     }
     public function render()
     {
-        if (Auth::user()->role_id != 3) {
-            $advisors = app(UserController::class)->getAsesor();
-        }
-        return view('livewire.panels.conversation.chat-panel', [
-            'advisors' => $advisors
-        ]);
+        return view('livewire.panels.conversation.chat-panel');
     }
 }
