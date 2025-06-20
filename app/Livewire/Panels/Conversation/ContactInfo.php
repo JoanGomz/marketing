@@ -23,6 +23,7 @@ class ContactInfo extends Component
     public $conversationId;
 
     //Modelos del formulario de cliente
+    public $id_client;
     public $identificacion;
     public $tipo_documento;
     public $nombre;
@@ -50,7 +51,24 @@ class ContactInfo extends Component
             'id_ciudad' => 'required|integer'
         ];
     }
-
+    public function setEditingClient()
+    {
+        if (!$this->dataClient || !isset($this->dataClient['data'])) {
+            return; // O manejar el error como prefieras
+        }
+        $this->id_client=$this->dataClient['data']->id;
+        $this->identificacion = $this->dataClient['data']->identificacion;
+        $this->nombre = $this->dataClient['data']->nombre;
+        $this->apellido = $this->dataClient['data']->apellido;
+        $this->celular = $this->dataClient['data']->celular;
+        $this->direccion = $this->dataClient['data']->direccion;
+        $this->email = $this->dataClient['data']->email;
+        $this->tipo_documento = $this->dataClient['data']->tipo_documento;
+        $this->genero = $this->dataClient['data']->genero;
+        $this->fecha_nacimiento = $this->dataClient['data']->fecha_nacimiento;
+        $this->id_ciudad = $this->dataClient['data']->id_ciudad;
+        $this->js('$store.forms.updateFormVisible = true');
+    }
     //Método para unir los nombres y así crear el campo nombre completo requerido por el back
     public function unirNombre()
     {
@@ -64,7 +82,7 @@ class ContactInfo extends Component
         $this->telClient = $telClient;
         $this->notes = $note;
         $this->conversationId = $conversationId;
-        $this->celular = $telClient;
+        $this->celular = strval($telClient);
         $request = new \Illuminate\Http\Request();
         $request->merge(['search' => $telClient]);
         $this->dataClient = app(ClienteController::class)->getUser($request);
@@ -78,7 +96,7 @@ class ContactInfo extends Component
             if ($response['status'] === "success") {
                 $this->notes = $this->noteText;
                 $this->callNotification($response['message'], $response['status']);
-                $this->noteText="";
+                $this->noteText = "";
             } else {
                 $this->callNotification($response['message'], $response['status']);
             }
@@ -89,6 +107,7 @@ class ContactInfo extends Component
     //Método para crear cliente en caso de no encontrar el cliente en el buscador
     public function create()
     {
+        strval($this->celular);
         $this->validateWithSpinner();
         try {
             $this->unirNombre();
@@ -111,8 +130,43 @@ class ContactInfo extends Component
             $this->response = app(ClienteController::class)->store($request);
 
             if ($this->response['status'] == 'success') {
-                $this->js("window.dispatchEvent(new CustomEvent('open-client-modal'))");
+                $this->js('$store.forms.createFormVisible = false');
                 $this->loadData($this->celular, $this->nombre_completo, $this->notes, $this->conversationId);
+                $this->dispatch('updateConversations');
+            }
+            $this->endPetition();
+        } catch (\Throwable $th) {
+            $this->handleException($th, 'Ha ocurrido un error al crear el cliente');
+        }
+    }
+    public function update()
+    {
+        strval($this->celular);
+        $this->validateWithSpinner();
+        try {
+            $this->unirNombre();
+            $request = new \Illuminate\Http\Request();
+            $request->merge([
+                'identificacion' => $this->identificacion,
+                'nombre' => $this->nombre,
+                'apellido' => $this->apellido,
+                'nombre_completo' => $this->nombre_completo,
+                'celular' => $this->celular,
+                'direccion' => $this->direccion,
+                'email' => $this->email,
+                'tipo_documento' => $this->tipo_documento,
+                'genero' => $this->genero,
+                'fecha_nacimiento' => $this->fecha_nacimiento,
+                'id_ciudad' => $this->id_ciudad,
+                'conversation_id' => $this->conversationId,
+                'id_centro_comercial' => Auth::user()->id_centro_comercial
+            ]);
+            $this->response = app(ClienteController::class)->update($request,$this->id_client);
+
+            if ($this->response['status'] == 'success') {
+                $this->js('$store.forms.updateFormVisible = false');
+                $this->loadData($this->celular, $this->nombre_completo, $this->notes, $this->conversationId);
+                $this->dispatch('updateConversations');
             }
             $this->endPetition();
         } catch (\Throwable $th) {

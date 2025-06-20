@@ -142,8 +142,7 @@ class LandbotWebhookController extends Controller
             ],
             'timeout' => 50,
             'http_errors' => false,
-            // Agregar verificación SSL
-            'verify' => storage_path('certificates/cacert.pem') // Asegúrate de tener el archivo aquí
+            'verify' => storage_path('certificates/cacert.pem')
         ]);
 
         $response = $client->post("v1/customers/{$conversation->landbot_customer_id}/send_text/", [
@@ -257,6 +256,7 @@ class LandbotWebhookController extends Controller
                 $conversation->user_asing_id = null;
             }
             $conversation->save();
+            event(new conversationUpdate());
             return $this->responseLivewire('success', 'Estado de la conversación actualizado correctamente', []);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => $e->getMessage()], 500);

@@ -28,6 +28,20 @@ class ChatPanel extends Component
             'text' => 'required|min:1|string'
         ];
     }
+    #[On('activate-conversation')]
+    public function activateConversation($conversationId)
+    {
+        if ($this->conversationId == $conversationId) {
+            $request = new \Illuminate\Http\Request();
+            $request->merge(['status' => 'activo']);
+            $response = app(LandbotWebhookController::class)->changeStatusConversation($request, $conversationId);
+
+            if ($response['status'] === "success") {
+                $this->conversationStatus = 'activo';
+            }
+        }
+    }
+    //Método llamado desde websocket o evento para actualizar la conversación
     #[On('updateChat')]
     public function updateConversation()
     {
@@ -50,6 +64,7 @@ class ChatPanel extends Component
         $this->mensajes = $newMessages;
         $this->dispatch('scrollChat');
     }
+    //Método llamado desde lista de conversaciones para cargar las conversaciones del chat seleccionado
     #[On('load-conversation')]
     public function loadConversation($conversationId, $userName, $status, $canWrite)
     {
@@ -138,6 +153,9 @@ class ChatPanel extends Component
     }
     public function render()
     {
-        return view('livewire.panels.conversation.chat-panel');
+        $advisors = app(UserController::class)->getAsesor();
+        return view('livewire.panels.conversation.chat-panel', [
+            'advisors' => $advisors
+        ]);
     }
 }

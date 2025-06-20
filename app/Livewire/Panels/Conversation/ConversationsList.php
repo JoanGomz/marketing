@@ -61,9 +61,9 @@ class ConversationsList extends Component
             note: $nota,
             conversationId: $conversationId
         )->to('panels.conversation.contact-info');
-        $request = new \Illuminate\Http\Request();
-        $request->merge(['status' => 'activo']);
-        $response = app(LandbotWebhookController::class)->changeStatusConversation($request, $conversationId);
+        if ($status != 'activo') {
+            $this->dispatch('activate-conversation', $conversationId)->to('panels.conversation.chat-panel');
+        }
     }
     public function render()
     {
@@ -121,7 +121,6 @@ class ConversationsList extends Component
                     }, 50);
                 ");
             }
-
             $this->lastQuery = $currentQuery;
         } catch (\Exception $e) {
             $conversations = ['data' => []];

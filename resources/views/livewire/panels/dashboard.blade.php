@@ -16,7 +16,10 @@
             </div>
         </div>
         <!-- Usando laravel mix pasamos la data consumida por el componente a el archivo de js -->
-        <script>window.user = @json(Auth::user())</script>
+        <script>
+        window.user = @json(Auth::user());
+        window.chartConversations = @json($cant_conversations['data']);
+        </script>
         <!-- Contenedor principal de gráficos -->
         <div class="mx-auto sm:px-4 lg:px-4">
             <div class="grid grid-cols-1 {{(Auth::user()->role_id===2) ? 'md:grid-cols-3' : 'md:grid-cols-2'}} gap-4">
@@ -37,6 +40,7 @@
                         </div>
                     </div>
                 @endif
+                @dump($cant_conversations)
                 @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)
                     <!-- Card Conversaciones con animación y gradiente -->
                     <div
@@ -44,12 +48,12 @@
                         <div
                             class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out">
                         </div>
-
+                        
                         <div class="relative z-10">
                             <div class="w-full flex flex-col items-center text-white">
                                 <i
                                     class="fa-solid fa-comments font-bold p-2 fa-2xl group-hover:scale-110 transition-transform duration-300 drop-shadow-lg"></i>
-                                <p class="font-bold p-2 pt-4 text-4xl drop-shadow-md">25</p>
+                                <p class="font-bold p-2 pt-4 text-4xl drop-shadow-md">{{$cant_conversations['data']['total_conversaciones']}}</p>
                                 <h3 class="font-bold p-2 opacity-90">Conversaciones</h3>
                             </div>
                         </div>

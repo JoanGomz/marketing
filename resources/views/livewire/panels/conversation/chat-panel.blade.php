@@ -200,19 +200,11 @@
                 @endif
             </div>
             <div class="flex space-x-2 ml-2">
-                <button class="text-gray-500 hover:text-gray-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
-                    </svg>
+                <button type="button" onclick="clearInput()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa-solid fa-eraser fa-lg"></i>
                 </button>
                 <button class="text-gray-500 hover:text-gray-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                    <i class="fa-solid fa-face-smile fa-lg"></i>
                 </button>
             </div>
             <button class="ml-2 bg-brand-blueStar text-white rounded-md px-4 py-2 shadowCard">
@@ -243,6 +235,11 @@
 </div>
 @push('scripts')
     <script>
+        function clearInput() {
+            const buttonClear = document.getElementById("buttonClear");
+            const inputChat = document.getElementById("message-input");
+            inputChat.value = "";
+        }
         document.addEventListener('DOMContentLoaded', function() {
             const messagesContainer = document.getElementById("content-conversation");
 
@@ -258,7 +255,6 @@
                     });
                     channel.subscribe('ConversationUpdate', function(message) {
                         Livewire.dispatch('updateChat');
-                        Livewire.dispatch('updateConversations');
                         scrollChat();
                     });
                 } else {
@@ -277,6 +273,8 @@
             document.addEventListener('scrollChat', function() {
                 scrollChat();
             });
+
+
         });
     </script>
 @endpush
