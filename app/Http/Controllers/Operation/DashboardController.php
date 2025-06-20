@@ -18,6 +18,10 @@ class DashboardController extends Controller
         return $this->responseLivewire('success', 'succes', $count_user);
     }
 
+    /**
+     * Obtiene las estadísticas de conversaciones
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getConversationsStats()
     {
         try {
@@ -36,9 +40,15 @@ class DashboardController extends Controller
                 ->orderBy('total_conversaciones', 'desc')
                 ->get();
 
+            $chartData = [
+                'labels' => $conversationsByPark->pluck('parque_nombre')->toArray(),
+                'series' => $conversationsByPark->pluck('total_conversaciones')->toArray()
+            ];
+
             $data = [
                 'total_conversaciones' => $totalConversations,
-                'conversaciones_por_sede' => $conversationsByPark
+                'conversaciones_por_sede' => $conversationsByPark,
+                'chart_data' => $chartData
             ];
 
             return $this->responseLivewire('success', 'success', $data);
@@ -50,6 +60,10 @@ class DashboardController extends Controller
         }
     }
 
+    /**
+     * Obtiene las estadísticas de eventos solicitados
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getStacticsEvents()
     {
         try {
@@ -65,12 +79,48 @@ class DashboardController extends Controller
             //Evento de conjuntos
             $communityEventsCount = LandbotMessage::where('conversation_data', 'LIKE', '%Evento de conjuntos%')->count();
 
+            // Preparar datos para ApexCharts
+            $eventLabels = [
+                'Fiesta Cumpleaños',
+                'Eventos Corporativos',
+                'Evento de Colegios',
+                'Evento de Conjuntos'
+            ];
+
+            $eventCounts = [
+                $happyBirthdayCount,
+                $corporateEventsCount,
+                $schoolEventsCount,
+                $communityEventsCount
+            ];
+
+            // Formato para gráfico de dona/pie
+            $pieChartData = [
+                'labels' => $eventLabels,
+                'series' => $eventCounts
+            ];
+
+            // Formato para gráfico de barras
+            $barChartData = [
+                'categories' => $eventLabels,
+                'series' => [
+                    [
+                        'name' => 'Eventos Solicitados',
+                        'data' => $eventCounts
+                    ]
+                ]
+            ];
+
             $data = [
                 'happy_birthday' => $happyBirthdayCount,
                 'corporate_events' => $corporateEventsCount,
                 'school_events' => $schoolEventsCount,
-                'community_events' => $communityEventsCount
+                'community_events' => $communityEventsCount,
+                'total_events' => array_sum($eventCounts),
+                'pie_chart' => $pieChartData,
+                'bar_chart' => $barChartData
             ];
+
             return $this->responseLivewire('success', 'success', $data);
         } catch (\Exception $e) {
             return response()->json([
