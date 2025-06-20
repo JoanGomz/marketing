@@ -75,6 +75,13 @@ class ChatPanel extends Component
         $this->conversationId = $conversationId;
         $this->dispatch('smoothScrollToBottom');
     }
+    public function hiddenChats(){
+        $this->mensajes=[];
+        $this->userName = "";
+        $this->conversationStatus = "";
+        $this->canWrite = "";
+        $this->conversationId = "";
+    }
     public function endConversation()
     {
         $request = new \Illuminate\Http\Request();
@@ -84,6 +91,7 @@ class ChatPanel extends Component
             $this->dispatch('updateConversations');
         }
         $this->status = "finalizado";
+        $this->hiddenChats();
         $this->conversationStatus = $this->status;
     }
     public function updatedStatus()

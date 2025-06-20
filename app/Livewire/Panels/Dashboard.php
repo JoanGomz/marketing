@@ -11,9 +11,11 @@ class Dashboard extends Component
     {
         $cantUsers = app(DashboardController::class)->countActiveUsers();
         $cantConversations = app(DashboardController::class)->getConversationsStats();
+        $events = app(DashboardController::class)->getStacticsEvents();
         return view('livewire.panels.dashboard',[
             'users' => $cantUsers,
-            'cant_conversations' => $cantConversations 
+            'cant_conversations' => $cantConversations,
+            'events' => $events
         ]);
     }
 }

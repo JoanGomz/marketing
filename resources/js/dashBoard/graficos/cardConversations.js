@@ -1,11 +1,11 @@
 export function cardConversations() {
     // Datos de ventas
     var user = window.user;
-    
+    let data = window.chartConversations;
     var spark1 = {
         series: [{
             name: 'Conversaciones',
-            data: [44, 55, 41, 67, 22, 43, 21, 33, 45]
+            data: data.chart_data.series
         }],
         chart: {
             height: (user.role_id === 1) ? 400 : 300,
@@ -27,15 +27,23 @@ export function cardConversations() {
             labels: {
                 rotate: -45
             },
-            categories: ['Bulevar', 'Ecoplaza', 'Neiva', 'Bello', 'Hayuelos', 'Altavista',
-                'Paseo', 'Cali', 'Mayorca'
-            ],
+            categories: data.chart_data.labels,
             tickPlacement: 'on'
         },
         yaxis: {
             title: {
                 text: 'Conversaciones',
             },
+        },
+        title: {
+            text: 'Conversaciones por sede',
+            align: 'center',
+            margin: 20,
+            style: {
+                fontSize: '16px',
+                fontWeight: 600,
+                color: '#263238'
+            }
         },
         fill: {
             type: 'gradient',
