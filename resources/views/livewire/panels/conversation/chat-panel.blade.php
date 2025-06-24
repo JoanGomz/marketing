@@ -87,7 +87,7 @@
                         <!-- Mensaje del cliente -->
                         <div wire:key="message-{{ $item['id'] ?? $loop->index }}"
                             class="mb-4 flex justify-start min-w-[400px]">
-                            <div class="max-w-md rounded-lg p-4 bg-white border min-w-[400px] shadowCard">
+                            <div class="max-w-md rounded-lg p-4  border min-w-[400px] shadowCard {{$conversationStatus === 'finalizado' ? "bg-gray-600 text-gray-400" : "bg-white text-black"}}">
                                 <div>{{ $getBodyText($conversationData) }}</div>
                                 <div class="text-xs mt-1 text-gray-500">
                                     {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}
@@ -97,7 +97,7 @@
                     @else
                         <!-- Mensaje del asesor -->
                         <div wire:key="message-{{ $item['id'] ?? $loop->index }}" class="mb-4 flex justify-end">
-                            <div class="max-w-md rounded-lg p-4 bg-brand-blueStar text-white shadowCard">
+                            <div class="max-w-md rounded-lg p-4 shadowCard {{$conversationStatus === 'finalizado' ? "bg-gray-600 text-gray-400" : "bg-brand-blueStar text-white"}}">
                                 @if (!$hasInteractiveElements($conversationData))
                                     <!-- Mensaje de texto simple -->
                                     <div>{{ $getBodyText($conversationData) }}</div>
@@ -184,9 +184,14 @@
             </div>
             <div class="flex-1">
                 <input wire:model="text" type="text" id="message-input"
-                    placeholder="{{ $canWrite ? 'Escribe tu respuesta...' : 'Chat bloqueado - 24h transcurridas' }}"
-                    {{ $canWrite ? '' : 'disabled' }} autocomplete="off"
-                    class="w-full bg-transparent border-none outline-none {{ $canWrite ? 'text-gray-900' : 'cursor-not-allowed text-gray-400' }}">
+                    placeholder="{{ !$canWrite ? 'Chat bloqueado - 24h transcurridas' : ($conversationStatus === 'finalizado' ? 'Conversación finalizada' : 'Escribe tu respuesta...') }}"
+                    {{ !$canWrite || $conversationStatus === 'finalizado' ? 'disabled' : '' }} autocomplete="off"
+                    @class([
+                        'w-full bg-transparent border-none outline-none',
+                        'text-gray-900' => $canWrite && $conversationStatus !== 'finalizado',
+                        'cursor-not-allowed text-gray-400' =>
+                            !$canWrite || $conversationStatus === 'finalizado',
+                    ])>
 
                 @error('text')
                     <div class="text-red-500 text-xs mt-1">
@@ -196,6 +201,11 @@
                 @if (!$canWrite)
                     <div class="text-gray-500 text-xs mt-1">
                         No puedes enviar mensajes después de 24 horas del último mensaje del cliente
+                    </div>
+                @endif
+                @if ($conversationStatus === 'finalizado')
+                    <div class="text-gray-500 text-xs mt-1">
+                        No puedes enviar mensajes porque la conversación se encuentra finalizada
                     </div>
                 @endif
             </div>
@@ -225,6 +235,7 @@
                         Cancelar
                     </button>
                     <button wire:click="endConversation"
+                        onclick="window.dispatchEvent(new CustomEvent('show-loading', { detail: { message: 'Cargando...' } }));"
                         class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
                         Finalizar
                     </button>

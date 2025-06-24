@@ -1,6 +1,6 @@
 <div id="Info-Panel"
     class="w-full lg:w-1/4 bg-white border-l lg:block overflow-y-auto  transition-all duration-400 z-20 shadowCard">
-    <div class="p-4" x-data="{ store.forms.createFormVisible: false, store.forms.updateFormVisible: false }">
+    <div class="p-4">
         <div class="flex justify-between gap-4 border-b pb-2 mb-3 items-center">
             <h3 class="font-bold">Información del cliente</h3>
 
@@ -69,22 +69,24 @@
                 <div class="space-y-2">
                     <div class="text-sm p-2 bg-gray-50 rounded border cursor-pointer">
                         <div class="font-medium">#Mensaje de bienvenida</div>
-                        <div class="message-pred text-xs text-gray-500">Bienvenido a la atención en linea de StarPark, ¿En que podemos ayudarte? ¿Desde que sede te comunicas?</div>
+                        <div class="message-pred text-xs text-gray-500">Bienvenido a la atención en linea de StarPark,
+                            ¿En que podemos ayudarte? ¿Desde que sede te comunicas?</div>
                     </div>
                     <div class="text-sm p-2 bg-gray-50 rounded border cursor-pointer">
                         <div class="font-medium">#Finalizar conversación</div>
-                        <div class="message-pred text-xs text-gray-500">Para nosotros es un placer ayudarte, a continuación te brindaremos una encuesta para que puedas calificar nuestra atención.</div>
+                        <div class="message-pred text-xs text-gray-500">Para nosotros es un placer ayudarte, a
+                            continuación te brindaremos una encuesta para que puedas calificar nuestra atención.</div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Formulario registro de clientes -->
         <div x-show="$store.forms.createFormVisible" x-cloak
-            x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity"
+            x-transition:enter="transition ease-out duration-200 delay-100"
             x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0"
-            class="fixed inset-0 z-40 overflow-y-auto flex items-center justify-center "
-            @open-client-modal.window="$store.forms.createFormVisible = true"
-            @close-client-modal.window="$store.forms.createFormVisible = false">>
+            class="fixed inset-0 z-40 overflow-y-auto flex items-center justify-center"
+            @open-client-modal.window="$store.forms.showCreateForm()"
+            @close-client-modal.window="$store.forms.hideCreateForm()">
             <!-- Overlay de fondo oscuro -->
             <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
                 @click="$store.forms.createFormVisible = false">
@@ -414,6 +416,7 @@
             mensajesPredeterminados.forEach(function(elemento) {
                 elemento.addEventListener('click', function(e) {
                     inputChat.value = this.textContent;
+                    inputChat.dispatchEvent(new Event('input', { bubbles: true }));
                 })
             });
         });

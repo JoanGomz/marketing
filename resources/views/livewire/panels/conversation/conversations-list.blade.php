@@ -11,8 +11,15 @@
         </div>
     </div>
 
-    <div class="p-2 border-b flex justify-between">
-        <button id="all" data-filter="all" wire:click="$set('status', '')"
+    <div class="p-2 border-b flex justify-between flex-1 flex-col">
+        <label for="status" class="block mb-2 text-sm font-medium text-gray-900">Seleccione estado</label>
+        <select wire:model.live="status" id="status" class="bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+            <option value="">Todos</option>
+            <option value="en espera">En espera</option>
+            <option value="pendiente">Pendiente</option>
+            <option value="finalizado">Finalizado</option>
+        </select>
+        {{-- <button id="all" data-filter="all" wire:click="$set('status', '')"
             class="px-1 py-1 rounded-md text-sm font-medium {{ $status === '' ? 'bg-brand-aqua' : '' }} hover:bg-brand-aqua bg-opacity-70 text-brand-darkPurple">
             Todos
         </button>
@@ -20,14 +27,14 @@
             class="px-1 py-1 rounded-md text-sm font-medium text-gray-500 hover:bg-yellow-100 {{ $status === 'pendiente' ? 'bg-yellow-100' : '' }} hover:text-yellow-800">
             Pendiente
         </button>
-        <button id="assigned" data-filter="asignado" wire:click="$set('status', 'asignado a')"
-            class="px-1 py-1 rounded-md text-sm font-medium text-gray-500 hover:bg-blue-100 {{ $status === 'asignado a' ? 'bg-blue-100' : '' }} hover:text-blue-800">
-            Asignado
-        </button>
         <button id="waiting" data-filter="En espera" wire:click="$set('status', 'en espera')"
             class="px-1 py-1 rounded-md text-sm font-medium text-gray-500 hover:bg-purple-100 {{ $status === 'en espera' ? 'bg-purple-100' : '' }} hover:text-purple-800">
             En espera
         </button>
+        <button id="waiting" data-filter="En espera" wire:click="$set('status', 'en espera')"
+            class="px-1 py-1 rounded-md text-sm font-medium text-gray-500 hover:bg-purple-100 {{ $status === 'en espera' ? 'bg-purple-100' : '' }} hover:text-purple-800">
+            Finalizado
+        </button> --}}
     </div>
     <div>
         @forelse ($conversations['data'] as $item)
@@ -37,7 +44,7 @@
 
                 <div class="flex justify-between items-start mb-1">
                     <div class="font-bold">
-                        {{ $item['client']->nombre ?? ("~".$item->nombre ?? 'Sin nombre') }}
+                        {{ $item['client']->nombre ?? ('~' . $item->nombre ?? 'Sin nombre') }}
                     </div>
                     <div
                         class="text-xs {{ $selectedConversationId === $item->id ? 'text-gray-200' : 'text-gray-500' }}">

@@ -21,6 +21,7 @@ class ChatPanel extends Component
     public $status;
     public $text;
 
+    public $response;
     public $showConfirmModal = false;
     protected function rulesMessage()
     {
@@ -86,13 +87,14 @@ class ChatPanel extends Component
     {
         $request = new \Illuminate\Http\Request();
         $request->merge(['status' => "finalizado"]);
-        $response = app(LandbotWebhookController::class)->changeStatusConversation($request, $this->conversationId);
-        if ($response['status'] === "success") {
+        $this->response = app(LandbotWebhookController::class)->changeStatusConversation($request, $this->conversationId);
+        if ($this->response['status'] === "success") {
             $this->dispatch('updateConversations');
         }
         $this->status = "finalizado";
         $this->hiddenChats();
         $this->conversationStatus = $this->status;
+        $this->endPetition();
     }
     public function updatedStatus()
     {
