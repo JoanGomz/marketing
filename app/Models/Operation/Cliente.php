@@ -38,6 +38,17 @@ class Cliente extends BaseModel
         'genero',
         'fecha_nacimiento',
         'id_ciudad',
-        'is_deleted'
+        'is_deleted',
+        'id_centro_comercial'
     ];
+
+    public function city()
+    {
+        return $this->belongsTo(Ciudad::class, 'id_ciudad', 'id');
+    }
+
+    public function park()
+    {
+        return $this->belongsTo(Parks::class, 'id_centro_comercial', 'id');
+    }
 }

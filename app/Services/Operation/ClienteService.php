@@ -14,8 +14,7 @@ class ClienteService extends BaseService
 
     public function getAllClients()
     {
-        // return $this->model->where('is_deleted', 0)->with('city')->get();
-        return $this->model->where('is_deleted', 0)->get();
+        return $this->model->where('is_deleted', 0)->with('city:id,nombre', 'park:id,name')->get();
     }
 
     /**
@@ -29,6 +28,13 @@ class ClienteService extends BaseService
         $query = $this->model::query();
 
         $query->where('is_deleted', 0);
+        $query->with('city:id,nombre', 'park:id,name');
+
+        // Validar si su rol es Asesor - con null safe operator
+        $userRole = auth()->user()?->role?->name;
+        if ($userRole === 'Asesor' || $userRole === 'asesor') {
+            $query->where('id_centro_comercial', auth()->user()->parks_id);
+        }
 
         // buscador
         if (!empty($search)) {
