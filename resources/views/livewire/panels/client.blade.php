@@ -163,19 +163,36 @@
                                                 @enderror
                                             </div>
                                         </div>
-
-                                        <!-- Quinta fila: Email -->
-                                        <div class="mb-5">
-                                            <label for="email"
-                                                class="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
-                                            <input wire:model="email" type="email" id="email"
-                                                class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5       "
-                                                placeholder="Ej: angel.ramirez@epam.com" />
-                                            @error('email')
-                                                <span class="error text-red-600">{{ $message }}</span>
-                                            @enderror
+                                        <!-- Quinta fila: Email y Parque -->
+                                        <div class="flex flex-wrap gap-4 mb-5">
+                                            <div class="mb-5 flex-1">
+                                                <label for="email"
+                                                    class="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
+                                                <input wire:model="email" type="email" id="email"
+                                                    class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5       "
+                                                    placeholder="Ej: angel.ramirez@epam.com" />
+                                                @error('email')
+                                                    <span class="error text-red-600">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="mb-5 flex-1">
+                                                <label for="id_park"
+                                                    class="block mb-2 text-sm font-medium text-gray-900 ">Parque</label>
+                                                <select wire:model="id_park" id="id_park"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5      ">
+                                                    <option value="">Selecciona parque</option>
+                                                    @forelse ($parks['data'] as $item)
+                                                        <option value="{{ $item['id'] }}">{{ $item['name'] }}
+                                                        </option>
+                                                    @empty
+                                                        <option>No hay parques disponibles</option>
+                                                    @endforelse
+                                                </select>
+                                                @error('id_park')
+                                                    <span class="error text-red-600">{{ $message }}</span>
+                                                @enderror
+                                            </div>
                                         </div>
-
                                         <!-- Botones -->
                                         <div class="flex gap-4">
                                             <x-primary-button mode="submit">Actualizar Cliente</x-primary-button>
@@ -296,7 +313,8 @@
                                                                                         '{{ $item['tipo_documento'] }}', 
                                                                                         '{{ $item['genero'] }}', 
                                                                                         '{{ $item['fecha_nacimiento'] }}', 
-                                                                                        '{{ $item['id_ciudad'] }}'
+                                                                                        '{{ $item['id_ciudad'] }}',
+                                                                                         '{{ $item['id_centro_comercial'] }}'
                                                                                     )">
                                                     <i class="fa-solid fa-square-pen fa-xl text-blue-500 "></i>
                                                 </button>
@@ -304,7 +322,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="px-6 py-4 text-center">No hay usuarios
+                                            <td colspan="5" class="px-6 py-4 text-center">No hay clientes
                                                 disponibles</td>
                                         </tr>
                                     @endforelse

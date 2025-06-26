@@ -4,6 +4,7 @@ namespace App\Livewire\Panels;
 
 use App\Http\Controllers\Base\CiudadController;
 use App\Http\Controllers\Operation\ClienteController;
+use App\Http\Controllers\Operation\ParksController;
 use App\Traits\traitCruds;
 use Livewire\Component;
 
@@ -25,7 +26,7 @@ class Client extends Component
     public $genero;
     public $fecha_nacimiento;
     public $id_ciudad;
-
+    public $id_park;
     //FUNCIÓN DE VALIDACIÓN DE CAMPOS POST
     protected function rules()
     {
@@ -47,7 +48,7 @@ class Client extends Component
         $this->nombre_completo = $this->nombre . " " . $this->apellido;
     }
     public function clear() {}
-    public function setEditingClient($id, $identificacion, $nombre, $apellido, $celular, $direccion, $email, $tipo_documento, $genero, $fecha_nacimiento, $id_ciudad)
+    public function setEditingClient($id, $identificacion, $nombre, $apellido, $celular, $direccion, $email, $tipo_documento, $genero, $fecha_nacimiento, $id_ciudad,$id_park)
     {
         $this->id_client = $id;
         $this->identificacion = $identificacion;
@@ -60,6 +61,7 @@ class Client extends Component
         $this->genero = $genero;
         $this->fecha_nacimiento = $fecha_nacimiento;
         $this->id_ciudad = $id_ciudad;
+        $this->id_park = $id_park;
         $this->dispatch('open-update-form');
     }
     public function updateClient()
@@ -77,7 +79,8 @@ class Client extends Component
                 'tipo_documento' => $this->tipo_documento,
                 'genero' => $this->genero,
                 'fecha_nacimiento' => $this->fecha_nacimiento,
-                'id_ciudad' => $this->id_ciudad
+                'id_ciudad' => $this->id_ciudad,
+                'id_centro_comercial' =>$this->id_park
             ]);
             $this->response = app(ClienteController::class)->update($request, $this->id_client);
             if ($this->response['status'] == 'success') {
@@ -92,9 +95,11 @@ class Client extends Component
     {
         $data = app(ClienteController::class)->indexPaginated($this->page, $this->perPage, $this->search);
         $ciudades = app(CiudadController::class)->index();
+        $parques = app(ParksController::class)->index();
         return view('livewire.panels.client', [
             'data' => $data,
-            'cities' => $ciudades
+            'cities' => $ciudades,
+            'parks' => $parques
         ]);
     }
 }

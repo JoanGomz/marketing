@@ -76,9 +76,6 @@ class ChatPanel extends Component
         $this->conversationId = $conversationId;
         $this->dispatch('smoothScrollToBottom');
     }
-    public function hiddenChats(){
-        $this->conversationStatus = "finalizado";
-    }
     public function endConversation()
     {
         $request = new \Illuminate\Http\Request();
@@ -86,10 +83,9 @@ class ChatPanel extends Component
         $this->response = app(LandbotWebhookController::class)->changeStatusConversation($request, $this->conversationId);
         if ($this->response['status'] === "success") {
             $this->dispatch('updateConversations');
+            $this->status = "finalizado";
+            $this->conversationStatus = $this->status;
         }
-        $this->status = "finalizado";
-        $this->hiddenChats();
-        $this->conversationStatus = $this->status;
         $this->endPetition();
     }
     public function updatedStatus()
