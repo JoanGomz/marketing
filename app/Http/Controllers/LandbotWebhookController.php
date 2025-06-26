@@ -189,7 +189,7 @@ class LandbotWebhookController extends Controller
     /**
      * Obtener todas las conversaciones
      */
-    public function getAllConversations($status = null, $userAsingId = null)
+    public function getAllConversations($status = null, $userAsingId = null, $search = null)
     {
         try {
             $query = LandbotConversations::with(['lastMessage:id,conversation_id,conversation_data']);
@@ -201,6 +201,13 @@ class LandbotWebhookController extends Controller
 
             if ($userAsingId) {
                 $query->where('user_asing_id', $userAsingId);
+            }
+
+            if (!empty($search)) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('nombre', 'like', '%' . $search . '%')
+                        ->orWhere('telefono', 'like', '%' . $search . '%');
+                });
             }
 
             $conversations = $query->orderBy('updated_at', 'desc')->get();
