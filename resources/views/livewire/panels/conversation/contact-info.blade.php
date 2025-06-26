@@ -248,7 +248,7 @@
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5      ">
                                 <option value="">Selecciona parque</option>
                                 @forelse ($parks['data'] as $item)
-                                    <option value="{{ $item['id'] }}">{{ $item['nombre'] }}</option>
+                                    <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
                                 @empty
                                     <option>No hay parques disponibles</option>
                                 @endforelse
@@ -430,7 +430,7 @@
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5      ">
                                 <option value="">Selecciona parque</option>
                                 @forelse ($parks['data'] as $item)
-                                    <option value="{{ $item['id'] }}">{{ $item['nombre'] }}</option>
+                                    <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
                                 @empty
                                     <option>No hay parques disponibles</option>
                                 @endforelse

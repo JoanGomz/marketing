@@ -36,7 +36,7 @@ class ContactInfo extends Component
     public $direccion;
     public $id_ciudad;
     public $nombre_completo;
-    public $id_park;
+    public int $id_park;
     //FUNCIÓN DE VALIDACIÓN DE CAMPOS POST
     protected function rules()
     {
@@ -88,7 +88,6 @@ class ContactInfo extends Component
         $request = new \Illuminate\Http\Request();
         $request->merge(['search' => $telClient]);
         $this->dataClient = app(ClienteController::class)->getUser($request);
-        dump($this->dataClient);
     }
     public function saveNote()
     {
@@ -129,7 +128,7 @@ class ContactInfo extends Component
                     'fecha_nacimiento' => $this->fecha_nacimiento,
                     'id_ciudad' => $this->id_ciudad,
                     'conversation_id' => $this->conversationId,
-                    'id_centro_comercial' => $this->id_park
+                    'id_centro_comercial' => intval($this->id_park)
                 ]);
             } else {
                 $request->merge([
@@ -167,23 +166,41 @@ class ContactInfo extends Component
         try {
             $this->unirNombre();
             $request = new \Illuminate\Http\Request();
-            $request->merge([
-                'identificacion' => $this->identificacion,
-                'nombre' => $this->nombre,
-                'apellido' => $this->apellido,
-                'nombre_completo' => $this->nombre_completo,
-                'celular' => $this->celular,
-                'direccion' => $this->direccion,
-                'email' => $this->email,
-                'tipo_documento' => $this->tipo_documento,
-                'genero' => $this->genero,
-                'fecha_nacimiento' => $this->fecha_nacimiento,
-                'id_ciudad' => $this->id_ciudad,
-                'conversation_id' => $this->conversationId,
-                'id_centro_comercial' => Auth::user()->id_centro_comercial
-            ]);
+            if (Auth::user()->role_id === 1 || Auth::user()->role_id === 3) {
+                $request->merge([
+                    'identificacion' => $this->identificacion,
+                    'nombre' => $this->nombre,
+                    'apellido' => $this->apellido,
+                    'nombre_completo' => $this->nombre_completo,
+                    'celular' => $this->celular,
+                    'direccion' => $this->direccion,
+                    'email' => $this->email,
+                    'tipo_documento' => $this->tipo_documento,
+                    'genero' => $this->genero,
+                    'fecha_nacimiento' => $this->fecha_nacimiento,
+                    'id_ciudad' => $this->id_ciudad,
+                    'conversation_id' => $this->conversationId,
+                    'id_centro_comercial' => $this->id_park
+                ]);
+            } else {
+                $request->merge([
+                    'identificacion' => $this->identificacion,
+                    'nombre' => $this->nombre,
+                    'apellido' => $this->apellido,
+                    'nombre_completo' => $this->nombre_completo,
+                    'celular' => $this->celular,
+                    'direccion' => $this->direccion,
+                    'email' => $this->email,
+                    'tipo_documento' => $this->tipo_documento,
+                    'genero' => $this->genero,
+                    'fecha_nacimiento' => $this->fecha_nacimiento,
+                    'id_ciudad' => $this->id_ciudad,
+                    'conversation_id' => $this->conversationId,
+                    'id_centro_comercial' => Auth::user()->id_centro_comercial
+                ]);
+            }
             $this->response = app(ClienteController::class)->update($request, $this->id_client);
-
+            dump($request);
             if ($this->response['status'] == 'success') {
                 $this->js('$store.forms.updateFormVisible = false');
                 $this->loadData($this->celular, $this->nombre_completo, $this->notes, $this->conversationId);

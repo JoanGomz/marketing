@@ -60,6 +60,7 @@ class ClienteService extends BaseService
     {
         return $this->model
             ->where('is_deleted', 0)
+            ->with('park:id,name')
             ->where(function ($query) use ($search) {
                 $query->where('celular', $search)
                     ->orWhere('identificacion', $search);
