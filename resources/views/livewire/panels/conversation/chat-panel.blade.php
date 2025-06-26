@@ -87,7 +87,8 @@
                         <!-- Mensaje del cliente -->
                         <div wire:key="message-{{ $item['id'] ?? $loop->index }}"
                             class="mb-4 flex justify-start min-w-[400px]">
-                            <div class="max-w-md rounded-lg p-4  border min-w-[400px] shadowCard {{$conversationStatus === 'finalizado' ? "bg-gray-600 text-gray-400" : "bg-white text-black"}}">
+                            <div
+                                class="max-w-md rounded-lg p-4  border min-w-[400px] shadowCard {{ $conversationStatus === 'finalizado' ? 'bg-gray-600 text-gray-400' : 'bg-white text-black' }}">
                                 <div>{{ $getBodyText($conversationData) }}</div>
                                 <div class="text-xs mt-1 text-gray-500">
                                     {{ \Carbon\Carbon::parse($item['message_timestamp'])->format('g:i A') }}
@@ -97,7 +98,8 @@
                     @else
                         <!-- Mensaje del asesor -->
                         <div wire:key="message-{{ $item['id'] ?? $loop->index }}" class="mb-4 flex justify-end">
-                            <div class="max-w-md rounded-lg p-4 shadowCard {{$conversationStatus === 'finalizado' ? "bg-gray-600 text-gray-400" : "bg-brand-blueStar text-white"}}">
+                            <div
+                                class="max-w-md rounded-lg p-4 shadowCard {{ $conversationStatus === 'finalizado' ? 'bg-gray-600 text-gray-400' : 'bg-brand-blueStar text-white' }}">
                                 @if (!$hasInteractiveElements($conversationData))
                                     <!-- Mensaje de texto simple -->
                                     <div>{{ $getBodyText($conversationData) }}</div>
@@ -182,7 +184,10 @@
             <div class="cursor-pointer p-2 text-bg-brand-darkPurple" title="Reiniciar bot" wire:click="launchBot">
                 <i class="fa-solid fa-robot fa-xl text-brand-purple"></i>
             </div>
-            <div class="flex-1">
+
+            <!-- TODO el contenedor del input Y botones con x-data -->
+            <div x-data="{ showEmojis: false }" class="flex-1 flex items-center relative">
+                <!-- Input -->
                 <input wire:model="text" type="text" id="message-input"
                     placeholder="{{ !$canWrite ? 'Chat bloqueado - 24h transcurridas' : ($conversationStatus === 'finalizado' ? 'Conversación finalizada' : 'Escribe tu respuesta...') }}"
                     {{ !$canWrite || $conversationStatus === 'finalizado' ? 'disabled' : '' }} autocomplete="off"
@@ -193,31 +198,46 @@
                             !$canWrite || $conversationStatus === 'finalizado',
                     ])>
 
+                <!-- Botones DENTRO del div con x-data -->
+                <div class="flex space-x-2 ml-2 ">
+                    <button type="button" @click="$wire.set('text', '')" class="text-gray-500 hover:text-gray-700 {{ $conversationStatus === 'finalizado' ? 'cursor-not-allowed' : '' }}" {{ $conversationStatus === 'finalizado' ? 'disabled' : '' }}>
+                        <i class="fa-solid fa-eraser fa-lg"></i>
+                    </button>
+                    <button type="button" @click="showEmojis = !showEmojis" class="text-gray-500 hover:text-gray-700 {{ $conversationStatus === 'finalizado' ? 'cursor-not-allowed' : '' }}" {{ $conversationStatus === 'finalizado' ? 'disabled' : '' }}>
+                        <i class="fa-solid fa-face-smile fa-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Modal de emojis -->
+                <div x-show="showEmojis" x-transition @click.away="showEmojis = false"
+                    class="absolute bottom-full mb-2 right-0 z-50 bg-white rounded-lg shadow-lg border">
+                    <emoji-picker
+                        @emoji-click="$wire.set('text', ($wire.text || '') + $event.detail.unicode); showEmojis = false"
+                        class="border-0">
+                    </emoji-picker>
+                </div>
+
                 @error('text')
-                    <div class="text-red-500 text-xs mt-1">
+                    <div class="text-red-500 text-xs mt-1 absolute top-full left-0">
                         {{ $message }}
                     </div>
                 @enderror
+
                 @if (!$canWrite)
-                    <div class="text-gray-500 text-xs mt-1">
+                    <div class="text-gray-500 text-xs mt-1 absolute top-full left-0">
                         No puedes enviar mensajes después de 24 horas del último mensaje del cliente
                     </div>
                 @endif
                 @if ($conversationStatus === 'finalizado')
-                    <div class="text-gray-500 text-xs mt-1">
+                    <div class="text-gray-500 text-xs mt-1 absolute top-full left-0">
                         No puedes enviar mensajes porque la conversación se encuentra finalizada
                     </div>
                 @endif
             </div>
-            <div class="flex space-x-2 ml-2">
-                <button type="button" onclick="clearInput()" class="text-gray-500 hover:text-gray-700">
-                    <i class="fa-solid fa-eraser fa-lg"></i>
-                </button>
-                <button class="text-gray-500 hover:text-gray-700">
-                    <i class="fa-solid fa-face-smile fa-lg"></i>
-                </button>
-            </div>
-            <button class="ml-2 bg-brand-blueStar text-white rounded-md px-4 py-2 shadowCard">
+
+            <button
+                class="ml-2 bg-brand-blueStar text-white rounded-md px-4 py-2 shadowCard {{ $conversationStatus === 'finalizado' ? 'cursor-not-allowed' : '' }}"
+                {{ $conversationStatus === 'finalizado' ? 'disabled' : '' }}>
                 Enviar
             </button>
         </form>
@@ -246,11 +266,6 @@
 </div>
 @push('scripts')
     <script>
-        function clearInput() {
-            const buttonClear = document.getElementById("buttonClear");
-            const inputChat = document.getElementById("message-input");
-            inputChat.value = "";
-        }
         document.addEventListener('DOMContentLoaded', function() {
             const messagesContainer = document.getElementById("content-conversation");
 

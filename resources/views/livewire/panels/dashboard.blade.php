@@ -10,7 +10,7 @@
                     </h1>
                     <p class="text-sm text-gray-600  mt-1">
                         Actualmente tienes el rol de <span
-                            class="font-medium">{{ Auth::user()->role_id === 1 ? 'Torre Central' : 'Asesor' }}</span>
+                            class="font-medium">{{ (Auth::user()->role_id === 1) ? 'Administrador' : (Auth::user()->role_id=== 2 ? 'Torre Central' : 'Asesor') }}</span>
                     </p>
                 </div>
             </div>

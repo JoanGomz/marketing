@@ -312,7 +312,7 @@
                                                     {{ $item['user_creator'] }}
                                                 @else
                                                     <span
-                                                        class="bg-brand-aqua text-brand-purple text-xs font-medium me-2 px-2.5 py-0.5 rounded">Desconocido</span>
+                                                        class="bg-brand-aqua text-brand-purple text-xs font-medium me-2 px-2.5 py-0.5 rounded">Administrador</span>
                                                 @endif
                                                 {{ $item['user_creator'] }}
                                             </td>
