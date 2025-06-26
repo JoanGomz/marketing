@@ -200,7 +200,6 @@ class ContactInfo extends Component
                 ]);
             }
             $this->response = app(ClienteController::class)->update($request, $this->id_client);
-            dump($request);
             if ($this->response['status'] == 'success') {
                 $this->js('$store.forms.updateFormVisible = false');
                 $this->loadData($this->celular, $this->nombre_completo, $this->notes, $this->conversationId);
