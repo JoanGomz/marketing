@@ -1,6 +1,7 @@
 // app.js - Versión Optimizada
 import './bootstrap';
 import '../css/app.css';
+import 'emoji-picker-element';
 import * as Ably from 'ably';
 import myLoading from './WebComponents/My-Loading.js';
 

@@ -201,30 +201,16 @@
 
                                         <!-- Información con iconos -->
                                         <div class="space-y-3 mb-5 flex justify-between">
-                                            <div class="flex items-start">
-                                                <svg class="h-5 w-5 text-blue-200 mt-0.5 mr-2 flex-shrink-0"
-                                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                </svg>
+                                            <div class="flex items-start gap-2">
+                                                <i class="fa-solid fa-location-dot mt-2" style="color: #DBEAFE;"></i>
                                                 <p class="text-sm text-blue-100">
                                                     <span class="font-semibold text-white">Ubicación:</span><br>
                                                     {{ $item->location }}
                                                 </p>
                                             </div>
 
-                                            <div class="flex items-start">
-                                                <svg class="h-5 w-5 text-blue-200 mt-0.5 mr-2 flex-shrink-0"
-                                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                                    </path>
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z">
-                                                    </path>
-                                                </svg>
+                                            <div class="flex items-start gap-2">
+                                                <i class="fa-solid fa-battery-full mt-2" style="color: #DBEAFE;"></i>
                                                 <p class="text-sm text-blue-100">
                                                     <span class="font-semibold text-white">Capacidad:</span><br>
                                                     {{ $item->capacity }}

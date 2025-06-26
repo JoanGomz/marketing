@@ -69,13 +69,11 @@
                 <div class="space-y-2">
                     <div class="text-sm p-2 bg-gray-50 rounded border cursor-pointer">
                         <div class="font-medium">#Mensaje de bienvenida</div>
-                        <div class="message-pred text-xs text-gray-500">Bienvenido a la atención en linea de StarPark,
-                            ¿En que podemos ayudarte? ¿Desde que sede te comunicas?</div>
+                        <div class="message-pred text-xs text-gray-500">Bienvenido a la atención en linea de StarPark, ¿En que podemos ayudarte? ¿Desde que sede te comunicas?</div>
                     </div>
                     <div class="text-sm p-2 bg-gray-50 rounded border cursor-pointer">
                         <div class="font-medium">#Finalizar conversación</div>
-                        <div class="message-pred text-xs text-gray-500">Para nosotros es un placer ayudarte, a
-                            continuación te brindaremos una encuesta para que puedas calificar nuestra atención.</div>
+                        <div class="message-pred text-xs text-gray-500">Para nosotros es un placer ayudarte, a continuación te brindaremos una encuesta para que puedas calificar nuestra atención.</div>
                     </div>
                 </div>
             </div>

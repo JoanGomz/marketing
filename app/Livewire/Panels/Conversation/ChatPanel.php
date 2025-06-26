@@ -77,11 +77,7 @@ class ChatPanel extends Component
         $this->dispatch('smoothScrollToBottom');
     }
     public function hiddenChats(){
-        $this->mensajes=[];
-        $this->userName = "";
-        $this->conversationStatus = "";
-        $this->canWrite = "";
-        $this->conversationId = "";
+        $this->conversationStatus = "finalizado";
     }
     public function endConversation()
     {
@@ -101,6 +97,7 @@ class ChatPanel extends Component
         if ($this->status === "finalizado") {
             $this->showConfirmModal = true;
             $this->status = "pendiente";
+            return;
         }
         $request = new \Illuminate\Http\Request();
         $request->merge(['status' => $this->status]);

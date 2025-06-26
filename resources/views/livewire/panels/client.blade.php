@@ -16,7 +16,7 @@
                         <!--header y menu de navegación-->
                         <div class="px-4 bg-white rounded-lg mb-4">
                             <div class="relative mt-1 flex flex-col gap-4 lg:flex-row justify-between">
-                                <x-input-search mode="tableSearch" placeholder="Buscar usuarios"></x-input-search>
+                                <x-input-search mode="tableSearch" placeholder="Buscar clientes"></x-input-search>
                             </div>
                         </div>
                         @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)
@@ -186,6 +186,7 @@
                             </div>
                         @endif
                         <!--TABLA DE CLIENTES DE LOS PARQUES-->
+                        @dump($data['data'])
                         <div
                             class="
                     [&::-webkit-scrollbar-track]:rounded-full
@@ -219,8 +220,11 @@
                                         <th scope="col" class="px-4 py-3">
                                             Actualizado
                                         </th>
-                                        {{-- <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-6 py-3">
                                             Ciudad
+                                        </th>
+                                        {{-- <th scope="col" class="px-6 py-3">
+                                            Parque
                                         </th> --}}
                                         <th scope="col" class="px-4 py-3 rounded-tr-xl">
                                             ACCIONES
@@ -254,7 +258,7 @@
                                             <td class="px-4 py-4">
                                                 {{ $item['update_at'] }}
                                             </td>
-                                            {{-- <td class="px-6 py-4">
+                                            <td class="px-6 py-4">
                                                 @if ($item['city'] == null)
                                                     <span
                                                         class="bg-brand-purple text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded">Sin
@@ -266,7 +270,7 @@
                                                 @else
                                                     {{ $item['city']->nombre }}
                                                 @endif
-                                            </td> --}}
+                                            </td>
                                             <td class="px-4 py-4 flex gap-4">
                                                 <button aria-label="Botón editar"
                                                     wire:click="setEditingClient(
