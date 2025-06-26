@@ -34,6 +34,7 @@ class StoreClienteRequest extends FormRequest
             'genero' => ['required', 'string'],
             'fecha_nacimiento' => ['required', 'string'],
             'id_ciudad' => ['required', 'integer'],
+            'id_centro_comercial' => ['required', 'integer'],
         ];
     }
 }
