@@ -5,6 +5,7 @@ namespace App\Livewire\Panels\Conversation;
 use App\Http\Controllers\Base\CiudadController;
 use App\Http\Controllers\LandbotWebhookController;
 use App\Http\Controllers\Operation\ClienteController;
+use App\Http\Controllers\Operation\ParksController;
 use App\Traits\traitCruds;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -35,6 +36,7 @@ class ContactInfo extends Component
     public $direccion;
     public $id_ciudad;
     public $nombre_completo;
+    public $id_park;
     //FUNCIÓN DE VALIDACIÓN DE CAMPOS POST
     protected function rules()
     {
@@ -56,7 +58,7 @@ class ContactInfo extends Component
         if (!$this->dataClient || !isset($this->dataClient['data'])) {
             return; // O manejar el error como prefieras
         }
-        $this->id_client=$this->dataClient['data']->id;
+        $this->id_client = $this->dataClient['data']->id;
         $this->identificacion = $this->dataClient['data']->identificacion;
         $this->nombre = $this->dataClient['data']->nombre;
         $this->apellido = $this->dataClient['data']->apellido;
@@ -86,6 +88,7 @@ class ContactInfo extends Component
         $request = new \Illuminate\Http\Request();
         $request->merge(['search' => $telClient]);
         $this->dataClient = app(ClienteController::class)->getUser($request);
+        dump($this->dataClient);
     }
     public function saveNote()
     {
@@ -112,21 +115,39 @@ class ContactInfo extends Component
         try {
             $this->unirNombre();
             $request = new \Illuminate\Http\Request();
-            $request->merge([
-                'identificacion' => $this->identificacion,
-                'nombre' => $this->nombre,
-                'apellido' => $this->apellido,
-                'nombre_completo' => $this->nombre_completo,
-                'celular' => $this->celular,
-                'direccion' => $this->direccion,
-                'email' => $this->email,
-                'tipo_documento' => $this->tipo_documento,
-                'genero' => $this->genero,
-                'fecha_nacimiento' => $this->fecha_nacimiento,
-                'id_ciudad' => $this->id_ciudad,
-                'conversation_id' => $this->conversationId,
-                'id_centro_comercial' => Auth::user()->id_centro_comercial
-            ]);
+            if (Auth::user()->role_id === 1 || Auth::user()->role_id === 3) {
+                $request->merge([
+                    'identificacion' => $this->identificacion,
+                    'nombre' => $this->nombre,
+                    'apellido' => $this->apellido,
+                    'nombre_completo' => $this->nombre_completo,
+                    'celular' => $this->celular,
+                    'direccion' => $this->direccion,
+                    'email' => $this->email,
+                    'tipo_documento' => $this->tipo_documento,
+                    'genero' => $this->genero,
+                    'fecha_nacimiento' => $this->fecha_nacimiento,
+                    'id_ciudad' => $this->id_ciudad,
+                    'conversation_id' => $this->conversationId,
+                    'id_centro_comercial' => $this->id_park
+                ]);
+            } else {
+                $request->merge([
+                    'identificacion' => $this->identificacion,
+                    'nombre' => $this->nombre,
+                    'apellido' => $this->apellido,
+                    'nombre_completo' => $this->nombre_completo,
+                    'celular' => $this->celular,
+                    'direccion' => $this->direccion,
+                    'email' => $this->email,
+                    'tipo_documento' => $this->tipo_documento,
+                    'genero' => $this->genero,
+                    'fecha_nacimiento' => $this->fecha_nacimiento,
+                    'id_ciudad' => $this->id_ciudad,
+                    'conversation_id' => $this->conversationId,
+                    'id_centro_comercial' => Auth::user()->id_centro_comercial
+                ]);
+            }
             $this->response = app(ClienteController::class)->store($request);
 
             if ($this->response['status'] == 'success') {
@@ -161,7 +182,7 @@ class ContactInfo extends Component
                 'conversation_id' => $this->conversationId,
                 'id_centro_comercial' => Auth::user()->id_centro_comercial
             ]);
-            $this->response = app(ClienteController::class)->update($request,$this->id_client);
+            $this->response = app(ClienteController::class)->update($request, $this->id_client);
 
             if ($this->response['status'] == 'success') {
                 $this->js('$store.forms.updateFormVisible = false');
@@ -176,8 +197,10 @@ class ContactInfo extends Component
     public function render()
     {
         $cities = app(CiudadController::class)->index();
+        $parks = app(ParksController::class)->index();
         return view('livewire.panels.conversation.contact-info', [
-            'cities' => $cities
+            'cities' => $cities,
+            'parks' => $parks
         ]);
     }
 }

@@ -39,6 +39,12 @@
                     {{ $dataClient && $dataClient['message'] !== 'Usuario no encontrado' ? $dataClient['data']['genero'] ?? '--' : '--' }}
                 </p>
             </div>
+            <div>
+                <p class="text-sm text-gray-500">Parque</p>
+                <p class="font-medium">
+                    {{ $dataClient && $dataClient['message'] !== 'Usuario no encontrado' ? $dataClient['data']->park['name'] ?? '--' : '--' }}
+                </p>
+            </div>
         </div>
         <div class="pt-4 border-t flex flex-col gap-4">
             <h4 class="font-medium mb-2">Notas</h4>
@@ -69,11 +75,13 @@
                 <div class="space-y-2">
                     <div class="text-sm p-2 bg-gray-50 rounded border cursor-pointer">
                         <div class="font-medium">#Mensaje de bienvenida</div>
-                        <div class="message-pred text-xs text-gray-500">Bienvenido a la atención en linea de StarPark, ¿En que podemos ayudarte? ¿Desde que sede te comunicas?</div>
+                        <div class="message-pred text-xs text-gray-500">Bienvenido a la atención en linea de StarPark,
+                            ¿En que podemos ayudarte? ¿Desde que sede te comunicas?</div>
                     </div>
                     <div class="text-sm p-2 bg-gray-50 rounded border cursor-pointer">
                         <div class="font-medium">#Finalizar conversación</div>
-                        <div class="message-pred text-xs text-gray-500">Para nosotros es un placer ayudarte, a continuación te brindaremos una encuesta para que puedas calificar nuestra atención.</div>
+                        <div class="message-pred text-xs text-gray-500">Para nosotros es un placer ayudarte, a
+                            continuación te brindaremos una encuesta para que puedas calificar nuestra atención.</div>
                     </div>
                 </div>
             </div>
@@ -232,6 +240,24 @@
                             @enderror
                         </div>
                     </div>
+                    @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)
+                        <div class="flex-1">
+                            <label for="id_park"
+                                class="block mb-2 text-sm font-medium text-gray-900 ">Parques</label>
+                            <select wire:model="id_park" id="id_park"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5      ">
+                                <option value="">Selecciona parque</option>
+                                @forelse ($parks['data'] as $item)
+                                    <option value="{{ $item['id'] }}">{{ $item['nombre'] }}</option>
+                                @empty
+                                    <option>No hay parques disponibles</option>
+                                @endforelse
+                            </select>
+                            @error('id_park')
+                                <span class="error text-red-600 text-xs">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    @endif
                     <!-- Botones -->
                     <div class="flex gap-4">
                         <x-primary-button class="flex-1" mode="submit">Añadir Usuario</x-primary-button>
@@ -240,7 +266,7 @@
                 </form>
             </div>
         </div>
-        <!-- Formulario registro de clientes -->
+        <!-- Formulario actualización de clientes -->
         <div x-show="$store.forms.updateFormVisible" x-cloak
             x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity"
             x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0"
@@ -396,6 +422,24 @@
                             @enderror
                         </div>
                     </div>
+                    @if (Auth::user()->role_id === 1 || Auth::user()->role_id === 2)
+                        <div class="flex-1 mb-2">
+                            <label for="id_park"
+                                class="block mb-2 text-sm font-medium text-gray-900 ">Parques</label>
+                            <select wire:model="id_park" id="id_park"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5      ">
+                                <option value="">Selecciona parque</option>
+                                @forelse ($parks['data'] as $item)
+                                    <option value="{{ $item['id'] }}">{{ $item['nombre'] }}</option>
+                                @empty
+                                    <option>No hay parques disponibles</option>
+                                @endforelse
+                            </select>
+                            @error('id_park')
+                                <span class="error text-red-600 text-xs">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    @endif
                     <!-- Botones -->
                     <div class="flex gap-4">
                         <x-primary-button class="flex-1" mode="submit">Actualizar</x-primary-button>
@@ -414,7 +458,9 @@
             mensajesPredeterminados.forEach(function(elemento) {
                 elemento.addEventListener('click', function(e) {
                     inputChat.value = this.textContent;
-                    inputChat.dispatchEvent(new Event('input', { bubbles: true }));
+                    inputChat.dispatchEvent(new Event('input', {
+                        bubbles: true
+                    }));
                 })
             });
         });

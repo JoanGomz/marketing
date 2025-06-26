@@ -186,7 +186,6 @@
                             </div>
                         @endif
                         <!--TABLA DE CLIENTES DE LOS PARQUES-->
-                        @dump($data['data'])
                         <div
                             class="
                     [&::-webkit-scrollbar-track]:rounded-full
@@ -223,9 +222,9 @@
                                         <th scope="col" class="px-6 py-3">
                                             Ciudad
                                         </th>
-                                        {{-- <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="px-6 py-3">
                                             Parque
-                                        </th> --}}
+                                        </th>
                                         <th scope="col" class="px-4 py-3 rounded-tr-xl">
                                             ACCIONES
                                         </th>
@@ -269,6 +268,19 @@
                                                         ciudad</span>
                                                 @else
                                                     {{ $item['city']->nombre }}
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                @if ($item['park'] == null)
+                                                    <span
+                                                        class="bg-brand-purple text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded">Sin
+                                                        parque</span>
+                                                @elseif($item['park']->name == null)
+                                                    <span
+                                                        class="bg-brand-purple text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded">Sin
+                                                        parque</span>
+                                                @else
+                                                    {{ $item['park']->name }}
                                                 @endif
                                             </td>
                                             <td class="px-4 py-4 flex gap-4">
