@@ -25,6 +25,53 @@ class ConversationsList extends Component
     {
         $this->loading = false;
     }
+    public function actualizar()
+    {
+        $this->updateConversations();
+        if ($this->selectedConversationId) {
+            try {
+                if (Auth::user()->role_id === 3) {
+                    $conversations = app(LandbotWebhookController::class)->getAllConversations($this->status, Auth::user()->id, $this->search);
+                } else {
+                    $conversations = app(LandbotWebhookController::class)->getAllConversations($this->status, null, $this->search);
+                }
+                $selectedConversation = null;
+                if (isset($conversations['data'])) {
+                    foreach ($conversations['data'] as $conversation) {
+                        if ($conversation['id'] == $this->selectedConversationId) {
+                            $selectedConversation = $conversation;
+                            break;
+                        }
+                    }
+                }
+                if ($selectedConversation) {
+                    $userName = $selectedConversation['nombre'];
+                    $status = $selectedConversation['status'];
+                    $telefono = $selectedConversation['telefono'];
+                    $nota = $selectedConversation['notas'] ?? null;
+                    $canWrite = $this->determineCanWrite($selectedConversation['updated_at']);
+
+                    $this->dispatch(
+                        'load-conversation',
+                        conversationId: $this->selectedConversationId,
+                        userName: $userName,
+                        status: $status,
+                        canWrite: $canWrite
+                    )->to('panels.conversation.chat-panel');
+
+                    $this->dispatch(
+                        'load-info-client',
+                        telClient: $telefono,
+                        userName: $userName,
+                        note: $nota,
+                        conversationId: $this->selectedConversationId
+                    )->to('panels.conversation.contact-info');
+                }
+            } catch (\Exception $e) {
+                session()->flash('error', 'Error al actualizar la conversación');
+            }
+        }
+    }
     private function determineCanWrite($fecha)
     {
         $lastMessageCarbon = Carbon::parse($fecha);
@@ -81,9 +128,9 @@ class ConversationsList extends Component
             $currentQuery = md5($this->search . $this->status);
 
             if (Auth::user()->role_id === 3) {
-                $conversations = app(LandbotWebhookController::class)->getAllConversations($this->status, Auth::user()->id);
+                $conversations = app(LandbotWebhookController::class)->getAllConversations($this->status, Auth::user()->id, $this->search);
             } else {
-                $conversations = app(LandbotWebhookController::class)->getAllConversations($this->status);
+                $conversations = app(LandbotWebhookController::class)->getAllConversations($this->status, null, $this->search);
             }
 
 

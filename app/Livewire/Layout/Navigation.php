@@ -6,6 +6,9 @@ use Livewire\Component;
 
 class Navigation extends Component
 {
+    public function actualizar(){
+         $this->dispatch('updateConversations');
+    }
     public function render()
     {
         return view('livewire.layout.navigation');

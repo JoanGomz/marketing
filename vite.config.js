@@ -7,7 +7,8 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
-                'resources/js/view-password.js'
+                'resources/js/view-password.js',
+                'resources/js/dashBoard/dashboardCharts.js'
             ],
             refresh: true,
         }),

@@ -65,8 +65,7 @@
                             </a>
                         </li>
                     @endif
-                    <li
-                        class="px-4 py-4 hover:bg-gray-700 {{ request()->routeIs('client') ? 'bg-gray-700' : '' }}">
+                    <li class="px-4 py-4 hover:bg-gray-700 {{ request()->routeIs('client') ? 'bg-gray-700' : '' }}">
                         <a href="{{ route('client') }}" class="flex items-center gap-4">
                             <i class="fa-solid fa-user"></i>
                             <span>Clientes</span>
@@ -74,7 +73,8 @@
                     </li>
                 </ul>
                 <!-- Información de versión -->
-                <div class="mt-auto flex flex-col gap-2 items-center p-4 border-t justify-center border-gray-800 w-full pb-2">
+                <div
+                    class="mt-auto flex flex-col gap-2 items-center p-4 border-t justify-center border-gray-800 w-full pb-2">
                     <img class="w-32" style="filter: drop-shadow(6px 4px 2px rgba(0, 0, 0, 0.427))"
                         fetchpriority="high" src="/Images/Logos/spoon-hor-3.png" alt="logo-Spoon">
                     <div class="text-xs text-gray-400 flex flex-col items-center">
@@ -97,22 +97,25 @@
                 <!-- Título -->
                 <div class="p-4 flex justify-end pr-14 pt-5">
                     <img class="w-48" style="filter: drop-shadow(6px 4px 2px rgba(0, 0, 0, 0.427))"
-                        fetchpriority="high" src="/Images/Logos/STARP.avif" alt="logo-StarPark">
+                        fetchpriority="high" src="Images/Logos/STARP.avif" alt="logo-StarPark">
                 </div>
                 <!-- Menú de usuario alineado completamente a la derecha -->
                 <div class="flex items-center">
-                    <div class="flex justify-end">
+                    <div class="flex justify-end gap-4">
                         <div class="text-sm text-white mr-4 font-bold uppercase">
                             @switch(Auth::user()->role_id)
                                 @case(1)
                                     Administrador
-                                    @break
+                                @break
+
                                 @case(2)
                                     Torre Central
-                                    @break
+                                @break
+
                                 @case(3)
-                                    Asesor / {{Auth::user()->load('park')['park']->name}}
-                                    @break
+                                    Asesor / {{ Auth::user()->load('park')['park']->name }}
+                                @break
+
                                 @default
                             @endswitch
                         </div>
