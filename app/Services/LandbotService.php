@@ -110,7 +110,6 @@ class LandbotService extends BaseService
             'raw_data' => json_encode($data),
             'conversation_data' => $data['data'],
             'customer_phone' => $data['customer']['phone'],
-            'conversation_date' => Carbon::now(),
             'landbot_chat_id' => $data['_raw']['chat'],
             'author_type' => $data['_raw']['author_type'] == 'user' ? 'cliente' : $data['_raw']['author_type'],
             'conversation_id' => $conversation->id,
