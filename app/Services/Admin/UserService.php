@@ -65,7 +65,7 @@ class UserService implements UserServiceInterface
 
         $user = Auth::user();
         if ($user->role_id ==  2) {
-            $query->andWhere('role_id', 3);
+            $query->where('role_id', 3);
         }
 
         $query->with('role');
