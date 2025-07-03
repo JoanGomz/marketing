@@ -68,16 +68,24 @@ class DashboardController extends Controller
     {
         try {
             //fiesta cumpleaños
-            $happyBirthdayCount = LandbotMessage::where('conversation_data', 'LIKE', '%Fiesta Cumplea%')->count();
+            $happyBirthdayCount = LandbotMessage::where('conversation_data', 'LIKE', '%Fiesta Cumplea%')
+                ->where('author_type', 'cliente')
+                ->count();
 
             //Eventos Corporativos
-            $corporateEventsCount = LandbotMessage::where('conversation_data', 'LIKE', '%Eventos corporativos%')->count();
+            $corporateEventsCount = LandbotMessage::where('conversation_data', 'LIKE', '%Eventos corporativos%')
+                ->where('author_type', 'cliente')
+                ->count();
 
             //Evento de colegios
-            $schoolEventsCount = LandbotMessage::where('conversation_data', 'LIKE', '%Evento de colegios%')->count();
+            $schoolEventsCount = LandbotMessage::where('conversation_data', 'LIKE', '%Evento de colegios%')
+                ->where('author_type', 'cliente')
+                ->count();
 
             //Evento de conjuntos
-            $communityEventsCount = LandbotMessage::where('conversation_data', 'LIKE', '%Evento de conjuntos%')->count();
+            $communityEventsCount = LandbotMessage::where('conversation_data', 'LIKE', '%Evento de conjuntos%')
+                ->where('author_type', 'cliente')
+                ->count();
 
             // Preparar datos para ApexCharts
             $eventLabels = [
